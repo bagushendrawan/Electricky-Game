@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Switch
   - Selectable
+  - Canvas_End
   layers:
   - Default
   - TransparentFX

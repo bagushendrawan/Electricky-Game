@@ -10,12 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f06256d219f66cf469b0c43aaea6195f, type: 3}
-  m_Name: test
+  m_Name: level_1
   m_EditorClassIdentifier: 
   dataList:
-  - taskName: 
+  - taskName: Lamp
     taskTimer: 0
-    taskStats: 1
-  - taskName: 
-    taskTimer: 0
+    wattage: 15
     taskStats: 0
+    taskOpen: 1
+    taskWait: 0
+  - taskName: TV
+    taskTimer: 5
+    wattage: 120
+    taskStats: 0
+    taskOpen: 0
+    taskWait: 1

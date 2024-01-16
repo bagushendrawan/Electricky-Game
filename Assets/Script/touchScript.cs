@@ -7,11 +7,10 @@ public class touchScript : MonoBehaviour
     private tagSelect script_tagSelect;
    [HideInInspector] public GameObject selectedObject;
 
-    public int indexButton;
-
     void Start()
     {
         script_tagSelect = GetComponent<tagSelect>();
+        
     }
     void Update()
     {
@@ -30,22 +29,9 @@ public class touchScript : MonoBehaviour
                     selectedObject = touchedObject;
                     print($"hit {touchedObject.tag}");
 
-                    // Perform actions specific to the touchedObject
-                    // For example, you can check its tag or name
-                    if(touchedObject.CompareTag("Switch"))
-                    {
-                        selectObject();
-                    }
                     script_tagSelect.select(touchedObject.tag);
                 }
             }
         }
     }
-
-    public scriptableObject scriptableScript;
-    void selectObject()
-    {
-        scriptableScript.dataList[indexButton].taskStats = true;
-    }
-    
 }

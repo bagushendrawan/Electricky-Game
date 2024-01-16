@@ -5,8 +5,11 @@ using UnityEngine;
 public class singletonStats : MonoBehaviour
 {
     private static singletonStats _instance;
-    public int timer { get; private set; }
-    public int eleCapacity { get; private set; }
+    public scriptableObject scriptableScript;
+    private uiScript script_ui;
+    public float totalTime;
+    public float timer { get; private set; }
+    public int eleCapacity;
 
     public static singletonStats Instance
     {
@@ -26,9 +29,25 @@ public class singletonStats : MonoBehaviour
             return _instance;
         }
     }
+    
+    void setTimer()
+    {
+        // Update the timer
+        timer -= Time.deltaTime;
 
-    // Other GameManager functionality...
+        // Update the UI Text component
+        script_ui.updateTimerUI();
 
+        // Check if the timer has reached zero
+        if (timer <= 0)
+        {
+            // Perform actions when the timer reaches zero (e.g., game over)
+            Debug.Log("Timer reached zero!");
+            // You might want to add logic to handle what happens when the timer reaches zero.
+        }
+    }
+
+   
     void Awake()
     {
         if (_instance != null && _instance != this)
@@ -40,5 +59,17 @@ public class singletonStats : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+    }
+
+    private void Start()
+    {
+        timer = totalTime;
+        script_ui = GetComponent<uiScript>();
+    }
+
+    private void Update()
+    {
+        setTimer();
+        script_ui.updateWattageUI();
     }
 }

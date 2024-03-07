@@ -6,7 +6,21 @@ TagManager:
   tags:
   - Switch
   - Selectable
+  - Electricity
+  - Canvas_Win
+  - Canvas_Lose
+  - Canvas_Menu
   - Canvas_End
+  - firstLevel
+  - secondLevel
+  - changeScene
+  - backScene
+  - mainVirtualCamera
+  - objList
+  - minButton
+  - plusButton
+  - firVirtualCamera
+  - secVirtualCamera
   layers:
   - Default
   - TransparentFX

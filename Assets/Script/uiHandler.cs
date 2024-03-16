@@ -43,7 +43,7 @@ public class uiHandler : MonoBehaviour
         {
             script_cameraState.activatePrevCamera();
             script_touchCode.deactivateObj();
-            script_touchCode.activateSecLevel();
+            script_touchCode.deactiveSecLevel();
         }
         else
         {

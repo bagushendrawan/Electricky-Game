@@ -32,7 +32,7 @@ public class objCondition : MonoBehaviour
 
         if (script_Scriptable.eleCapacity <= 0)
         {
-            Debug.Log("Elec Out");
+            //Debug.Log("Elec Out");
         }
         else
         {
@@ -41,7 +41,7 @@ public class objCondition : MonoBehaviour
 
         if (GameObject.FindWithTag("Electricity") != null  && !done)
         {
-            Debug.Log("Find Electricity & Obj");
+            //Debug.Log("Find Electricity & Obj");
             eleOnObj = GameObject.FindWithTag("Electricity");
 
             done = true;
@@ -51,7 +51,7 @@ public class objCondition : MonoBehaviour
    
     public void objColor()
     {
-        Debug.Log("Color Updated");
+        //Debug.Log("Color Updated");
         for (int i = 0; i < objList.Count; i++)
         {
             if(objList != null)
@@ -87,7 +87,7 @@ public class objCondition : MonoBehaviour
         {
             if(target.name == objList[i].name)
             {
-                Debug.Log($"Activated Found of index {i}");
+                //Debug.Log($"Activated Found of index {i}");
                 //Debug.Log("Object Activated");
                 
                 if (!list[i].taskActive)
@@ -243,14 +243,14 @@ public class objCondition : MonoBehaviour
         foreach (GameObject x in GameObject.FindGameObjectsWithTag("Switch"))
         {
             objList.Add(x);
-            Debug.Log("Herre");
+            //Debug.Log("Herre");
         }
         if(objList != null)
         {
             objList.Sort(CompareGameObjectNames);
         }
         
-        Debug.Log("Object Assigned");
+        //Debug.Log("Object Assigned");
     }
 
     private int CompareGameObjectNames(GameObject a, GameObject b)

@@ -8,6 +8,7 @@ public class touchCode : MonoBehaviour
     private cameraState script_cameraState;
     private objCondition script_objCondition;
     private GameObject selectedObject;
+    private Collider objCollider;
     private gameState script_gameState;
     public objValue objVal;
 
@@ -58,23 +59,45 @@ public class touchCode : MonoBehaviour
                 endTouchPos = touch.position;
                 if(script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
                 {
-                    if (endTouchPos.x < startTouchPos.x)
+                    if(startTouchPos.y < Screen.height/2)
                     {
-                        Debug.Log("Next Swipe");
-                        script_cameraState.nextSwipe();
-                    }
+                        if (endTouchPos.x < startTouchPos.x)
+                        {
+                            Debug.Log("Next Swipe");
+                            script_cameraState.nextSwipe();
+                        }
 
-                    if (endTouchPos.x > startTouchPos.x)
-                    {
-                        Debug.Log("Prev Swipe");
-                        script_cameraState.prevSwipe();
-                    }
+                        if (endTouchPos.x > startTouchPos.x)
+                        {
+                            Debug.Log("Prev Swipe");
+                            script_cameraState.prevSwipe();
+                        }
+                    }   
                 }
                 
             }
         }
     }
 
+    IEnumerator textPopUp()
+    {
+       Debug.Log("Text Pop Up!");
+       float elapsedTime = 0f;
+       textToActivate script_textToActivate = selectedObject.GetComponent<textToActivate>();
+       while (elapsedTime < script_textToActivate.timer)
+       {
+          // Execute your function here
+          script_textToActivate.textToShow.text = script_textToActivate.text;
+
+          // Wait for the next frame
+          yield return null;
+
+          // Update the elapsed time
+          elapsedTime += Time.deltaTime;
+       }
+
+        script_textToActivate.textToShow.text = "";
+    }
 
     void changeValue(int val)
     {
@@ -82,31 +105,47 @@ public class touchCode : MonoBehaviour
     }
 
     public void activateObj()
-    { if(selectedObject.GetComponentInParent<objValue>() != null)
-        {
-            objVal = selectedObject.GetComponentInParent<objValue>();
-            objVal._objActivate = true;
-            Debug.Log("objActivated");
-        }
+    { 
+        if(selectedObject.GetComponentInParent<objValue>() != null)
+            {
+                objVal = selectedObject.GetComponentInParent<objValue>();
+                objVal._objActivate = true;
+                Debug.Log("objActivated");
+            }
     }
-
     public void deactivateObj()
     {
-        objVal._objActivate = false;
-        Debug.Log("objDeactivated");
+        if(objVal != null)
+        {
+            objVal._objActivate = false;
+            Debug.Log("objDeactivated");
+        }
+        
     }
 
     public void activateSecLevel()
     {
-        if (!script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
+        if (selectedObject.GetComponent<levelToActivate>() != null)
         {
-            script_levelToActivate.objCol.enabled = true;
-        }
-        else
-        {
-            script_levelToActivate.objCol.enabled = false;
+            script_levelToActivate = selectedObject.GetComponent<levelToActivate>();
+            if (!script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
+            {
+                script_levelToActivate.objCol.enabled = true;
+                objCollider = selectedObject.GetComponent<Collider>();
+                objCollider.enabled = false;
+            }
         }
     }
+    public void deactiveSecLevel()
+    {
+        if(script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
+        {
+            script_levelToActivate.objCol.enabled = false;
+            objCollider.enabled = true;
+        }
+       
+    }
+
     public void select(string Tag)
     {
 
@@ -117,12 +156,7 @@ public class touchCode : MonoBehaviour
                 script_cameraState.activateNewCamera(selectedObject);
                 script_cameraState.ChangeState(cameraState.state.first);
                 activateObj();
-                
-                if(selectedObject.GetComponent<levelToActivate>() != null)
-                {
-                    script_levelToActivate = selectedObject.GetComponent<levelToActivate>();
-                    activateSecLevel();
-                }
+                activateSecLevel();
 
                 if(selectedObject.GetComponent<objToActivate>() != null)
                 {
@@ -134,12 +168,7 @@ public class touchCode : MonoBehaviour
                 script_cameraState.activateNewCamera(selectedObject);
                 script_cameraState.ChangeState(cameraState.state.second);
                 activateObj();
-
-                if (selectedObject.GetComponent<levelToActivate>() != null)
-                {
-                    script_levelToActivate = selectedObject.GetComponent<levelToActivate>();
-                    activateSecLevel();
-                }
+                activateSecLevel();
 
                 if (selectedObject.GetComponent<objToActivate>() != null)
                 {
@@ -174,6 +203,13 @@ public class touchCode : MonoBehaviour
                 script_objCondition.done = false;
                 script_objCondition.activateObj();
                 script_cameraState.activateMove(script_cameraState.currentCameraIndex);
+                break;
+            case "Selectable":
+                print($"tag : {Tag}");
+                if (selectedObject.GetComponent<textToActivate>() != null)
+                {
+                    StartCoroutine(textPopUp());
+                }
                 break;
             default:
                 print($"tag : {Tag}");

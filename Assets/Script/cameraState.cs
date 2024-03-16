@@ -6,7 +6,7 @@ using Cinemachine;
 public class cameraState : MonoBehaviour
 {
     public CinemachineVirtualCamera currentVirtualCamera;
-    public CinemachineVirtualCamera prevVirtualCamera;
+    public List<CinemachineVirtualCamera> virCameraList;
 
     public List<CinemachineVirtualCamera> roomCamera;
     public int currentCameraIndex;
@@ -35,7 +35,8 @@ public class cameraState : MonoBehaviour
         // Initialize the character in the Idle state
         ChangeState(state.main);
         deactivateAllCameras();
-        currentVirtualCamera = roomCamera[0];
+        virCameraList.Add(roomCamera[0]);
+        currentVirtualCamera = virCameraList[0];
         currentCameraIndex = 0;
         activateMove(currentCameraIndex);
     }
@@ -115,18 +116,22 @@ public class cameraState : MonoBehaviour
    
     public void activateNewCamera(GameObject selectedObject)
     {
-        prevVirtualCamera = currentVirtualCamera;
-        currentVirtualCamera.enabled = false;
-        currentVirtualCamera = selectedObject.GetComponent<cameraToActivate>().cam;
-        currentVirtualCamera.enabled = true;
-        activateSwitch(selectedObject, true);
+        if(selectedObject.GetComponent<cameraToActivate>().cam != virCameraList[virCameraList.Count - 1])
+        {
+            currentVirtualCamera.enabled = false;
+            virCameraList.Add(selectedObject.GetComponent<cameraToActivate>().cam);
+            currentVirtualCamera = virCameraList[virCameraList.Count - 1];
+            currentVirtualCamera.enabled = true;
+            activateSwitch(selectedObject, true);
+        }
     }
 
 
     public void activatePrevCamera()
     {
         currentVirtualCamera.enabled = false;
-        currentVirtualCamera = prevVirtualCamera;
+        virCameraList.RemoveAt(virCameraList.Count - 1);
+        currentVirtualCamera = virCameraList[virCameraList.Count - 1];
         currentVirtualCamera.enabled = true;
     }
 
@@ -136,15 +141,19 @@ public class cameraState : MonoBehaviour
         if (currentVirtualCamera != roomCamera[3])
         {
             currentVirtualCamera.enabled = false;
+            virCameraList.RemoveAt(virCameraList.Count - 1);
             roomCamera[currentCameraIndex + 1].enabled = true;
-            currentVirtualCamera = roomCamera[currentCameraIndex + 1];
+            virCameraList.Add(roomCamera[currentCameraIndex + 1]);
+            currentVirtualCamera = virCameraList[virCameraList.Count - 1];
             currentCameraIndex = currentCameraIndex + 1;
         }
         else
         {
             currentVirtualCamera.enabled = false;
+            virCameraList.RemoveAt(virCameraList.Count - 1);
             roomCamera[0].enabled = true;
-            currentVirtualCamera = roomCamera[0];
+            virCameraList.Add(roomCamera[0]);
+            currentVirtualCamera = virCameraList[virCameraList.Count - 1];
             currentCameraIndex = 0;
         }
         activateMove(currentCameraIndex);
@@ -157,15 +166,19 @@ public class cameraState : MonoBehaviour
         if (currentVirtualCamera != roomCamera[0])
         {
             currentVirtualCamera.enabled = false;
+            virCameraList.RemoveAt(virCameraList.Count - 1);
             roomCamera[currentCameraIndex - 1].enabled = true;
-            currentVirtualCamera = roomCamera[currentCameraIndex - 1];
+            virCameraList.Add(roomCamera[currentCameraIndex - 1]);
+            currentVirtualCamera = virCameraList[virCameraList.Count - 1];
             currentCameraIndex = currentCameraIndex - 1;
         }
         else
         {
             currentVirtualCamera.enabled = false;
+            virCameraList.RemoveAt(virCameraList.Count - 1);
             roomCamera[3].enabled = true;
-            currentVirtualCamera = roomCamera[3];
+            virCameraList.Add(roomCamera[3]);
+            currentVirtualCamera = virCameraList[virCameraList.Count - 1];
             currentCameraIndex = 3;
         }
         activateMove(currentCameraIndex);
@@ -254,32 +267,32 @@ public class cameraState : MonoBehaviour
 
     public void activateMove(int tag)
     {
-        Debug.Log("Move");
+        //Debug.Log("Move");
         switch(tag)
         {
             case 0:
-                Debug.Log("Move" + tag);
+                //Debug.Log("Move" + tag);
                 moveObjUp(roomSides[0], 1.1f, 10);
                 moveObjUp(roomSides[3], 1.1f, 10);
                 moveObjDown(roomSides[2], 0, 0);
                 moveObjDown(roomSides[1], 0, 0);
                 break;
             case 1:
-                Debug.Log("Move" + tag);
+                //Debug.Log("Move" + tag);
                 moveObjUp(roomSides[0], 1.1f, 10);
                 moveObjUp(roomSides[1], 1.1f, 10);
                 moveObjDown(roomSides[2], 0, 0);
                 moveObjDown(roomSides[3], 0, 0);
                 break;
             case 2:
-                Debug.Log("Move" + tag);
+                //Debug.Log("Move" + tag);
                 moveObjUp(roomSides[2], 1.1f, 10);
                 moveObjUp(roomSides[1], 1.1f, 10);
                 moveObjDown(roomSides[3], 0, 0);
                 moveObjDown(roomSides[0], 0, 0);
                 break;
             case 3:
-                Debug.Log("Move" + tag);
+                //Debug.Log("Move" + tag);
                 moveObjUp(roomSides[2], 1.1f, 10);
                 moveObjUp(roomSides[3], 1.1f, 10);
                 moveObjDown(roomSides[0], 0, 0);

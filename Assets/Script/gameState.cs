@@ -95,7 +95,7 @@ public class gameState : MonoBehaviour
         switch (currentState)
         {
             case state.mainGame:
-                Debug.Log("On mainGame state");
+                //Debug.Log("On mainGame state");
                 if(script_Data.win)
                 {
                     ChangeState(state.winGame);
@@ -107,16 +107,16 @@ public class gameState : MonoBehaviour
                 }
                 break;
             case state.pauseGame:
-                Debug.Log("On pauseGame state");
+                //Debug.Log("On pauseGame state");
                 break;
             case state.winGame:
-                Debug.Log("On winGame state");
+                //Debug.Log("On winGame state");
                 break;
             case state.loseGame:
-                Debug.Log("On loseGame state");
+                //Debug.Log("On loseGame state");
                 break;
             case state.menuGame:
-                Debug.Log("On menuGame state");
+                //Debug.Log("On menuGame state");
                 break;
         }
     }

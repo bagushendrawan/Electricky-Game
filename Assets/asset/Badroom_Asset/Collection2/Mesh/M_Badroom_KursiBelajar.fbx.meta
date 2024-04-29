@@ -3,12 +3,7 @@ guid: 5cb570b6a4692d54fab9bef0821c7395
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Tembok
-    second: {fileID: 2100000, guid: 4a9a1657c3e749e4f96b101db4f620a1, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

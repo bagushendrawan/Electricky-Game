@@ -25,6 +25,12 @@ public class uiButton : MonoBehaviour
         SceneManager.LoadSceneAsync(index);
     }
 
+    public void exitScene(int index)
+    {
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+        SceneManager.LoadSceneAsync(index);
+    }
+
     public void quit()
     {
         script_dataHandler.Save();

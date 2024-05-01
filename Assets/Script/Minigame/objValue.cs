@@ -8,9 +8,10 @@ public class objValue : MonoBehaviour
     private bool objActive = false;
     public int defValue;
     public int changeVal;
+    public int valueCondition;
     public GameObject objToActivate;
     public GameObject objToDeactivate;
-    public GameObject AC;
+    public Collider ACButton;
     [SerializeField] TMP_Text valText;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class objValue : MonoBehaviour
     void Update()
     {
         updateValue();
+        valueCheck(valueCondition);
     }
 
     public bool _objActivate
@@ -47,13 +49,14 @@ public class objValue : MonoBehaviour
 
     void valueCheck(int con)
     {
-        if (defValue >= con)
+        if (defValue == con)
         {
-            AC.SetActive(false);
+            Debug.Log("AC Temp right");
+            ACButton.enabled = true;
         }
         else
         {
-            AC.SetActive(true);
+            ACButton.enabled = false;
         }
     }
 }

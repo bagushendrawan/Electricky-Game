@@ -9,13 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/mainMenu.unity
     guid: 56f567ca8b347f942a0550a592b2e657
   - enabled: 1
-    path: Assets/Scenes/livingRoom 1.unity
-    guid: d406d0e2becf96e4cac95261e2ecf155
+    path: Assets/Scenes/bedRoom.unity
+    guid: cb243c6c4b3e9054cb4a973381c01368
   - enabled: 1
     path: Assets/Scenes/Outside.unity
     guid: ef4981f8cde7a3e49a42a661d9df5dde
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 572a6f27702569c45aa08399f31345e1,
       type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: 93862e27e5da4f145a38b39bafaa2ba5, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 6cb791130ce105849a32d8c04a5805bc, type: 2}

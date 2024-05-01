@@ -17,7 +17,9 @@ public class touchCode : MonoBehaviour
 
     private levelToActivate script_levelToActivate;
     private objToActivate script_objToActivate;
+    private bool isSwipeLocked = false;
     public bool secLevel = false;
+    public float swipeTimer;
 
     void Awake()
     {
@@ -64,18 +66,50 @@ public class touchCode : MonoBehaviour
                         if (endTouchPos.x < startTouchPos.x)
                         {
                             Debug.Log("Next Swipe");
-                            script_cameraState.nextSwipe();
+                            if(!isSwipeLocked)
+                            {
+                                script_cameraState.nextSwipe();
+                                StartCoroutine(SwipeTimer(swipeTimer));
+                            } else
+                            {
+                                Debug.Log("SWIPE NEXT IS LOCKED TIMER");
+                            }
+
                         }
 
                         if (endTouchPos.x > startTouchPos.x)
                         {
                             Debug.Log("Prev Swipe");
-                            script_cameraState.prevSwipe();
+                            if(!isSwipeLocked)
+                            {
+                                script_cameraState.prevSwipe();
+                                StartCoroutine(SwipeTimer(swipeTimer));
+                            } else
+                            {
+                                Debug.Log("SWIPE PREV IS LOCKED TIMER");
+                            }
+                            
                         }
                     }   
                 }
                 
             }
+        }
+    }
+
+    IEnumerator SwipeTimer(float time)
+    {
+        float timer = time;
+        isSwipeLocked = true;
+        while (timer >= 0 && isSwipeLocked)
+        {
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                isSwipeLocked = false;
+                yield break; // Exit the coroutine if the taskTimer has reached zero
+            }
+            yield return null; // Wait for the next frame
         }
     }
 

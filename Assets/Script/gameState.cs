@@ -49,21 +49,16 @@ public class gameState : MonoBehaviour
         switch (currentState)
         {
             case state.mainGame:
-                Debug.Log("Entering mainGame state");
                 break;
             case state.pauseGame:
-                Debug.Log("Entering pauseGame state");
                 break;
             case state.winGame:
                 winCanvas.enabled = true;
-                Debug.Log("Entering winGame state");
                 break;
             case state.loseGame:
                 loseCanvas.enabled = true;
-                Debug.Log("Entering loseGame state");
                 break;
             case state.menuGame:
-                Debug.Log("Entering menuGame state");
                 break;
         }
     }
@@ -73,19 +68,14 @@ public class gameState : MonoBehaviour
         switch (currentState)
         {
             case state.mainGame:
-                Debug.Log("Exiting mainGame state");
                 break;
             case state.pauseGame:
-                Debug.Log("Exiting pauseGame state");
                 break;
             case state.winGame:
-                Debug.Log("Exiting winGame state");
                 break;
             case state.loseGame:
-                Debug.Log("Exiting loseGame state");
                 break;
             case state.menuGame:
-                Debug.Log("Exiting menuGame state");
                 break;
         }
     }

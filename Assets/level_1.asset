@@ -12,47 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
   m_Name: level_1
   m_EditorClassIdentifier: 
-  eleCapacity: 0
-  eleQuota: 1
-  timer: 0
+  eleCapacity: 900
+  eleQuota: 1000
+  timer: 52.804676
   dataList:
   - taskName: wallLamp
     taskTimer: 0
-    wattage: 0
-    wattPerSec: 0
+    wattage: 15
+    wattPerSec: 15
     taskStats: 0
     taskRestore: 0
     taskActive: 0
-    eleOn: 0
+    eleOn: 1
   - taskName: CPU
-    taskTimer: 0
-    wattage: 0
-    wattPerSec: 0
+    taskTimer: 5
+    wattage: 100
+    wattPerSec: 25
     taskStats: 0
     taskRestore: 0
     taskActive: 0
-    eleOn: 0
+    eleOn: 1
   - taskName: Monitor
-    taskTimer: 0
-    wattage: 0
-    wattPerSec: 0
+    taskTimer: 5
+    wattage: 50
+    wattPerSec: 15
     taskStats: 0
     taskRestore: 0
     taskActive: 0
-    eleOn: 0
+    eleOn: 1
   - taskName: Bedlamp
-    taskTimer: 0
-    wattage: 0
-    wattPerSec: 0
+    taskTimer: 2
+    wattage: 25
+    wattPerSec: 10
     taskStats: 0
     taskRestore: 0
     taskActive: 0
-    eleOn: 0
+    eleOn: 1
   - taskName: AC
-    taskTimer: 0
-    wattage: 0
-    wattPerSec: 0
+    taskTimer: 15
+    wattage: 300
+    wattPerSec: 40
     taskStats: 0
     taskRestore: 0
     taskActive: 0
-    eleOn: 0
+    eleOn: 1

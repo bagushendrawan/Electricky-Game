@@ -66,15 +66,15 @@ public class cameraState : MonoBehaviour
         {
             case state.main:
                 currentState = 0;
-                Debug.Log("Entering Main state");
+                //Debug.Log("Entering Main state");
                 break;
             case state.first:
                 currentState = 1;
-                Debug.Log("Entering First state");
+                //Debug.Log("Entering First state");
                 break;
             case state.second:
                 currentState = 2;
-                Debug.Log("Entering Second state");
+                //Debug.Log("Entering Second state");
                 break;
         }
     }
@@ -85,13 +85,13 @@ public class cameraState : MonoBehaviour
         switch (state_camera)
         {
             case state.main:
-                Debug.Log("Exiting Main state");
+                //Debug.Log("Exiting Main state");
                 break;
             case state.first:
-                Debug.Log("Exiting First state");
+                //Debug.Log("Exiting First state");
                 break;
             case state.second:
-                Debug.Log("Exiting Second state");
+               //Debug.Log("Exiting Second state");
                 break;
         }
     }
@@ -126,7 +126,9 @@ public class cameraState : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     public void activatePrevCamera()
     {
         currentVirtualCamera.enabled = false;
@@ -135,6 +137,9 @@ public class cameraState : MonoBehaviour
         currentVirtualCamera.enabled = true;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void nextSwipe()
     {
         deactivateAllCameras();

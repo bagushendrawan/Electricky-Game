@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eleCapacity: 900
   eleQuota: 1000
-  timer: 52.804676
+  timer: 3000
   dataList:
   - taskName: wallLamp
     taskTimer: 0

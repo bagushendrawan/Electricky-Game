@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public class gameState : MonoBehaviour
+//Should be a central game state, but only using it for win and lose
+public class GameCondStateScript : MonoBehaviour
 {
-    private singletonData script_Data;
+    private SingletonDataScript script_Data;
     private Canvas winCanvas;
     private Canvas loseCanvas;
 
@@ -25,7 +26,7 @@ public class gameState : MonoBehaviour
     void Start()
     {
         ChangeState(state.mainGame);
-        script_Data = GetComponent<singletonData>();
+        script_Data = GetComponent<SingletonDataScript>();
         winCanvas = GameObject.Find("Canvas_Win").GetComponent<Canvas>();
         loseCanvas = GameObject.Find("Canvas_Lose").GetComponent<Canvas>();
         winCanvas.enabled = false;
@@ -86,12 +87,12 @@ public class gameState : MonoBehaviour
         {
             case state.mainGame:
                 //Debug.Log("On mainGame state");
-                if(script_Data.win)
+                if(script_Data.global_win_Q)
                 {
                     ChangeState(state.winGame);
                 }
 
-                if (script_Data.lose)
+                if (script_Data.global_lose_Q)
                 {
                     ChangeState(state.loseGame);
                 }

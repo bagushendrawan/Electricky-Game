@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class textToActivate : MonoBehaviour
+public class ACTextWarningScript : MonoBehaviour
 {
     public TMP_Text textToShow;
     public string text;

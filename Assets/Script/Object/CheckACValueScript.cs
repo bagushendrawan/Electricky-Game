@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class objValue : MonoBehaviour
+public class CheckACValueScript : MonoBehaviour
 {
     private bool objActive = false;
     public int defValue;

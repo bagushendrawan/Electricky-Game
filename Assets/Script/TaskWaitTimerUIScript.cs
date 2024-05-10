@@ -2,15 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class waitTimer : MonoBehaviour
+//Show task Timer Stack in UI
+public class TaskWaitTimerUIScript : MonoBehaviour
 {
     private TMP_Text timerText;
-    public scriptableObject script_scriptable;
-    public Dictionary<int, Timer> timers = new Dictionary<int, Timer>();
+    public ScriptableObjectScript script_scriptable;
+    public Dictionary<int, Timer> global_taskTimerActive = new Dictionary<int, Timer>();
 
     // Start is called before the first frame update
     void Start()
     {
+        //Find objTimer in canvas
         timerText = GameObject.Find("ObjTimer").GetComponent<TMP_Text>();
     }
 
@@ -24,10 +26,10 @@ public class waitTimer : MonoBehaviour
     // Start a new timer
     public void StartTimer(float duration, string nameObj, int index)
     {
-        if (!timers.ContainsKey(index))
+        if (!global_taskTimerActive.ContainsKey(index))
         {
             Timer newTimer = new Timer(duration);
-            timers.Add(index, newTimer);
+            global_taskTimerActive.Add(index, newTimer);
         }
     }
 
@@ -36,11 +38,11 @@ public class waitTimer : MonoBehaviour
     {
         // Remove finished timers
         List<int> keysToRemove = new List<int>();
-        foreach (var pair in timers)
+        foreach (var pair in global_taskTimerActive)
         {
             int index = pair.Key;
             Timer timer = pair.Value;
-            if (timer.IsFinished || !script_scriptable.dataList[index].taskActive)
+            if (timer.IsFinished || !script_scriptable.global_tronicDataList[index].tronic_active_Q)
             {
                 keysToRemove.Add(index);
             }
@@ -48,14 +50,14 @@ public class waitTimer : MonoBehaviour
 
         foreach (int index in keysToRemove)
         {
-            timers.Remove(index);
+            global_taskTimerActive.Remove(index);
         }
 
         // Display active timers in UI
         DisplayTimers();
 
         // Update each timer
-        foreach (var pair in timers)
+        foreach (var pair in global_taskTimerActive)
         {
             pair.Value.UpdateTimer(Time.deltaTime);
         }
@@ -70,10 +72,10 @@ public class waitTimer : MonoBehaviour
             timerText.text = "";
 
             // Display each active timer
-            foreach (var pair in timers)
+            foreach (var pair in global_taskTimerActive)
             {
                 int index = pair.Key;
-                string nameObj = script_scriptable.dataList[index].taskName;
+                string nameObj = script_scriptable.global_tronicDataList[index].tronic_name;
                 Timer timer = pair.Value;
                 timerText.text += $"{nameObj} Timer: {timer.Duration - timer.ElapsedTime:F1}s\n";
             }

@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class cameraState : MonoBehaviour
+public class CameraStatesScript : MonoBehaviour
 {
-    public CinemachineVirtualCamera currentVirtualCamera;
-    public List<CinemachineVirtualCamera> virCameraList;
+    [HideInInspector] public CinemachineVirtualCamera currentVirtualCamera;
+    [HideInInspector] public List<CinemachineVirtualCamera> virCameraList;
 
+    [HideInInspector] public int currentCameraIndex;
+    [HideInInspector] public int currentState;
+
+    [Header("Assign The Camera and Wall Sides")]
     public List<CinemachineVirtualCamera> roomCamera;
-    public int currentCameraIndex;
-    public int currentState { get; private set; }
-
     public List<GameObject> roomSides;
-   [SerializeField] private float distance;
-   [SerializeField] private float speed;
-   [SerializeField] private float fadeDuration;
-   [SerializeField] private string animTriggerUp;
+
+    [Header("Wall Animation")]
+   //[SerializeField] private float distance;
+   //[SerializeField] private float speed;
+    [SerializeField] private float fadeDuration;
+    [SerializeField] private string animTriggerUp;
     [SerializeField] private string animTriggerDown;
 
     // Define possible states
@@ -116,10 +119,10 @@ public class cameraState : MonoBehaviour
    
     public void activateNewCamera(GameObject selectedObject)
     {
-        if(selectedObject.GetComponent<cameraToActivate>().cam != virCameraList[virCameraList.Count - 1])
+        if(selectedObject.GetComponent<ObjCameraScript>().cam != virCameraList[virCameraList.Count - 1])
         {
             currentVirtualCamera.enabled = false;
-            virCameraList.Add(selectedObject.GetComponent<cameraToActivate>().cam);
+            virCameraList.Add(selectedObject.GetComponent<ObjCameraScript>().cam);
             currentVirtualCamera = virCameraList[virCameraList.Count - 1];
             currentVirtualCamera.enabled = true;
             activateSwitch(selectedObject, true);

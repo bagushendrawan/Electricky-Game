@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class taskUI : MonoBehaviour
+public class TaskStatsUIScript : MonoBehaviour
 {
-    public Dictionary<string, bool> task = new Dictionary<string, bool>();
-    public scriptableObject script_Scriptable;
+    public Dictionary<string, bool> global_taskUI = new Dictionary<string, bool>();
+    public ScriptableObjectScript script_scriptable;
     private TMP_Text taskText;
     // Start is called before the first frame update
     void Start()
@@ -24,20 +24,20 @@ public class taskUI : MonoBehaviour
 
     void showTask()
     {
-        foreach (var x in script_Scriptable.dataList)
+        foreach (var x in script_scriptable.global_tronicDataList)
         {
-            task.Add(x.taskName, x.taskStats);
+            global_taskUI.Add(x.tronic_name, x.tronic_statsDone_Q);
         }
     }
     public void updateTask()
     {
         taskText.text = null;
-        foreach (var x in script_Scriptable.dataList)
+        foreach (var x in script_scriptable.global_tronicDataList)
         {
-            task[x.taskName] = x.taskStats;
+            global_taskUI[x.tronic_name] = x.tronic_statsDone_Q;
         }
 
-        foreach (var pair in task)
+        foreach (var pair in global_taskUI)
         {
             taskText.text += $"{pair.Key} Stats: {pair.Value.ToString()}\n";
         }

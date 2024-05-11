@@ -6,13 +6,19 @@ using TMPro;
 public class CheckACValueScript : MonoBehaviour
 {
     private bool objActive = false;
+    private bool isAnimRun = false;
     public int defValue;
     public int changeVal;
     public int valueCondition;
     public GameObject objToActivate;
     public GameObject objToDeactivate;
     public Collider ACButton;
+    public List<Texture2D> textureACList = new();
+    public Renderer rendererRemote;
+    public Renderer rendererAC;
     [SerializeField] TMP_Text valText;
+    [SerializeField] private GameObject ac_remoteSwitch;
+    [SerializeField] private Animator acAnimator;
 
     // Update is called once per frame
     void Update()
@@ -46,7 +52,6 @@ public class CheckACValueScript : MonoBehaviour
     {
         if (defValue == con)
         {
-            Debug.Log("AC Temp right");
             ACButton.enabled = true;
         }
         else
@@ -69,9 +74,43 @@ public class CheckACValueScript : MonoBehaviour
         script_acText.textToShow.text = "";
     }
 
+    //Refer this to select touchcode
+    public void ACButtonPressed(bool isWantToTurnOn)
+    {
+        if (TouchCodeScript.selectedObject != null && TouchCodeScript.selectedObject.name == ac_remoteSwitch.name)
+        {
+            Debug.Log("AC Anim Hit!");
+            if(isWantToTurnOn)
+            {
+                Debug.Log("AC Anim On!");
+                acAnimator.SetTrigger("acOn");
+            } else
+            {
+                Debug.Log("AC Anim Off!");
+                acAnimator.SetTrigger("acOff");
+            }
+            
+        }
+    }
+
     public void changeACValue(int val)
     {
-        defValue += (changeVal * val);
+        if (defValue - 21 + val > -1 && defValue - 20 + val < 6)
+        {
+            defValue += (changeVal * val);
+            try 
+            { 
+                rendererRemote.material.SetTexture("_MainTex", textureACList[defValue - 21]);
+                rendererAC.material.SetTexture("_MainTex", textureACList[defValue - 21]);
+            } catch 
+            {
+                Debug.Log("Ac Value is out of bounds");
+            }
+        } else
+        {
+            Debug.Log("Ac Value is out of bounds");
+        }
+       
     }
 
     public void activateACCollider()

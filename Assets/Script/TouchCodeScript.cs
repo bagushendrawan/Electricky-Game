@@ -16,6 +16,7 @@ public class TouchCodeScript : MonoBehaviour
 
     private ObjColliderToActivateScript script_colliderToActivate;
     private BedLampActivateScript script_objToActivate;
+    [SerializeField] private CPUButtonScript script_cpuButton;
     private bool isSwipeLocked = false;
     //public bool secLevel = false;
     public float swipeLockTimer;
@@ -111,6 +112,7 @@ public class TouchCodeScript : MonoBehaviour
             case "Switch":
                 print($"tag : {Tag}");
                 script_objCondition.objSwitch(selectedObject);
+                script_cpuButton.CPUButtonPressed();
                 break;
             case "Electricity":
                 print($"tag : {Tag}");
@@ -167,6 +169,7 @@ public class TouchCodeScript : MonoBehaviour
 
             if (touch.phase == TouchPhase.Moved && script_cameraState.currentVirtualCamera.CompareTag("firVirtualCamera"))
             {
+                //Error here
                 script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
             }
 

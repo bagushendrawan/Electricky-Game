@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   global_eleCapacity: 900
   global_eleQuota: 1000
-  global_timer: 60
+  global_timer: 300
   global_eleOn_Q: 1
   global_tronicDataList:
   - tronic_name: Room_Lamp
-    tronic_timer: 20
+    tronic_timer: 5
     tronic_wattage: 300
     tronic_wattPerSec: 15
     tronic_statsDone_Q: 0
@@ -33,16 +33,8 @@ MonoBehaviour:
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
-  - tronic_name: Monitor
-    tronic_timer: 15
-    tronic_wattage: 50
-    tronic_wattPerSec: 15
-    tronic_statsDone_Q: 0
-    tronic_couldRestored_Q: 0
-    tronic_active_Q: 0
-    tronic_eleSupplied_Q: 1
   - tronic_name: Bed_Lamp
-    tronic_timer: 30
+    tronic_timer: 5
     tronic_wattage: 15
     tronic_wattPerSec: 30
     tronic_statsDone_Q: 0
@@ -50,7 +42,7 @@ MonoBehaviour:
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 0
   - tronic_name: AC
-    tronic_timer: 30
+    tronic_timer: 10
     tronic_wattage: 15
     tronic_wattPerSec: 30
     tronic_statsDone_Q: 0

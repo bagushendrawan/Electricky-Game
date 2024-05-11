@@ -5,7 +5,10 @@ using Cinemachine;
 
 public class CameraStatesScript : MonoBehaviour
 {
+    //save current active camera
     [HideInInspector] public CinemachineVirtualCamera currentVirtualCamera;
+
+    //control camera level act like a stack, could be optimized with stack
     [HideInInspector] public List<CinemachineVirtualCamera> virCameraList;
 
     [HideInInspector] public int currentCameraIndex;
@@ -22,21 +25,9 @@ public class CameraStatesScript : MonoBehaviour
     [SerializeField] private string animTriggerUp;
     [SerializeField] private string animTriggerDown;
 
-    // Define possible states
-    public enum state
-    {
-        main,
-        first,
-        second
-    }
-
-    // Current state of the character
-    private state state_camera;
 
     void Start()
     {
-        // Initialize the character in the Idle state
-        ChangeState(state.main);
         deactivateAllCameras();
         virCameraList.Add(roomCamera[0]);
         currentVirtualCamera = virCameraList[0];
@@ -46,77 +37,10 @@ public class CameraStatesScript : MonoBehaviour
 
     void Update()
     {
-        // Perform actions based on the current state
-        PerformStateActions();
+
     }
 
-    public void ChangeState(state newState)
-    {
-        // Exit the current state
-        ExitState();
-
-        // Set the new state
-        state_camera = newState;
-
-        // Enter the new state
-        EnterState();
-    }
-
-    void EnterState()
-    {
-        // Perform actions when entering a state
-        switch (state_camera)
-        {
-            case state.main:
-                currentState = 0;
-                //Debug.Log("Entering Main state");
-                break;
-            case state.first:
-                currentState = 1;
-                //Debug.Log("Entering First state");
-                break;
-            case state.second:
-                currentState = 2;
-                //Debug.Log("Entering Second state");
-                break;
-        }
-    }
-
-    void ExitState()
-    {
-        // Perform actions when exiting a state
-        switch (state_camera)
-        {
-            case state.main:
-                //Debug.Log("Exiting Main state");
-                break;
-            case state.first:
-                //Debug.Log("Exiting First state");
-                break;
-            case state.second:
-               //Debug.Log("Exiting Second state");
-                break;
-        }
-    }
-
-    void PerformStateActions()
-    {
-        // Perform actions based on the current state
-        switch (state_camera)
-        {
-            case state.main:
-                // Perform Idle state actions
-                break;
-            case state.first:
-                // Perform Walking state actions
-                break;
-            case state.second:
-                // Perform Running state actions
-                break;
-        }
-    }
-
-   
+    //activate obj camera
     public void activateNewCamera(GameObject selectedObject)
     {
         if(selectedObject.GetComponent<ObjCameraScript>().cam != virCameraList[virCameraList.Count - 1])
@@ -130,7 +54,7 @@ public class CameraStatesScript : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Back button pressed
     /// </summary>
     public void activatePrevCamera()
     {
@@ -217,6 +141,7 @@ public class CameraStatesScript : MonoBehaviour
         
     }
 
+    //fixed wall last position after anim
     private IEnumerator DelayedExecution(GameObject obj, bool con, float dur, float pos)
     {
         yield return new WaitForSeconds(dur);
@@ -225,37 +150,37 @@ public class CameraStatesScript : MonoBehaviour
         //obj.SetActive(con);
     }
 
-    private IEnumerator Start(GameObject obj, float trans)
-    {
-        Renderer[] rend = obj.GetComponentsInChildren<Renderer>(true);
+    //private IEnumerator Start(GameObject obj, float trans)
+    //{
+    //    Renderer[] rend = obj.GetComponentsInChildren<Renderer>(true);
         
-        foreach (Renderer renderer in rend)
-        {
-            Debug.Log(renderer.name);
-            StartCoroutine(FadeOut(renderer, trans));
-        }
+    //    foreach (Renderer renderer in rend)
+    //    {
+    //        Debug.Log(renderer.name);
+    //        StartCoroutine(FadeOut(renderer, trans));
+    //    }
 
-        yield return new WaitForSeconds(fadeDuration);
-    }
+    //    yield return new WaitForSeconds(fadeDuration);
+    //}
 
 
-    IEnumerator FadeOut(Renderer rend, float trans)
-    {
-        Material material = rend.material;
-        Color originalColor = material.color;
-        Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, trans);
+    //IEnumerator FadeOut(Renderer rend, float trans)
+    //{
+    //    Material material = rend.material;
+    //    Color originalColor = material.color;
+    //    Color targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, trans);
 
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
-            material.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
+    //    float elapsed = 0f;
+    //    while (elapsed < fadeDuration)
+    //    {
+    //        float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+    //        material.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+    //        elapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
 
-        material.color = targetColor;
-    }
+    //    material.color = targetColor;
+    //}
 
     void deactivateAllCameras()
     {
@@ -308,6 +233,8 @@ public class CameraStatesScript : MonoBehaviour
                 break;
         }
     }
+
+    //activate obj collider after switch cam
     void activateSwitch(GameObject selectedObject, bool col)
     {
         Collider[] objectToActivate = selectedObject.GetComponentsInChildren<Collider>(true);

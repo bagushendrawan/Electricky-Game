@@ -8,8 +8,9 @@ using TMPro;
 public class UIGlobalHandlerScript : MonoBehaviour
 {
     public ScriptableObjectScript script_scriptable;
-    private CameraStatesScript script_cameraState;
+    private FSMCameraRoomScript script_cameraState;
     private TouchCodeScript script_touchCode;
+    [SerializeField] private CheckACValueScript script_acObj;
 
     private Canvas canvasMenu;
     private TMP_Text textUI;
@@ -18,7 +19,7 @@ public class UIGlobalHandlerScript : MonoBehaviour
 
     private void Start()
     {
-        script_cameraState = GetComponent<CameraStatesScript>();
+        script_cameraState = GetComponent<FSMCameraRoomScript>();
         script_touchCode = GetComponent<TouchCodeScript>();
         canvasMenu = GameObject.Find("Canvas_Menu").GetComponent<Canvas>();
         textUI = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
@@ -39,7 +40,7 @@ public class UIGlobalHandlerScript : MonoBehaviour
         if (!script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
         {
             script_cameraState.activatePrevCamera();
-            script_touchCode.deactivateACCollider();
+            script_acObj.deactivateACCollider();
             script_touchCode.deactiveSecCollider();
         }
         else

@@ -13,11 +13,6 @@ public class CheckACValueScript : MonoBehaviour
     public GameObject objToDeactivate;
     public Collider ACButton;
     [SerializeField] TMP_Text valText;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -58,5 +53,39 @@ public class CheckACValueScript : MonoBehaviour
         {
             ACButton.enabled = false;
         }
+    }
+    public IEnumerator acPopUpWarning()
+    {
+        Debug.Log("Text Pop Up!");
+        float elapsedTime = 0f;
+        ACTextWarningScript script_acText = TouchCodeScript.selectedObject.GetComponent<ACTextWarningScript>();
+        while (elapsedTime < script_acText.timer)
+        {
+            script_acText.textToShow.text = script_acText.text;
+            yield return null;
+            elapsedTime += Time.deltaTime;
+        }
+
+        script_acText.textToShow.text = "";
+    }
+
+    public void changeACValue(int val)
+    {
+        defValue += (changeVal * val);
+    }
+
+    public void activateACCollider()
+    {
+        if (TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>() != null)
+        {
+            _objActivate = true;
+            Debug.Log("objActivated");
+        }
+    }
+
+    public void deactivateACCollider()
+    {
+            _objActivate = false;
+            Debug.Log("objDeactivated");
     }
 }

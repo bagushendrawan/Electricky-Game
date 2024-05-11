@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class TouchCodeScript : MonoBehaviour
 {
-    private CameraStatesScript script_cameraState;
+    private FSMCameraRoomScript script_cameraState;
     private ObjConditionScript script_objCondition;
-    private GameObject selectedObject;
+    public static GameObject selectedObject;
     private Collider objCollider;
-    private CheckACValueScript ac_obj;
+    [SerializeField] private CheckACValueScript script_acObj;
 
     private Vector2 startTouchPos;
     private Vector2 endTouchPos;
@@ -22,7 +22,8 @@ public class TouchCodeScript : MonoBehaviour
 
     void Start()
     {
-        script_cameraState = GetComponent<CameraStatesScript>();
+
+        script_cameraState = GetComponent<FSMCameraRoomScript>();
         script_objCondition = GetComponent<ObjConditionScript>();
     }
     void Update()
@@ -45,46 +46,6 @@ public class TouchCodeScript : MonoBehaviour
             }
             yield return null; // Wait for the next frame
         }
-    }
-
-    IEnumerator acPopUpWarning()
-    {
-       Debug.Log("Text Pop Up!");
-       float elapsedTime = 0f;
-       ACTextWarningScript script_acText = selectedObject.GetComponent<ACTextWarningScript>();
-       while (elapsedTime < script_acText.timer)
-       {
-          script_acText.textToShow.text = script_acText.text;
-          yield return null;
-          elapsedTime += Time.deltaTime;
-       }
-
-        script_acText.textToShow.text = "";
-    }
-
-    void changeACValue(int val)
-    {
-        ac_obj.defValue += (ac_obj.changeVal * val);
-    }
-
-    public void activateACCollider()
-    { 
-        if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
-            {
-                ac_obj = selectedObject.GetComponentInParent<CheckACValueScript>();
-                ac_obj._objActivate = true;
-                Debug.Log("objActivated");
-            }
-    }
-
-    public void deactivateACCollider()
-    {
-        if(ac_obj != null)
-        {
-            ac_obj._objActivate = false;
-            Debug.Log("objDeactivated");
-        }
-        
     }
 
     public void activateSecCollider()
@@ -118,8 +79,8 @@ public class TouchCodeScript : MonoBehaviour
             case "firstLevel":
                 print($"tag : {Tag}");
                 script_cameraState.activateNewCamera(selectedObject);
-                script_cameraState.ChangeState(CameraStatesScript.state.first);
-                activateACCollider();
+                //script_cameraState.ChangeState(CameraStatesScript.cameraState.first);
+                script_acObj.activateACCollider();
                 activateSecCollider();
 
                 if(selectedObject.GetComponent<BedLampActivateScript>() != null)
@@ -130,8 +91,8 @@ public class TouchCodeScript : MonoBehaviour
             case "secondLevel":
                 print($"tag : {Tag}");
                 script_cameraState.activateNewCamera(selectedObject);
-                script_cameraState.ChangeState(CameraStatesScript.state.second);
-                activateACCollider();
+                //script_cameraState.ChangeState(CameraStatesScript.cameraState.second);
+                script_acObj.activateACCollider();
                 activateSecCollider();
 
                 if (selectedObject.GetComponent<BedLampActivateScript>() != null)
@@ -141,11 +102,11 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "plusButton":
                 print($"tag : {Tag}");
-                changeACValue(1);
+                script_acObj.changeACValue(1);
                 break;
             case "minButton":
                 print($"tag : {Tag}");
-                changeACValue(-1);
+                script_acObj.changeACValue(-1);
                 break;
             case "Switch":
                 print($"tag : {Tag}");
@@ -166,13 +127,13 @@ public class TouchCodeScript : MonoBehaviour
                 SceneManager.LoadSceneAsync(1);
                 script_objCondition.isElectricityAssetFound = false;
                 script_objCondition.activateObjSwitch();
-                script_cameraState.activateMove(script_cameraState.currentCameraIndex);
+                script_cameraState.checkRoomState(script_cameraState.currentCameraIndex);
                 break;
             case "Selectable":
                 print($"tag : {Tag}");
                 if (selectedObject.GetComponent<ACTextWarningScript>() != null)
                 {
-                    StartCoroutine(acPopUpWarning());
+                    StartCoroutine(script_acObj.acPopUpWarning());
                 }
                 break;
             default:

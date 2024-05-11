@@ -15,7 +15,7 @@ public class ObjConditionScript : MonoBehaviour
 
     //Show if errors
     private GameObject global_electricitySwitch;
-    [HideInInspector] public List<GameObject> obj_assetSwitchList;
+    public List<GameObject> obj_assetSwitchList;
     [HideInInspector] public bool isElectricityAssetFound;
 
     /// <summary>

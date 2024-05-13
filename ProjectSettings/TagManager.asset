@@ -21,6 +21,7 @@ TagManager:
   - plusButton
   - firVirtualCamera
   - secVirtualCamera
+  - wall
   layers:
   - Default
   - TransparentFX

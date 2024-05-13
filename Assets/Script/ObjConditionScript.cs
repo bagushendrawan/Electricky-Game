@@ -12,33 +12,36 @@ public class ObjConditionScript : MonoBehaviour
     [SerializeField] private CheckACValueScript script_checkAC;
 
     //Get global tronic data list and store it here
-    [HideInInspector] public List<LevelDataClass> obj_dataList;
+    [HideInInspector] public static List<LevelDataClass> obj_dataList;
+    [SerializeField] public static List<GameObject> obj_roomList;
 
     //Show if errors
-    private GameObject global_electricitySwitch;
+    [Header("Assign This for each level")]
+    public GameObject global_electricitySwitch;
     public List<GameObject> obj_assetSwitchList;
-    [HideInInspector] public bool isElectricityAssetFound;
+    public List<GameObject> room_list;
+    //[HideInInspector] public bool isElectricityAssetFound;
 
     /// <summary>
     /// Onscene Loaded 
     /// </summary>
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+    //private void OnEnable()
+    //{
+    //    SceneManager.sceneLoaded += OnSceneLoaded;
+    //}
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    //private void OnDisable()
+    //{
+    //    SceneManager.sceneLoaded -= OnSceneLoaded;
+    //}
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("Scene loaded: " + scene.name);
-        // THIS ONE IS A PROBLEM BECAUSE ON ENABLE IS CALLED FIRST THAN START
-        assignObj();
-        objColor();
-    }
+    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    //{
+    //    Debug.Log("Scene loaded: " + scene.name);
+    //    // THIS ONE IS A PROBLEM BECAUSE ON ENABLE IS CALLED FIRST THAN START
+    //    //assignObj();
+    //    objColor();
+    //}
 
     private void Start()
     {
@@ -46,8 +49,7 @@ public class ObjConditionScript : MonoBehaviour
         script_singletonData = GetComponent<SingletonDataScript>();
         script_taskUi = GetComponent<TaskStatsUIScript>();
         obj_dataList = script_scriptable.global_tronicDataList;
-        global_electricitySwitch = GameObject.FindWithTag("Electricity");
-        
+        obj_roomList = room_list;
     }
 
     private void Update()
@@ -64,13 +66,13 @@ public class ObjConditionScript : MonoBehaviour
             script_scriptable.global_eleOn_Q = true;
         }
 
-        if (GameObject.FindWithTag("Electricity") != null  && !isElectricityAssetFound)
-        {
-            //Debug.Log("Find Electricity & Obj");
-            global_electricitySwitch = GameObject.FindWithTag("Electricity");
+        //if (GameObject.FindWithTag("Electricity") != null  && !isElectricityAssetFound)
+        //{
+        //    //Debug.Log("Find Electricity & Obj");
+        //    global_electricitySwitch = GameObject.FindWithTag("Electricity");
 
-            isElectricityAssetFound = true;
-        }
+        //    isElectricityAssetFound = true;
+        //}
 
     }
    
@@ -120,7 +122,7 @@ public class ObjConditionScript : MonoBehaviour
                     //Debug.Log($"Activated Found of index {i}");
                     //Debug.Log("Object Activated");
 
-                    if (!obj_dataList[j].tronic_active_Q)
+                    if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
                     {
                         obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
                         script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
@@ -134,8 +136,14 @@ public class ObjConditionScript : MonoBehaviour
 
                         else
                         {
-                            StartCoroutine(timerDecreasePerSec(j));
-                            script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, obj_dataList[j].tronic_name, j);
+                            if (obj_dataList[j].tronic_timer > 0)
+                            {
+                                StartCoroutine(timerDecreasePerSec(j));
+                                script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, obj_dataList[j].tronic_name, j);
+                            } else
+                            {
+                                StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                            }
                             objColor();
                             break;
                         }
@@ -234,7 +242,11 @@ public class ObjConditionScript : MonoBehaviour
         while (true && obj_dataList[index].tronic_active_Q)
         {
             script_scriptable.global_eleQuota -= amount * Time.deltaTime;
-            if(obj_dataList[index].tronic_timer < 0)
+            //if(obj_dataList[index].tronic_timer < 0)
+            //{
+            //    yield break;
+            //}
+            if(script_scriptable.global_eleQuota < 0)
             {
                 yield break;
             }
@@ -274,46 +286,47 @@ public class ObjConditionScript : MonoBehaviour
         }
     }
 
-    //Assign obj to objList
-    public void assignObj()
-    {
-        if(obj_assetSwitchList != null)
-        {
-            obj_assetSwitchList.Clear();
-        }
+    ////Assign obj to objList
+    //public void assignObj()
+    //{
+    //    if(obj_assetSwitchList != null)
+    //    {
+    //        obj_assetSwitchList.Clear();
+    //    }
         
-        foreach (GameObject x in GameObject.FindGameObjectsWithTag("Switch"))
-        {
-            obj_assetSwitchList.Add(x);
-        }
+    //    foreach (GameObject x in GameObject.FindGameObjectsWithTag("Switch"))
+    //    {
+    //        obj_assetSwitchList.Add(x);
+    //    }
 
-        if(obj_assetSwitchList != null)
-        {
-            obj_assetSwitchList.Sort(CompareGameObjectNames);
-        }
-    }
+    //    if(obj_assetSwitchList != null)
+    //    {
+    //        obj_assetSwitchList.Sort(CompareGameObjectNames);
+    //    }
+    //}
 
-    //Sort by names
-    private int CompareGameObjectNames(GameObject a, GameObject b)
-    {
-        return a.name.CompareTo(b.name);
-    }
+    ////Sort by names
+    //private int CompareGameObjectNames(GameObject a, GameObject b)
+    //{
+    //    return a.name.CompareTo(b.name);
+    //}
 
-    public void deactivateObjSwitch()
-    {
-        foreach(GameObject obj in obj_assetSwitchList)
-        {
-            obj.SetActive(false);
-        }
-    }
+    //public void deactivateObjSwitch()
+    //{
+    //    foreach(GameObject obj in obj_assetSwitchList)
+    //    {
+    //        obj.SetActive(false);
+    //    }
+    //}
 
-    public void activateObjSwitch()
-    {
-        foreach (GameObject obj in obj_assetSwitchList)
-        {
-            obj.SetActive(true);
-        }
-    }
+    //public void activateObjSwitch()
+    //{
+    //    foreach (GameObject obj in obj_assetSwitchList)
+    //    {
+    //        obj.SetActive(true);
+    //    }
+    //}
+
     public void ChangeObjectMaterial(GameObject target, Color color)
     {
         if(target != null)

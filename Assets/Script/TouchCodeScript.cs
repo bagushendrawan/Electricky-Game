@@ -120,16 +120,17 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "changeScene":
                 print($"tag : {Tag}");
-                SceneManager.LoadSceneAsync(2);
-                script_objCondition.isElectricityAssetFound = false;
-                script_objCondition.deactivateObjSwitch();
+                selectedObject.GetComponent<DoorSceneScript>().changeRoom();
+                //SceneManager.LoadSceneAsync(selectedObject.GetComponent<DoorSceneScript>().sceneIndex);
+                //script_objCondition.isElectricityAssetFound = false;
+                //script_objCondition.deactivateObjSwitch();
                 break;
             case "backScene":
                 print($"tag : {Tag}");
-                SceneManager.LoadSceneAsync(1);
-                script_objCondition.isElectricityAssetFound = false;
-                script_objCondition.activateObjSwitch();
-                script_cameraState.checkRoomState(script_cameraState.currentCameraIndex);
+                //SceneManager.LoadSceneAsync(1);
+                ////script_objCondition.isElectricityAssetFound = false;
+                ////script_objCondition.activateObjSwitch();
+                //script_cameraState.changeRoomState(script_cameraState.currentCameraIndex);
                 break;
             case "Selectable":
                 print($"tag : {Tag}");
@@ -183,30 +184,30 @@ public class TouchCodeScript : MonoBehaviour
                         if (endTouchPos.x < startTouchPos.x)
                         {
                             Debug.Log("Next Swipe");
-                            if (!isSwipeLocked)
-                            {
+                            //if (!isSwipeLocked)
+                            //{
                                 script_cameraState.nextSwipe();
-                                StartCoroutine(SwipeTimer(swipeLockTimer));
-                            }
-                            else
-                            {
-                                Debug.Log("SWIPE NEXT IS LOCKED TIMER");
-                            }
+                                //StartCoroutine(SwipeTimer(swipeLockTimer));
+                            //}
+                            //else
+                            //{
+                            //    Debug.Log("SWIPE NEXT IS LOCKED TIMER");
+                            //}
 
                         }
 
                         if (endTouchPos.x > startTouchPos.x)
                         {
                             Debug.Log("Prev Swipe");
-                            if (!isSwipeLocked)
-                            {
+                            //if (!isSwipeLocked)
+                            //{
                                 script_cameraState.prevSwipe();
-                                StartCoroutine(SwipeTimer(swipeLockTimer));
-                            }
-                            else
-                            {
-                                Debug.Log("SWIPE PREV IS LOCKED TIMER");
-                            }
+                            //    StartCoroutine(SwipeTimer(swipeLockTimer));
+                            //}
+                            //else
+                            //{
+                            //    Debug.Log("SWIPE PREV IS LOCKED TIMER");
+                            //}
 
                         }
                     }

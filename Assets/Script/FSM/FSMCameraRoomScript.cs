@@ -21,16 +21,17 @@ public class FSMCameraRoomScript : MonoBehaviour
     [Header("Wall Animation")]
     //[SerializeField] private float distance;
     //[SerializeField] private float speed;
-    [SerializeField] private float fadeDuration;
+    private float wallMoveTimer = 1.1f;
+    private float wallMoveSpeed = 1.75f;
     [SerializeField] private string animTriggerUp;
     [SerializeField] private string animTriggerDown;
 
     public enum roomCameraState
     {
-        north,
-        east,
-        south,
-        west
+        front,
+        right,
+        back,
+        left
     }
 
     private roomCameraState state_roomCamera;
@@ -42,9 +43,10 @@ public class FSMCameraRoomScript : MonoBehaviour
         virCameraList.Push(roomCamera[0]);
         currentVirtualCamera = virCameraList.Peek();
         currentCameraIndex = 0;
-        checkRoomState(currentCameraIndex);
+        //changeRoomState(currentCameraIndex);
         currentVirtualCamera.enabled = true;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -57,6 +59,7 @@ public class FSMCameraRoomScript : MonoBehaviour
         //CHECK THIS ONE
         // Exit the current state
         ExitState();
+        Debug.Log("Change to new state " + newState);
         // Set the new state
         state_roomCamera = newState;
 
@@ -69,29 +72,45 @@ public class FSMCameraRoomScript : MonoBehaviour
         // Perform actions when entering a state
         switch (state_roomCamera)
         {
-            case roomCameraState.north:
-                moveObjDown(roomSides[2], 0, 0);
-                moveObjDown(roomSides[1], 0, 0);
-                moveObjUp(roomSides[0], 1.1f, 10);
-                moveObjUp(roomSides[3], 1.1f, 10);
+            case roomCameraState.front:
+                StartCoroutine(MoveToY(roomSides[2], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[1], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[0], wallMoveTimer, 10));
+                StartCoroutine(MoveToY(roomSides[3], wallMoveTimer, 10));
+                //moveObjDown(roomSides[2], 0, 0);
+                //moveObjDown(roomSides[1], 0, 0);
+                //moveObjUp(roomSides[0], 1.1f, 10);
+                //moveObjUp(roomSides[3], 1.1f, 10);
                 break;
-            case roomCameraState.west:
-                moveObjDown(roomSides[0], 0, 0);
-                moveObjDown(roomSides[1], 0, 0);
-                moveObjUp(roomSides[2], 1.1f, 10);
-                moveObjUp(roomSides[3], 1.1f, 10);
+            case roomCameraState.left:
+                StartCoroutine(MoveToY(roomSides[0], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[1], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[2], wallMoveTimer, 10));
+                StartCoroutine(MoveToY(roomSides[3], wallMoveTimer, 10));
+                //moveObjDown(roomSides[0], 0, 0);
+                //moveObjDown(roomSides[1], 0, 0);
+                //moveObjUp(roomSides[2], 1.1f, 10);
+                //moveObjUp(roomSides[3], 1.1f, 10);
                 break;
-            case roomCameraState.south:
-                moveObjDown(roomSides[3], 0, 0);
-                moveObjDown(roomSides[0], 0, 0);
-                moveObjUp(roomSides[2], 1.1f, 10);
-                moveObjUp(roomSides[1], 1.1f, 10);
+            case roomCameraState.back:
+                StartCoroutine(MoveToY(roomSides[3], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[0], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[2], wallMoveTimer, 10));
+                StartCoroutine(MoveToY(roomSides[1], wallMoveTimer, 10));
+                //moveObjDown(roomSides[3], 0, 0);
+                //moveObjDown(roomSides[0], 0, 0);
+                //moveObjUp(roomSides[2], 1.1f, 10);
+                //moveObjUp(roomSides[1], 1.1f, 10);
                 break;
-            case roomCameraState.east:
-                moveObjDown(roomSides[2], 0, 0);
-                moveObjDown(roomSides[3], 0, 0);
-                moveObjUp(roomSides[0], 1.1f, 10);
-                moveObjUp(roomSides[1], 1.1f, 10);
+            case roomCameraState.right:
+                StartCoroutine(MoveToY(roomSides[2], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[3], wallMoveTimer, 0));
+                StartCoroutine(MoveToY(roomSides[0], wallMoveTimer, 10));
+                StartCoroutine(MoveToY(roomSides[1], wallMoveTimer, 10));
+                //moveObjDown(roomSides[2], 0, 0);
+                //moveObjDown(roomSides[3], 0, 0);
+                //moveObjUp(roomSides[0], 1.1f, 10);
+                //moveObjUp(roomSides[1], 1.1f, 10);
                 break;
         }
     }
@@ -101,16 +120,16 @@ public class FSMCameraRoomScript : MonoBehaviour
         // Perform actions when exiting a state
         switch (state_roomCamera)
         {
-            case roomCameraState.north:
+            case roomCameraState.front:
 
                 break;
-            case roomCameraState.west:
+            case roomCameraState.left:
 
                 break;
-            case roomCameraState.south:
+            case roomCameraState.back:
 
                 break;
-            case roomCameraState.east:
+            case roomCameraState.right:
 
                 break;
         }
@@ -121,16 +140,16 @@ public class FSMCameraRoomScript : MonoBehaviour
         // Perform actions based on the current state
         switch (state_roomCamera)
         {
-            case roomCameraState.north:
+            case roomCameraState.front:
 
                 break;
-            case roomCameraState.west:
+            case roomCameraState.left:
 
                 break;
-            case roomCameraState.south:
+            case roomCameraState.back:
 
                 break;
-            case roomCameraState.east:
+            case roomCameraState.right:
 
                 break;
         }
@@ -160,7 +179,7 @@ public class FSMCameraRoomScript : MonoBehaviour
             currentVirtualCamera = virCameraList.Peek();
             currentCameraIndex = 0;
         }
-        checkRoomState(currentCameraIndex);
+        changeRoomState(currentCameraIndex);
         //activateMove(currentCameraIndex);
     }
 
@@ -186,35 +205,51 @@ public class FSMCameraRoomScript : MonoBehaviour
             currentVirtualCamera = virCameraList.Peek();
             currentCameraIndex = 3;
         }
-        checkRoomState(currentCameraIndex);
+        changeRoomState(currentCameraIndex);
         //activateMove(currentCameraIndex);
     }
 
-    public void checkRoomState(int index)
+    public void changeRoomState(int index)
     {
         Debug.Log("Index " + index);
         switch (index)
         {
             case 0:
-                ChangeState(roomCameraState.north);
+                ChangeState(roomCameraState.front);
                 break;
             case 1:
-                ChangeState(roomCameraState.east);
+                ChangeState(roomCameraState.right);
                 break;
             case 2:
-                ChangeState(roomCameraState.south);
+                ChangeState(roomCameraState.back);
                 break;
             case 3:
-                ChangeState(roomCameraState.west);
+                ChangeState(roomCameraState.left);
                 break;
+        }
+    }
+
+    IEnumerator MoveToY(GameObject obj, float duration, float targetY)
+    {
+        float startY = obj.transform.position.y;
+        float timer = 0f;
+
+        while (timer < duration)
+        { 
+            timer += Time.deltaTime * wallMoveSpeed;
+            float newY = Mathf.Lerp(startY, targetY, timer);
+            obj.transform.position = new Vector3(obj.transform.position.x, newY, obj.transform.position.z);
+            Debug.Log("MOVETO Y " + obj.name + " " + obj.transform.position);
+            yield return null;
         }
     }
 
     void moveObjDown(GameObject obj, float duration, float pos)
     {
         Animator anim = obj.GetComponent<Animator>();
+        
         if (obj.transform.position.y > 0)
-        {
+        {   
             Debug.Log(obj.name + animTriggerDown);
             anim.SetTrigger(animTriggerDown);
             StartCoroutine(DelayedExecution(obj, true, duration, pos));
@@ -225,8 +260,10 @@ public class FSMCameraRoomScript : MonoBehaviour
     void moveObjUp(GameObject obj, float duration, float pos)
     {
         Animator anim = obj.GetComponent<Animator>();
+        Debug.Log("OBJ UP POS" + obj.transform.position.y);
         if (obj.transform.position.y <= 0)
         {
+            //This one doesnt execute after back to rooms because the pos is 10
             Debug.Log(obj.name + animTriggerUp);
             anim.SetTrigger(animTriggerUp);
             StartCoroutine(DelayedExecution(obj, false, duration, pos));
@@ -333,4 +370,6 @@ public class FSMCameraRoomScript : MonoBehaviour
             }
         }
     }
+
+
 }

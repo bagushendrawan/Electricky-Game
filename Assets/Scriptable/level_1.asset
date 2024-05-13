@@ -19,15 +19,15 @@ MonoBehaviour:
   global_tronicDataList:
   - tronic_name: Room_Lamp
     tronic_timer: 5
-    tronic_wattage: 300
-    tronic_wattPerSec: 15
+    tronic_wattage: 15
+    tronic_wattPerSec: 5
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
   - tronic_name: CPU
     tronic_timer: 10
-    tronic_wattage: 30
+    tronic_wattage: 300
     tronic_wattPerSec: 10
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 0
@@ -36,16 +36,24 @@ MonoBehaviour:
   - tronic_name: Bed_Lamp
     tronic_timer: 5
     tronic_wattage: 15
-    tronic_wattPerSec: 30
+    tronic_wattPerSec: 5
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
-    tronic_eleSupplied_Q: 0
+    tronic_eleSupplied_Q: 1
   - tronic_name: AC
     tronic_timer: 10
-    tronic_wattage: 15
+    tronic_wattage: 300
     tronic_wattPerSec: 30
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
-    tronic_eleSupplied_Q: 0
+    tronic_eleSupplied_Q: 1
+  - tronic_name: Middle_Lamp
+    tronic_timer: 0
+    tronic_wattage: 15
+    tronic_wattPerSec: 30
+    tronic_statsDone_Q: 1
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 1
+    tronic_eleSupplied_Q: 1

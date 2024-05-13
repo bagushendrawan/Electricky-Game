@@ -6,7 +6,6 @@ using TMPro;
 public class CheckACValueScript : MonoBehaviour
 {
     private bool objActive = false;
-    private bool isAnimRun = false;
     public int defValue;
     public int changeVal;
     public int valueCondition;

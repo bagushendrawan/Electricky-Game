@@ -239,7 +239,6 @@ public class FSMCameraRoomScript : MonoBehaviour
             timer += Time.deltaTime * wallMoveSpeed;
             float newY = Mathf.Lerp(startY, targetY, timer);
             obj.transform.position = new Vector3(obj.transform.position.x, newY, obj.transform.position.z);
-            Debug.Log("MOVETO Y " + obj.name + " " + obj.transform.position);
             yield return null;
         }
     }

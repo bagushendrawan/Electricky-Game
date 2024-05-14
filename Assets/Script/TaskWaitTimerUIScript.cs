@@ -7,6 +7,7 @@ public class TaskWaitTimerUIScript : MonoBehaviour
 {
     private TMP_Text timerText;
     public ScriptableObjectScript script_scriptable;
+    public ObjConditionScript script_objCon;
     public Dictionary<int, Timer> global_taskTimerActive = new Dictionary<int, Timer>();
 
     // Start is called before the first frame update
@@ -42,7 +43,7 @@ public class TaskWaitTimerUIScript : MonoBehaviour
         {
             int index = pair.Key;
             Timer timer = pair.Value;
-            if (timer.IsFinished || !script_scriptable.global_tronicDataList[index].tronic_active_Q)
+            if (timer.IsFinished || !script_scriptable.global_tronicDataList[index].tronic_active_Q || script_objCon.script_checkAC.state_acBehaviour != CheckACValueScript.acBehaviour.correct) //the ac makes error
             {
                 keysToRemove.Add(index);
             }

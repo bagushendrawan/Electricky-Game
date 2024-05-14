@@ -44,7 +44,7 @@ MonoBehaviour:
   - tronic_name: AC
     tronic_timer: 10
     tronic_wattage: 300
-    tronic_wattPerSec: 30
+    tronic_wattPerSec: 10
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0

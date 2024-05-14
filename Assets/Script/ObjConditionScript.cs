@@ -9,7 +9,8 @@ public class ObjConditionScript : MonoBehaviour
     private SingletonDataScript script_singletonData;
     private TaskWaitTimerUIScript script_waitTimer;
     private TaskStatsUIScript script_taskUi;
-    [SerializeField] private CheckACValueScript script_checkAC;
+    public CheckACValueScript script_checkAC;
+
 
     //Get global tronic data list and store it here
     [HideInInspector] public static List<LevelDataClass> obj_dataList;
@@ -20,6 +21,7 @@ public class ObjConditionScript : MonoBehaviour
     public GameObject global_electricitySwitch;
     public List<GameObject> obj_assetSwitchList;
     public List<GameObject> room_list;
+    //public List<CheckACValueScript> script_acValue;
     //[HideInInspector] public bool isElectricityAssetFound;
 
     /// <summary>
@@ -66,6 +68,7 @@ public class ObjConditionScript : MonoBehaviour
             script_scriptable.global_eleOn_Q = true;
         }
 
+        
         //if (GameObject.FindWithTag("Electricity") != null  && !isElectricityAssetFound)
         //{
         //    //Debug.Log("Find Electricity & Obj");
@@ -149,18 +152,72 @@ public class ObjConditionScript : MonoBehaviour
                         }
                     }
                     else
-                    {
-                        //AC Anim Off if being pressed off
-                        script_checkAC.ACButtonPressed(false);
+                    {   
                         obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
                         script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
-                        //Debug.Log("Object Deactivated");
                     }
                 //}
             }
         }
     }
 
+    public void objACSwitch(GameObject target)
+    {
+        //Debug.Log("Here");
+        for (int j = 0; j < obj_dataList.Count; j++)
+        {
+            if (target.name == obj_assetSwitchList[j].name)
+            {
+                if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
+                {
+                    obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
+                    script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
+                    if (script_scriptable.global_eleCapacity < 0)
+                    {
+                        Debug.Log("Electricity Out");
+                        elecOut();
+                        objColor();
+                        break;
+                    }
+
+                    else
+                    {
+                        script_checkAC = TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>();
+                        script_checkAC.ACButtonPressed(true);
+                        script_checkAC.acIndex = j;
+                        objACStats();
+                        objColor();
+                        break;
+                    }
+                }
+                else
+                {
+                    //AC Anim Off if being pressed off
+                    script_checkAC.ACButtonPressed(false);
+                    obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
+                    script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
+                }
+                //}
+            }
+        }
+    }
+
+    public void objACStats()
+    {
+        if (script_checkAC.state_acBehaviour == CheckACValueScript.acBehaviour.activated && !script_checkAC.isACActive)
+        {
+            StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
+        }
+        if (script_checkAC.defValue == script_checkAC.valueCondition)
+        {
+            script_checkAC.ChangeState(CheckACValueScript.acBehaviour.correct);
+            StartCoroutine(timerACDecreasePerSec(script_checkAC.acIndex));
+            script_waitTimer.StartTimer(obj_dataList[script_checkAC.acIndex].tronic_timer, obj_dataList[script_checkAC.acIndex].tronic_name, script_checkAC.acIndex);
+        } else
+        {
+            script_checkAC.ChangeState(CheckACValueScript.acBehaviour.activated);
+        }
+    }
     //turn off electricity
     public void elecOut()
     {
@@ -269,8 +326,49 @@ public class ObjConditionScript : MonoBehaviour
         while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q)
         {
             obj_dataList[index].tronic_timer -= Time.deltaTime;
-            //AC Anim On
-            script_checkAC.ACButtonPressed(true);
+
+            if (obj_dataList[index].tronic_timer <= 0)
+            {
+                obj_dataList[index].tronic_statsDone_Q = !obj_dataList[index].tronic_statsDone_Q;
+                script_taskUi.updateTask();
+                objColor();
+                winCheck();
+                yield break; // Exit the coroutine if the taskTimer has reached zero
+            }
+            yield return null; // Wait for the next frame
+        }
+    }
+
+    IEnumerator eleACDecreasePerSec(int index, float amount)
+    {
+        script_checkAC.isACActive = true;
+        while (true && obj_dataList[index].tronic_active_Q )
+        {
+            script_scriptable.global_eleQuota -= amount * Time.deltaTime;
+            //if(obj_dataList[index].tronic_timer < 0)
+            //{
+            //    yield break;
+            //}
+            if (script_scriptable.global_eleQuota < 0)
+            {
+                yield break;
+            }
+            yield return null; // Wait for the next frame
+        }
+    }
+
+    //Decrease the timer and update the task
+    IEnumerator timerACDecreasePerSec(int index)
+    {
+        if (index < 0 || index >= obj_dataList.Count)
+        {
+            Debug.LogError("Invalid index provided for timerDecreasePerSec coroutine.");
+            yield break; // Exit the coroutine if the index is out of range
+        }
+
+        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && script_checkAC.state_acBehaviour == CheckACValueScript.acBehaviour.correct)
+        {
+            obj_dataList[index].tronic_timer -= Time.deltaTime;
             if (obj_dataList[index].tronic_timer <= 0)
             {
                 obj_dataList[index].tronic_statsDone_Q = !obj_dataList[index].tronic_statsDone_Q;
@@ -278,8 +376,8 @@ public class ObjConditionScript : MonoBehaviour
                 objColor();
                 //Debug.Log("Object Deactivated-Done Timer");
                 winCheck();
-                //AC Anim Off
-                script_checkAC.ACButtonPressed(false);
+
+                script_checkAC.ChangeState(CheckACValueScript.acBehaviour.activated);
                 yield break; // Exit the coroutine if the taskTimer has reached zero
             }
             yield return null; // Wait for the next frame
@@ -293,7 +391,7 @@ public class ObjConditionScript : MonoBehaviour
     //    {
     //        obj_assetSwitchList.Clear();
     //    }
-        
+
     //    foreach (GameObject x in GameObject.FindGameObjectsWithTag("Switch"))
     //    {
     //        obj_assetSwitchList.Add(x);

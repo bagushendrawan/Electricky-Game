@@ -11,19 +11,117 @@ public class CheckACValueScript : MonoBehaviour
     public int valueCondition;
     public GameObject objToActivate;
     public GameObject objToDeactivate;
-    public Collider ACButton;
+
     public List<Texture2D> textureACList = new();
+    public List<Texture2D> emissionACList = new();
     public Renderer rendererRemote;
     public Renderer rendererAC;
     [SerializeField] TMP_Text valText;
     [SerializeField] private GameObject ac_remoteSwitch;
     [SerializeField] private Animator acAnimator;
+    [SerializeField] private ObjConditionScript script_obj;
+    [SerializeField] private Light acLight;
+    [SerializeField] private Light remoteLight;
+
+    [SerializeField] private GameObject remoteScreenCover;
+    [SerializeField] private GameObject acScreenCover;
+    [HideInInspector] public int acIndex;
+    [HideInInspector] public bool isACActive = false;
 
     // Update is called once per frame
     void Update()
     {
         updateValue();
-        valueCheck(valueCondition);
+        //valueCheck(valueCondition);
+    }
+
+    public enum acBehaviour
+    {
+        off,
+        initialized,
+        activated,
+        correct
+    }
+
+    public acBehaviour state_acBehaviour;
+
+    public void ChangeState(acBehaviour newState)
+    {
+        // Exit the current state
+        ExitState();
+        // Set the new state
+        state_acBehaviour = newState;
+        // Enter the new state
+        EnterState();
+    }
+
+    void EnterState()
+    {
+        // Perform actions when exiting a state
+        switch (state_acBehaviour)
+        {
+            case acBehaviour.off:
+                acAnimator.SetTrigger("acOff");
+                acScreenCover.SetActive(true);
+                remoteScreenCover.SetActive(true);
+                acLight.enabled = false;
+                remoteLight.enabled = false;
+                break;
+            case acBehaviour.initialized:
+                
+                
+                break;
+            case acBehaviour.activated:
+                acAnimator.SetTrigger("acOn");
+                acScreenCover.SetActive(false);
+                remoteScreenCover.SetActive(false);
+                acLight.enabled = true;
+                remoteLight.enabled = true;
+                break;
+            case acBehaviour.correct:
+
+                break;
+        }
+    }
+
+    void ExitState()
+    {
+        // Perform actions when exiting a state
+        switch (state_acBehaviour)
+        {
+            case acBehaviour.off:
+
+                break;
+            case acBehaviour.initialized:
+
+                break;
+            case acBehaviour.activated:
+    
+                break;
+            case acBehaviour.correct:
+
+                break;
+        }
+    }
+
+    void PerformStateBehaviour()
+    {
+        // Perform actions when exiting a state
+        switch (state_acBehaviour)
+        {
+            case acBehaviour.off:
+
+                break;
+            case acBehaviour.initialized:
+
+                break;
+            case acBehaviour.activated:
+                
+                break;
+            case acBehaviour.correct:
+
+                break;
+        }
     }
 
     public bool _objActivate
@@ -47,17 +145,6 @@ public class CheckACValueScript : MonoBehaviour
         valText.text = s;
     }
 
-    void valueCheck(int con)
-    {
-        if (defValue == con)
-        {
-            ACButton.enabled = true;
-        }
-        else
-        {
-            ACButton.enabled = false;
-        }
-    }
     public IEnumerator acPopUpWarning()
     {
         Debug.Log("Text Pop Up!");
@@ -78,15 +165,13 @@ public class CheckACValueScript : MonoBehaviour
     {
         if (TouchCodeScript.selectedObject != null && TouchCodeScript.selectedObject.name == ac_remoteSwitch.name)
         {
-            Debug.Log("AC Anim Hit!");
             if(isWantToTurnOn)
             {
-                Debug.Log("AC Anim On!");
-                acAnimator.SetTrigger("acOn");
+                ChangeState(acBehaviour.activated);
             } else
             {
-                Debug.Log("AC Anim Off!");
-                acAnimator.SetTrigger("acOff");
+                ChangeState(acBehaviour.off);
+                isACActive = false;
             }
             
         }
@@ -94,22 +179,29 @@ public class CheckACValueScript : MonoBehaviour
 
     public void changeACValue(int val)
     {
-        if (defValue - 21 + val > -1 && defValue - 20 + val < 6)
+        if (state_acBehaviour == acBehaviour.activated || state_acBehaviour == acBehaviour.correct)
         {
-            defValue += (changeVal * val);
-            try 
-            { 
-                rendererRemote.material.SetTexture("_MainTex", textureACList[defValue - 21]);
-                rendererAC.material.SetTexture("_MainTex", textureACList[defValue - 21]);
-            } catch 
+            if (defValue - 20 + val > -1 && defValue - 20 + val < 7)
+            {
+                defValue += (changeVal * val);
+                Debug.Log("Value " + defValue);
+                try
+                {
+                    script_obj.objACStats();
+                    rendererRemote.material.SetTexture("_MainTex", textureACList[defValue - 20]);
+                    rendererAC.material.SetTexture("_EmissionMap", emissionACList[defValue - 20]);
+                    rendererAC.material.SetTexture("_MainTex", textureACList[defValue - 20]);
+                }
+                catch
+                {
+                    Debug.Log("Ac Value is out of bounds");
+                }
+            }
+            else
             {
                 Debug.Log("Ac Value is out of bounds");
             }
-        } else
-        {
-            Debug.Log("Ac Value is out of bounds");
         }
-       
     }
 
     public void activateACCollider()
@@ -117,13 +209,13 @@ public class CheckACValueScript : MonoBehaviour
         if (TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>() != null)
         {
             _objActivate = true;
-            Debug.Log("objActivated");
+            ChangeState(acBehaviour.initialized);
         }
     }
 
     public void deactivateACCollider()
     {
             _objActivate = false;
-            Debug.Log("objDeactivated");
+        ChangeState(acBehaviour.off);
     }
 }

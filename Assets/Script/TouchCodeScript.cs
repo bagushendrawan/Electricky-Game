@@ -18,6 +18,8 @@ public class TouchCodeScript : MonoBehaviour
     private BedLampActivateScript script_objToActivate;
     [SerializeField] private CPUButtonScript script_cpuButton;
     private bool isSwipeLocked = false;
+    private Stack<Collider> stack_selectedCollider = new ();
+    private Stack<Collider> stack_objCollider = new();
     //public bool secLevel = false;
     public float swipeLockTimer;
 
@@ -53,23 +55,18 @@ public class TouchCodeScript : MonoBehaviour
     {
         if (selectedObject.GetComponent<ObjColliderToActivateScript>() != null)
         {
-            script_colliderToActivate = selectedObject.GetComponent<ObjColliderToActivateScript>();
-            if (!script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
-            {
-                script_colliderToActivate.objCol.enabled = true;
-                objCollider = selectedObject.GetComponent<Collider>();
-                objCollider.enabled = false;
-            }
+            stack_objCollider.Push(selectedObject.GetComponent<ObjColliderToActivateScript>().objCol);
+            stack_selectedCollider.Push(selectedObject.GetComponent<Collider>());
+            stack_objCollider.Peek().enabled = true;
+            stack_selectedCollider.Peek().enabled = false;
+            //objCollider = selectedObject.GetComponent<Collider>();
+            //objCollider.enabled = false;
         }
     }
     public void deactiveSecCollider()
     {
-        if(script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
-        {
-            script_colliderToActivate.objCol.enabled = false;
-            objCollider.enabled = true;
-        }
-       
+        stack_objCollider.Pop().enabled = false;
+        stack_selectedCollider.Pop().enabled = true;
     }
 
     public void select(string Tag)
@@ -111,8 +108,14 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Switch":
                 print($"tag : {Tag}");
-                script_objCondition.objSwitch(selectedObject);
-                script_cpuButton.CPUButtonPressed();
+                if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
+                {
+                    script_objCondition.objACSwitch(selectedObject);
+                } else
+                {
+                    script_objCondition.objSwitch(selectedObject);
+                    script_cpuButton.CPUButtonPressed();
+                }
                 break;
             case "Electricity":
                 print($"tag : {Tag}");
@@ -171,6 +174,7 @@ public class TouchCodeScript : MonoBehaviour
             if (touch.phase == TouchPhase.Moved && script_cameraState.currentVirtualCamera.CompareTag("firVirtualCamera"))
             {
                 //Error here
+                if(script_objToActivate != null)
                 script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
             }
 

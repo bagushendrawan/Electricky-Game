@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
+  m_Name: level_2
+  m_EditorClassIdentifier: 
+  global_eleCapacity: 1000
+  global_eleQuota: 1000
+  global_timer: 300
+  global_eleOn_Q: 1
+  global_tronicDataList:
+  - tronic_name: Room_lamp
+    tronic_timer: 30
+    tronic_wattage: 15
+    tronic_wattPerSec: 5
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: Roomba
+    tronic_timer: 10
+    tronic_wattage: 200
+    tronic_wattPerSec: 10
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: AC_middle
+    tronic_timer: 5
+    tronic_wattage: 300
+    tronic_wattPerSec: 15
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: TV
+    tronic_timer: 20
+    tronic_wattage: 300
+    tronic_wattPerSec: 15
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: Console
+    tronic_timer: 20
+    tronic_wattage: 200
+    tronic_wattPerSec: 5
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 0

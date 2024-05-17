@@ -22,6 +22,9 @@ TagManager:
   - firVirtualCamera
   - secVirtualCamera
   - wall
+  - Channel
+  - Coffee
+  - Console
   layers:
   - Default
   - TransparentFX

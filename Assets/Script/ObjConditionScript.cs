@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class ObjConditionScript : MonoBehaviour
 {
-   [SerializeField] private ScriptableObjectScript script_scriptable;
+    [SerializeField] private ScriptableObjectScript script_scriptable;
     private SingletonDataScript script_singletonData;
-    private TaskWaitTimerUIScript script_waitTimer;
+    [HideInInspector] public TaskWaitTimerUIScript script_waitTimer;
     private TaskStatsUIScript script_taskUi;
-    public CheckACValueScript script_checkAC;
+    public static CheckACValueScript script_checkAC;
 
 
     //Get global tronic data list and store it here
@@ -42,9 +42,17 @@ public class ObjConditionScript : MonoBehaviour
     //    Debug.Log("Scene loaded: " + scene.name);
     //    // THIS ONE IS A PROBLEM BECAUSE ON ENABLE IS CALLED FIRST THAN START
     //    //assignObj();
-    //    objColor();
+    //    //objColor();
     //}
+    public static Dictionary<int, acObjBehaviour> global_acStatsIndex = new();
 
+    public enum acObjBehaviour
+    {
+        off,
+        initialized,
+        activated,
+        correct
+    }
     private void Start()
     {
         script_waitTimer = GetComponent<TaskWaitTimerUIScript>();
@@ -120,10 +128,6 @@ public class ObjConditionScript : MonoBehaviour
         {
             if(target.name == obj_assetSwitchList[j].name)
             {
-                //for (int j = 0; j < obj_dataList.Count; j++)
-                //{
-                    //Debug.Log($"Activated Found of index {i}");
-                    //Debug.Log("Object Activated");
 
                     if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
                     {
@@ -133,7 +137,7 @@ public class ObjConditionScript : MonoBehaviour
                         {
                             Debug.Log("Electricity Out");
                             elecOut();
-                            objColor();
+                            //objColor();
                             break;
                         }
 
@@ -141,13 +145,18 @@ public class ObjConditionScript : MonoBehaviour
                         {
                             if (obj_dataList[j].tronic_timer > 0)
                             {
-                                StartCoroutine(timerDecreasePerSec(j));
-                                script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, obj_dataList[j].tronic_name, j);
+                                obj_dataList[j].tronic_timerCoroutine  = StartCoroutine(timerDecreasePerSec
+                                    (j));
+                                script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
+                                StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
                             } else
                             {
+                                obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
+                                 (j));
+                                script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
                                 StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
                             }
-                            objColor();
+                            //objColor();
                             break;
                         }
                     }
@@ -156,14 +165,12 @@ public class ObjConditionScript : MonoBehaviour
                         obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
                         script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                     }
-                //}
             }
         }
     }
 
     public void objACSwitch(GameObject target)
     {
-        //Debug.Log("Here");
         for (int j = 0; j < obj_dataList.Count; j++)
         {
             if (target.name == obj_assetSwitchList[j].name)
@@ -176,17 +183,16 @@ public class ObjConditionScript : MonoBehaviour
                     {
                         Debug.Log("Electricity Out");
                         elecOut();
-                        objColor();
+                        //objColor();
                         break;
                     }
 
                     else
                     {
-                        script_checkAC = TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>();
                         script_checkAC.ACButtonPressed(true);
                         script_checkAC.acIndex = j;
                         objACStats();
-                        objColor();
+                        //objColor();
                         break;
                     }
                 }
@@ -197,7 +203,6 @@ public class ObjConditionScript : MonoBehaviour
                     obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
                     script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                 }
-                //}
             }
         }
     }
@@ -211,13 +216,17 @@ public class ObjConditionScript : MonoBehaviour
         if (script_checkAC.defValue == script_checkAC.valueCondition)
         {
             script_checkAC.ChangeState(CheckACValueScript.acBehaviour.correct);
-            StartCoroutine(timerACDecreasePerSec(script_checkAC.acIndex));
-            script_waitTimer.StartTimer(obj_dataList[script_checkAC.acIndex].tronic_timer, obj_dataList[script_checkAC.acIndex].tronic_name, script_checkAC.acIndex);
+            global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.correct;
+            obj_dataList[script_checkAC.acIndex].tronic_timerCoroutine = StartCoroutine(timerACDecreasePerSec(script_checkAC.acIndex));
+            script_waitTimer.StartTimer(obj_dataList[script_checkAC.acIndex].tronic_timer, script_checkAC.acIndex, true);
         } else
         {
             script_checkAC.ChangeState(CheckACValueScript.acBehaviour.activated);
+            global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
         }
     }
+
+
     //turn off electricity
     public void elecOut()
     {
@@ -260,12 +269,12 @@ public class ObjConditionScript : MonoBehaviour
             {
                 obj_dataList[i].tronic_eleSupplied_Q = true;
                 script_scriptable.global_eleCapacity += obj_dataList[i].tronic_wattage;
-                objColor();
+                //objColor();
                 if (obj_dataList[i].tronic_couldRestored_Q)
                 {
                     obj_dataList[i].tronic_active_Q = true;
                     script_scriptable.global_eleCapacity -= obj_dataList[i].tronic_wattage;
-                    objColor();
+                    //objColor();
                 }
             }
         }
@@ -294,7 +303,7 @@ public class ObjConditionScript : MonoBehaviour
         }
     }
 
-    IEnumerator eleDecreasePerSec(int index,float amount)
+   public IEnumerator eleDecreasePerSec(int index,float amount)
     {
         while (true && obj_dataList[index].tronic_active_Q)
         {
@@ -312,7 +321,7 @@ public class ObjConditionScript : MonoBehaviour
     }
 
     //Decrease the timer and update the task
-    IEnumerator timerDecreasePerSec(int index)
+    public IEnumerator timerDecreasePerSec(int index)
     {
         if (index < 0 || index >= obj_dataList.Count)
         {
@@ -320,10 +329,10 @@ public class ObjConditionScript : MonoBehaviour
             yield break; // Exit the coroutine if the index is out of range
         }
 
-        StartCoroutine(eleDecreasePerSec(index,obj_dataList[index].tronic_wattPerSec));
+        //StartCoroutine(eleDecreasePerSec(index,obj_dataList[index].tronic_wattPerSec));
 
         
-        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q)
+        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_correct_Q)
         {
             obj_dataList[index].tronic_timer -= Time.deltaTime;
 
@@ -331,7 +340,7 @@ public class ObjConditionScript : MonoBehaviour
             {
                 obj_dataList[index].tronic_statsDone_Q = !obj_dataList[index].tronic_statsDone_Q;
                 script_taskUi.updateTask();
-                objColor();
+                //objColor();
                 winCheck();
                 yield break; // Exit the coroutine if the taskTimer has reached zero
             }
@@ -366,18 +375,19 @@ public class ObjConditionScript : MonoBehaviour
             yield break; // Exit the coroutine if the index is out of range
         }
 
-        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && script_checkAC.state_acBehaviour == CheckACValueScript.acBehaviour.correct)
+        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && global_acStatsIndex[index] == acObjBehaviour.correct && obj_dataList[index].tronic_correct_Q)//errr
         {
             obj_dataList[index].tronic_timer -= Time.deltaTime;
             if (obj_dataList[index].tronic_timer <= 0)
             {
                 obj_dataList[index].tronic_statsDone_Q = !obj_dataList[index].tronic_statsDone_Q;
                 script_taskUi.updateTask();
-                objColor();
+                //objColor();
                 //Debug.Log("Object Deactivated-Done Timer");
                 winCheck();
 
                 script_checkAC.ChangeState(CheckACValueScript.acBehaviour.activated);
+                global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
                 yield break; // Exit the coroutine if the taskTimer has reached zero
             }
             yield return null; // Wait for the next frame

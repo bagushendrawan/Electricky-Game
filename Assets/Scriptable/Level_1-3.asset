@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
+  m_Name: Level_1-3
+  m_EditorClassIdentifier: 
+  global_eleCapacity: 10000
+  global_eleQuota: 10000
+  global_timer: 600
+  global_eleOn_Q: 1
+  global_tronicDataList:
+  - tronic_name: B_Lamp
+    tronic_timer: 0
+    tronic_wattage: 15
+    tronic_wattPerSec: 5
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: B_Comp
+    tronic_timer: 20
+    tronic_wattage: 200
+    tronic_wattPerSec: 15
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: B_AC
+    tronic_timer: 30
+    tronic_wattage: 300
+    tronic_wattPerSec: 15
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: B_BedLamp
+    tronic_timer: 10
+    tronic_wattage: 300
+    tronic_wattPerSec: 20
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: M_Lamp
+    tronic_timer: 0
+    tronic_wattage: 15
+    tronic_wattPerSec: 5
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: M_AC
+    tronic_timer: 30
+    tronic_wattage: 300
+    tronic_wattPerSec: 20
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: M_Roomba
+    tronic_timer: 15
+    tronic_wattage: 300
+    tronic_wattPerSec: 15
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: M_TV
+    tronic_timer: 15
+    tronic_wattage: 300
+    tronic_wattPerSec: 10
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: M_Console
+    tronic_timer: 10
+    tronic_wattage: 200
+    tronic_wattPerSec: 40
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 0
+  - tronic_name: K_Lamp
+    tronic_timer: 0
+    tronic_wattage: 15
+    tronic_wattPerSec: 5
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: K_Coffee
+    tronic_timer: 15
+    tronic_wattage: 300
+    tronic_wattPerSec: 30
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 0
+  - tronic_name: K_Stove
+    tronic_timer: 10
+    tronic_wattage: 400
+    tronic_wattPerSec: 50
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1
+  - tronic_name: K_Blender
+    tronic_timer: 10
+    tronic_wattage: 300
+    tronic_wattPerSec: 20
+    tronic_statsDone_Q: 0
+    tronic_couldRestored_Q: 0
+    tronic_active_Q: 0
+    tronic_eleSupplied_Q: 1
+    tronic_correct_Q: 1

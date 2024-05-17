@@ -21,12 +21,19 @@ public class CameraOnEnableScript : MonoBehaviour
         }
 
         Debug.Log("ONENABLE CAMERA");
-        script_cameraState.changeRoomState(cameraRoomState);
+        cameraChanges();
     }
 
     //Sort by names
     private int CompareGameObjectNames(GameObject a, GameObject b)
     {
         return a.name.CompareTo(b.name);
+    }
+
+    private void cameraChanges()
+    {
+        script_cameraState.deactivateAllCameras();
+        script_cameraState.roomCamera[cameraRoomState].enabled = true;
+        script_cameraState.changeRoomState(cameraRoomState);
     }
 }

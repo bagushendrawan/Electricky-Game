@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class TouchCodeScript : MonoBehaviour
 {
     private FSMCameraRoomScript script_cameraState;
     private ObjConditionScript script_objCondition;
     public static GameObject selectedObject;
-    private Collider objCollider;
-    [SerializeField] private CheckACValueScript script_acObj;
 
     private Vector2 startTouchPos;
     private Vector2 endTouchPos;
 
-    private ObjColliderToActivateScript script_colliderToActivate;
     private BedLampActivateScript script_objToActivate;
     [SerializeField] private CPUButtonScript script_cpuButton;
     private bool isSwipeLocked = false;
@@ -77,8 +75,11 @@ public class TouchCodeScript : MonoBehaviour
             case "firstLevel":
                 print($"tag : {Tag}");
                 script_cameraState.activateNewCamera(selectedObject);
-                //script_cameraState.ChangeState(CameraStatesScript.cameraState.first);
-                script_acObj.activateACCollider();
+                if(ObjConditionScript.script_checkAC != null)
+                {
+                    ObjConditionScript.script_checkAC.activateACCollider();
+                }
+
                 activateSecCollider();
 
                 if(selectedObject.GetComponent<BedLampActivateScript>() != null)
@@ -89,8 +90,11 @@ public class TouchCodeScript : MonoBehaviour
             case "secondLevel":
                 print($"tag : {Tag}");
                 script_cameraState.activateNewCamera(selectedObject);
-                //script_cameraState.ChangeState(CameraStatesScript.cameraState.second);
-                script_acObj.activateACCollider();
+                if (ObjConditionScript.script_checkAC != null)
+                {
+                    ObjConditionScript.script_checkAC.activateACCollider();
+                }
+
                 activateSecCollider();
 
                 if (selectedObject.GetComponent<BedLampActivateScript>() != null)
@@ -100,19 +104,26 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "plusButton":
                 print($"tag : {Tag}");
-                script_acObj.changeACValue(1);
+                ObjConditionScript.script_checkAC.changeACValue(1);
                 break;
             case "minButton":
                 print($"tag : {Tag}");
-                script_acObj.changeACValue(-1);
+                ObjConditionScript.script_checkAC.changeACValue(-1);
                 break;
             case "Switch":
                 print($"tag : {Tag}");
                 if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
                 {
                     script_objCondition.objACSwitch(selectedObject);
+                    if(selectedObject.GetComponentInParent<ConsoleMiddleScript>() != null)
+                    {
+                        Debug.Log("Console Switch Hit!");
+                        ConsoleMiddleScript script_console = selectedObject.GetComponentInParent<ConsoleMiddleScript>();
+                        script_console.consoleCheck();
+                    }
                 } else
                 {
+                    Debug.Log("Regular Switch Hit!");
                     script_objCondition.objSwitch(selectedObject);
                     script_cpuButton.CPUButtonPressed();
                 }
@@ -124,22 +135,40 @@ public class TouchCodeScript : MonoBehaviour
             case "changeScene":
                 print($"tag : {Tag}");
                 selectedObject.GetComponent<DoorSceneScript>().changeRoom();
-                //SceneManager.LoadSceneAsync(selectedObject.GetComponent<DoorSceneScript>().sceneIndex);
-                //script_objCondition.isElectricityAssetFound = false;
-                //script_objCondition.deactivateObjSwitch();
                 break;
             case "backScene":
                 print($"tag : {Tag}");
-                //SceneManager.LoadSceneAsync(1);
-                ////script_objCondition.isElectricityAssetFound = false;
-                ////script_objCondition.activateObjSwitch();
-                //script_cameraState.changeRoomState(script_cameraState.currentCameraIndex);
                 break;
             case "Selectable":
                 print($"tag : {Tag}");
                 if (selectedObject.GetComponent<ACTextWarningScript>() != null)
                 {
-                    StartCoroutine(script_acObj.acPopUpWarning());
+                    StartCoroutine(ObjConditionScript.script_checkAC.acPopUpWarning());
+                }
+                break;
+            case "Channel":
+                print($"tag : {Tag}");
+                if(selectedObject.GetComponent<TVRemoteScript>() != null)
+                {
+                    TVRemoteScript script_tv = selectedObject.GetComponent<TVRemoteScript>();
+                    script_tv.changeChannel(script_tv.channel);
+                }
+                break;
+            case "Coffee":
+                print($"tag : {Tag}");
+                if (selectedObject.GetComponent<CoffeeScript>() != null)
+                {
+                    CoffeeScript script_coffee = selectedObject.GetComponent<CoffeeScript>();
+                    script_coffee.isCupPlaced = true;
+                }
+                break;
+            case "Console":
+                print($"tag : {Tag}");
+                if (selectedObject.GetComponentInParent<ConsoleMiddleScript>() != null)
+                {
+                    ConsoleMiddleScript script_console = selectedObject.GetComponentInParent<ConsoleMiddleScript>();
+                    script_console.consoleOn();
+                    script_console.consoleCheck();
                 }
                 break;
             default:
@@ -167,6 +196,11 @@ public class TouchCodeScript : MonoBehaviour
                     selectedObject = touchedObject;
                     print($"hit {touchedObject.tag}");
 
+                    if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
+                    {
+                        ObjConditionScript.script_checkAC = selectedObject.GetComponentInParent<CheckACValueScript>();
+                    }
+                    
                     select(touchedObject.tag);
                 }
             }

@@ -280,7 +280,7 @@ public class FSMCameraRoomScript : MonoBehaviour
         //obj.SetActive(con);
     }
 
-    void deactivateAllCameras()
+   public void deactivateAllCameras()
     {
         for (int i = 0; i < roomCamera.Count; i++)
         {

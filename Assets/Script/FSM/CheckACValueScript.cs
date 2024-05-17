@@ -5,6 +5,12 @@ using TMPro;
 
 public class CheckACValueScript : MonoBehaviour
 {
+    [HideInInspector] public int acStatsIndex;
+    public bool isTVAV;
+    [SerializeField] public int consoleIndex;
+    [SerializeField] public int tvIndex;
+    [SerializeField] private bool isThisTV = false;
+
     private bool objActive = false;
     public int defValue;
     public int changeVal;
@@ -16,8 +22,8 @@ public class CheckACValueScript : MonoBehaviour
     public List<Texture2D> emissionACList = new();
     public Renderer rendererRemote;
     public Renderer rendererAC;
-    [SerializeField] TMP_Text valText;
     [SerializeField] private GameObject ac_remoteSwitch;
+    [SerializeField] private Collider console_switch;
     [SerializeField] private Animator acAnimator;
     [SerializeField] private ObjConditionScript script_obj;
     [SerializeField] private Light acLight;
@@ -31,8 +37,8 @@ public class CheckACValueScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateValue();
         //valueCheck(valueCondition);
+        PerformStateBehaviour();
     }
 
     public enum acBehaviour
@@ -61,22 +67,38 @@ public class CheckACValueScript : MonoBehaviour
         switch (state_acBehaviour)
         {
             case acBehaviour.off:
-                acAnimator.SetTrigger("acOff");
-                acScreenCover.SetActive(true);
-                remoteScreenCover.SetActive(true);
-                acLight.enabled = false;
-                remoteLight.enabled = false;
+                if(!isThisTV)
+                {
+                    acAnimator.SetTrigger("acOff");
+                    acScreenCover.SetActive(true);
+                    remoteScreenCover.SetActive(true);
+                    acLight.enabled = false;
+                    remoteLight.enabled = false;
+                }
+                else
+                {
+                    
+                }
+
                 break;
             case acBehaviour.initialized:
                 
                 
                 break;
             case acBehaviour.activated:
-                acAnimator.SetTrigger("acOn");
-                acScreenCover.SetActive(false);
-                remoteScreenCover.SetActive(false);
-                acLight.enabled = true;
-                remoteLight.enabled = true;
+                if(!isThisTV)
+                {
+                    Debug.Log("AC ACTIVATED");
+                    acAnimator.SetTrigger("acOn");
+                    acScreenCover.SetActive(false);
+                    remoteScreenCover.SetActive(false);
+                    acLight.enabled = true;
+                    remoteLight.enabled = true;
+                } else
+                {
+                    
+                }
+                
                 break;
             case acBehaviour.correct:
 
@@ -110,13 +132,22 @@ public class CheckACValueScript : MonoBehaviour
         switch (state_acBehaviour)
         {
             case acBehaviour.off:
-
+                if (console_switch != null)
+                {
+                    console_switch.enabled = false;
+                }
                 break;
             case acBehaviour.initialized:
 
                 break;
             case acBehaviour.activated:
-                
+                if (console_switch != null)
+                {
+                    if(isTVAV)
+                    {
+                        console_switch.enabled = true;
+                    }
+                }
                 break;
             case acBehaviour.correct:
 
@@ -136,13 +167,6 @@ public class CheckACValueScript : MonoBehaviour
                 objToDeactivate.SetActive(!objActive);
             }
         }
-    }
-
-    void updateValue()
-    {
-        string s;
-        s = defValue.ToString();
-        valText.text = s;
     }
 
     public IEnumerator acPopUpWarning()
@@ -168,9 +192,11 @@ public class CheckACValueScript : MonoBehaviour
             if(isWantToTurnOn)
             {
                 ChangeState(acBehaviour.activated);
+                ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.activated;
             } else
             {
                 ChangeState(acBehaviour.off);
+                ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.off;
                 isACActive = false;
             }
             
@@ -210,12 +236,17 @@ public class CheckACValueScript : MonoBehaviour
         {
             _objActivate = true;
             ChangeState(acBehaviour.initialized);
+            if (!ObjConditionScript.global_acStatsIndex.ContainsKey(acIndex))
+            {
+                ObjConditionScript.global_acStatsIndex.Add(acIndex, ObjConditionScript.acObjBehaviour.initialized);
+            }
         }
     }
 
     public void deactivateACCollider()
     {
             _objActivate = false;
-        ChangeState(acBehaviour.off);
+        //ChangeState(acBehaviour.off);
     }
+
 }

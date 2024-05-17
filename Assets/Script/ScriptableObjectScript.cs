@@ -23,6 +23,8 @@ public class LevelDataClass
     public bool tronic_couldRestored_Q;
     public bool tronic_active_Q;
     public bool tronic_eleSupplied_Q;
+    public bool tronic_correct_Q;
+    public Coroutine tronic_timerCoroutine;
 
     public LevelDataClass CopyFrom(LevelDataClass level_originalData)
     {
@@ -38,6 +40,8 @@ public class LevelDataClass
         level_copiedData.tronic_couldRestored_Q = level_originalData.tronic_couldRestored_Q;
         level_copiedData.tronic_active_Q = level_originalData.tronic_active_Q;
         level_copiedData.tronic_eleSupplied_Q = level_originalData.tronic_eleSupplied_Q;
+        level_copiedData.tronic_correct_Q = level_originalData.tronic_correct_Q;
+        level_copiedData.tronic_timerCoroutine = level_originalData.tronic_timerCoroutine;
         // Copy other properties as needed
 
         // Return the copied object

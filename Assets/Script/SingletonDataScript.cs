@@ -9,8 +9,9 @@ public class SingletonDataScript : MonoBehaviour
     [HideInInspector] public bool global_lose_Q = false;
 
     private float timer;
-    private int eleCapacity;
+    public static int eleCapacity;
     private float eleQuota;
+    private bool eleGlobal;
     public static SingletonDataScript singletonInstance;
     [SerializeField] private ScriptableObjectScript script_scriptable;
     [HideInInspector] public List<LevelDataClass> level_listDataInstanceBackup;
@@ -45,15 +46,17 @@ public class SingletonDataScript : MonoBehaviour
         timer = script_scriptable.global_timer;
         eleCapacity = script_scriptable.global_eleCapacity;
         eleQuota = script_scriptable.global_eleQuota;
+        eleGlobal = script_scriptable.global_eleOn_Q;
     }
 
     
-    private void OnApplicationQuit()
+    private void OnDisable()
     {
         script_scriptable.global_tronicDataList = CloneList(level_listDataInstanceBackup);
         script_scriptable.global_timer = timer;
         script_scriptable.global_eleCapacity = eleCapacity;
         script_scriptable.global_eleQuota = eleQuota;
+        script_scriptable.global_eleOn_Q = eleGlobal;
     }
 
     public List<LevelDataClass> CloneList(List<LevelDataClass> originalList)

@@ -7,39 +7,47 @@ public class TVRemoteScript : MonoBehaviour
     public int channel;
     public CheckACValueScript script_value;
     public ObjConditionScript script_obj;
-
+    [SerializeField] private ScriptableObjectScript script_scriptable;
     public void changeChannel(int channel)
     {
-        if(script_value.state_acBehaviour == CheckACValueScript.acBehaviour.activated || script_value.state_acBehaviour == CheckACValueScript.acBehaviour.correct || script_value.state_acBehaviour == CheckACValueScript.acBehaviour.initialized)
+        if(script_scriptable.global_eleOn_Q)
         {
-            if (channel != 4)
+            if (script_value.state_acBehaviour == CheckACValueScript.acBehaviour.activated || script_value.state_acBehaviour == CheckACValueScript.acBehaviour.correct || script_value.state_acBehaviour == CheckACValueScript.acBehaviour.initialized)
             {
-                script_value.defValue = channel;
-                script_value.isTVAV = false;
-                script_obj.objACStats();
-                script_value.rendererAC.material.SetTexture("_MainTex", script_value.textureACList[channel]);
-                ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q = true;
+                if (channel != 4)
+                {
+                    Debug.Log("TV CHANNEL CHANGED");
+                    script_value.defValue = channel;
+                    script_value.isTVAV = false;
+                    script_obj.objACStats();
+                    script_value.rendererAC.material.SetTexture("_MainTex", script_value.textureACList[channel]);
+                    ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q = true;
+                }
+                else
+                {
+                    script_value.isTVAV = true;
+                    script_value.defValue = channel;
+                    script_obj.objACStats();
+
+                    if (ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q == false)
+                    {
+                        ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q = true;
+                        ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_timerCoroutine = StartCoroutine(script_obj.timerDecreasePerSec(script_value.consoleIndex));
+                        script_obj.script_waitTimer.StartTimer(ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_timer, script_value.consoleIndex, false);
+                    }
+
+                    script_value.rendererAC.material.SetTexture("_MainTex", null);
+                }
             }
             else
             {
-                script_value.isTVAV = true;
-                script_value.defValue = channel;
-                script_obj.objACStats();
-                
-                if (ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q == false)
-                {
-                    ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q = true;
-                    ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_timerCoroutine = StartCoroutine(script_obj.timerDecreasePerSec(script_value.consoleIndex));
-                    script_obj.script_waitTimer.StartTimer(ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_timer, script_value.consoleIndex, false);
-                }
-
+                Debug.LogError("The TV is not activated");
                 script_value.rendererAC.material.SetTexture("_MainTex", null);
             }
         } else
         {
-            Debug.LogError("The TV is not activated");
+            script_value.rendererAC.material.SetTexture("_MainTex", null);
         }
-        
     }
 
 }

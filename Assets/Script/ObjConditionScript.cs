@@ -9,6 +9,7 @@ public class ObjConditionScript : MonoBehaviour
     private SingletonDataScript script_singletonData;
     [HideInInspector] public TaskWaitTimerUIScript script_waitTimer;
     private TaskStatsUIScript script_taskUi;
+    public BedLampBehaviourScript script_bedlamp;
     public static CheckACValueScript script_checkAC;
 
 
@@ -21,6 +22,7 @@ public class ObjConditionScript : MonoBehaviour
     public GameObject global_electricitySwitch;
     public List<GameObject> obj_assetSwitchList;
     public List<GameObject> room_list;
+    public List<CheckACValueScript> acTVScript;
     //public List<CheckACValueScript> script_acValue;
     //[HideInInspector] public bool isElectricityAssetFound;
 
@@ -67,14 +69,14 @@ public class ObjConditionScript : MonoBehaviour
         loseCheck();
         eleSwitch();
 
-        if (script_scriptable.global_eleCapacity <= 0)
-        {
-            //Debug.Log("Elec Out");
-        }
-        else
-        {
-            script_scriptable.global_eleOn_Q = true;
-        }
+        //if (script_scriptable.global_eleCapacity <= 0)
+        //{
+        //    //Debug.Log("Elec Out");
+        //}
+        //else
+        //{
+        //    script_scriptable.global_eleOn_Q = true;
+        //}
 
         
         //if (GameObject.FindWithTag("Electricity") != null  && !isElectricityAssetFound)
@@ -131,9 +133,14 @@ public class ObjConditionScript : MonoBehaviour
 
                     if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
                     {
-                        obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
-                        script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
-                        if (script_scriptable.global_eleCapacity < 0)
+                        obj_dataList[j].tronic_active_Q = true;
+                        //script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
+                        script_bedlamp.bedroomLampCheck();
+                        obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
+                            (j));
+                        script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
+                        StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                    if (script_scriptable.global_eleCapacity < 0)
                         {
                             Debug.Log("Electricity Out");
                             elecOut();
@@ -141,30 +148,34 @@ public class ObjConditionScript : MonoBehaviour
                             break;
                         }
 
-                        else
-                        {
-                            if (obj_dataList[j].tronic_timer > 0)
-                            {
-                                obj_dataList[j].tronic_timerCoroutine  = StartCoroutine(timerDecreasePerSec
-                                    (j));
-                                script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
-                                StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
-                            } else
-                            {
-                                obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
-                                 (j));
-                                script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
-                                StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
-                            }
-                            //objColor();
-                            break;
-                        }
+                        //else
+                        //{
+                        //    if (obj_dataList[j].tronic_timer > 0)
+                        //    {
+                        //        obj_dataList[j].tronic_timerCoroutine  = StartCoroutine(timerDecreasePerSec
+                        //            (j));
+                        //        script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
+                        //        StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                        //    } else
+                        //    {
+                        //    obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
+                        //     (j));
+                        //    script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
+                        //        StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                        //    }
+                        //    //objColor();
+                        //    break;
+                        //}
                     }
                     else
                     {   
-                        obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
-                        script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
-                    }
+                        obj_dataList[j].tronic_active_Q = false;
+                        //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
+                        script_bedlamp.bedroomLampCheck();
+                        StartCoroutine(timerDecreasePerSec
+                            (script_bedlamp.bedlampIndex));
+                        script_waitTimer.StartTimer(obj_dataList[script_bedlamp.bedlampIndex].tronic_timer, script_bedlamp.bedlampIndex, false);
+                }
             }
         }
     }
@@ -178,7 +189,7 @@ public class ObjConditionScript : MonoBehaviour
                 if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
                 {
                     obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
-                    script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
+                    //script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
                     if (script_scriptable.global_eleCapacity < 0)
                     {
                         Debug.Log("Electricity Out");
@@ -201,7 +212,7 @@ public class ObjConditionScript : MonoBehaviour
                     //AC Anim Off if being pressed off
                     script_checkAC.ACButtonPressed(false);
                     obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
-                    script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
+                    //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                 }
             }
         }
@@ -236,6 +247,15 @@ public class ObjConditionScript : MonoBehaviour
             obj_dataList[i].tronic_eleSupplied_Q = false;
             obj_dataList[i].tronic_active_Q = false;
         }
+
+        for (int j = 0; j < acTVScript.Count; j++)
+        {
+            acTVScript[j].ChangeState(CheckACValueScript.acBehaviour.off);
+            if (acTVScript[j].isThisTV)
+            {
+                acTVScript[j].rendererAC.material.SetTexture("_MainTex", null);
+            }
+        }
     }
 
     //Check global ele then change its color
@@ -247,12 +267,12 @@ public class ObjConditionScript : MonoBehaviour
             Collider collider = obj.GetComponent<Collider>();
             if (script_scriptable.global_eleOn_Q)
             {
-                ChangeObjectMaterial(obj, Color.yellow);
+                //ChangeObjectMaterial(obj, Color.yellow);
                 collider.enabled = false;
             }
             else
             {
-                ChangeObjectMaterial(obj, Color.cyan);
+               // ChangeObjectMaterial(obj, Color.cyan);
                 collider.enabled = true;
             }
         }
@@ -265,18 +285,31 @@ public class ObjConditionScript : MonoBehaviour
         if(!script_scriptable.global_eleOn_Q)
         {
             Debug.Log("Elec On");
+            script_scriptable.global_eleOn_Q = true;
+            script_scriptable.global_eleCapacity = SingletonDataScript.eleCapacity;
             for (int i = 0; i < obj_dataList.Count; i++)
             {
                 obj_dataList[i].tronic_eleSupplied_Q = true;
-                script_scriptable.global_eleCapacity += obj_dataList[i].tronic_wattage;
                 //objColor();
-                if (obj_dataList[i].tronic_couldRestored_Q)
-                {
-                    obj_dataList[i].tronic_active_Q = true;
-                    script_scriptable.global_eleCapacity -= obj_dataList[i].tronic_wattage;
-                    //objColor();
-                }
+                //if (obj_dataList[i].tronic_couldRestored_Q)
+                //{
+                //    obj_dataList[i].tronic_active_Q = true;
+                //    script_scriptable.global_eleCapacity -= obj_dataList[i].tronic_wattage;
+                //    if(obj_dataList[i].tronic_correct_Q)
+                //    {
+                //        obj_dataList[i].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
+                //                   (i));
+                //        script_waitTimer.StartTimer(obj_dataList[i].tronic_timer, i, false);
+                //        StartCoroutine(eleDecreasePerSec(i, obj_dataList[i].tronic_wattPerSec));
+                //    }
+                //    //objColor();
+                //} 
+
+                
             }
+
+            
+
         }
     }
 
@@ -305,18 +338,25 @@ public class ObjConditionScript : MonoBehaviour
 
    public IEnumerator eleDecreasePerSec(int index,float amount)
     {
-        while (true && obj_dataList[index].tronic_active_Q)
+        if(true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
         {
-            script_scriptable.global_eleQuota -= amount * Time.deltaTime;
-            //if(obj_dataList[index].tronic_timer < 0)
-            //{
-            //    yield break;
-            //}
-            if(script_scriptable.global_eleQuota < 0)
+            script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
+            while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
             {
-                yield break;
+                script_scriptable.global_eleQuota -= amount * Time.deltaTime;
+                //if(obj_dataList[index].tronic_timer < 0)
+                //{
+                //    yield break;
+                //}
+                if (script_scriptable.global_eleQuota < 0)
+                {
+                    yield break;
+                }
+                yield return null; // Wait for the next frame
             }
-            yield return null; // Wait for the next frame
+        } else
+        {
+            script_scriptable.global_eleCapacity += obj_dataList[index].tronic_wattage;
         }
     }
 
@@ -332,7 +372,7 @@ public class ObjConditionScript : MonoBehaviour
         //StartCoroutine(eleDecreasePerSec(index,obj_dataList[index].tronic_wattPerSec));
 
         
-        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_correct_Q)
+        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_correct_Q && obj_dataList[index].tronic_eleSupplied_Q)
         {
             obj_dataList[index].tronic_timer -= Time.deltaTime;
 
@@ -351,18 +391,25 @@ public class ObjConditionScript : MonoBehaviour
     IEnumerator eleACDecreasePerSec(int index, float amount)
     {
         script_checkAC.isACActive = true;
-        while (true && obj_dataList[index].tronic_active_Q )
+        if(true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
         {
-            script_scriptable.global_eleQuota -= amount * Time.deltaTime;
-            //if(obj_dataList[index].tronic_timer < 0)
-            //{
-            //    yield break;
-            //}
-            if (script_scriptable.global_eleQuota < 0)
+            script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
+            while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
             {
-                yield break;
+                script_scriptable.global_eleQuota -= amount * Time.deltaTime;
+                //if(obj_dataList[index].tronic_timer < 0)
+                //{
+                //    yield break;
+                //}
+                if (script_scriptable.global_eleQuota < 0)
+                {
+                    yield break;
+                }
+                yield return null; // Wait for the next frame
             }
-            yield return null; // Wait for the next frame
+        } else
+        {
+            script_scriptable.global_eleCapacity += obj_dataList[index].tronic_wattage;
         }
     }
 
@@ -375,7 +422,7 @@ public class ObjConditionScript : MonoBehaviour
             yield break; // Exit the coroutine if the index is out of range
         }
 
-        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && global_acStatsIndex[index] == acObjBehaviour.correct && obj_dataList[index].tronic_correct_Q)//errr
+        while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && global_acStatsIndex[index] == acObjBehaviour.correct && obj_dataList[index].tronic_correct_Q && obj_dataList[index].tronic_eleSupplied_Q)//errr
         {
             obj_dataList[index].tronic_timer -= Time.deltaTime;
             if (obj_dataList[index].tronic_timer <= 0)

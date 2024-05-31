@@ -9,7 +9,7 @@ public class CheckACValueScript : MonoBehaviour
     public bool isTVAV;
     [SerializeField] public int consoleIndex;
     [SerializeField] public int tvIndex;
-    [SerializeField] private bool isThisTV = false;
+    [SerializeField] public bool isThisTV = false;
 
     private bool objActive = false;
     public int defValue;

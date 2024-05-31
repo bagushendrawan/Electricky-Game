@@ -12,7 +12,6 @@ public class CPUButtonScript : MonoBehaviour
         {
             GameObject selected = TouchCodeScript.selectedObject;
             Animator anim = selected.GetComponentInParent<Animator>();
-            Debug.Log("CPU Hit!");
             anim.SetTrigger("cpuOn");
         }
     }

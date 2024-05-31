@@ -81,6 +81,6 @@ public class UIGlobalHandlerScript : MonoBehaviour
 
     public void updateGlobalQuotaUI()
     {
-        textQuota.text = "Quota : " + script_scriptable.global_eleQuota;
+        textQuota.text = "Quota : " + Mathf.Round(script_scriptable.global_eleQuota);
     }
 }

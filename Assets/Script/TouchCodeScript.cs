@@ -15,6 +15,7 @@ public class TouchCodeScript : MonoBehaviour
 
     private BedLampActivateScript script_objToActivate;
     [SerializeField] private CPUButtonScript script_cpuButton;
+    private LampButtonScript script_lampButton;
     private bool isSwipeLocked = false;
     private Stack<Collider> stack_selectedCollider = new ();
     private Stack<Collider> stack_objCollider = new();
@@ -26,6 +27,7 @@ public class TouchCodeScript : MonoBehaviour
 
         script_cameraState = GetComponent<FSMCameraRoomScript>();
         script_objCondition = GetComponent<ObjConditionScript>();
+        script_lampButton = FindObjectOfType<LampButtonScript>();
     }
     void Update()
     {
@@ -126,6 +128,10 @@ public class TouchCodeScript : MonoBehaviour
                     Debug.Log("Regular Switch Hit!");
                     script_objCondition.objSwitch(selectedObject);
                     script_cpuButton.CPUButtonPressed();
+                    if(script_lampButton != null)
+                    {
+                        script_lampButton.LampButtonPressed();
+                    }
                 }
                 break;
             case "Electricity":
@@ -135,6 +141,7 @@ public class TouchCodeScript : MonoBehaviour
             case "changeScene":
                 print($"tag : {Tag}");
                 selectedObject.GetComponent<DoorSceneScript>().changeRoom();
+                script_lampButton = FindAnyObjectByType<LampButtonScript>();
                 break;
             case "backScene":
                 print($"tag : {Tag}");

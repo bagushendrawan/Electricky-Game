@@ -18,25 +18,26 @@ public class SingletonDataScript : MonoBehaviour
 
     private void Awake()
     {
-        if (singletonInstance == null)
-        {
-            singletonInstance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
+        //if (singletonInstance == null)
+        //{
+        //    singletonInstance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
+        //DontDestroyOnLoad(gameObject);
+        Time.timeScale = 1;
         Application.targetFrameRate = 60;
     }
 
     private void Update()
     {
-        if(SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            Destroy(gameObject);
-        }
+        //if(SceneManager.GetActiveScene().buildIndex == 0)
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 
     private void Start()

@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/mainMenu.unity
+    path: Assets/Scenes/Level/mainMenu.unity
     guid: 56f567ca8b347f942a0550a592b2e657
   - enabled: 1
-    path: Assets/Scenes/bedRoom.unity
-    guid: cb243c6c4b3e9054cb4a973381c01368
+    path: Assets/Scenes/Level/Level_1.unity
+    guid: 9aa9449173d6f474aba7385a696defed
   - enabled: 1
-    path: Assets/Scenes/Outside.unity
-    guid: ef4981f8cde7a3e49a42a661d9df5dde
+    path: Assets/Scenes/Level/Level_2.unity
+    guid: 9ab75d5e1355be749acec4945ae10033
+  - enabled: 1
+    path: Assets/Scenes/Level/Level_3.unity
+    guid: cb243c6c4b3e9054cb4a973381c01368
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 572a6f27702569c45aa08399f31345e1,
       type: 2}

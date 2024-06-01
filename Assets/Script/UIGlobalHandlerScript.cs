@@ -65,7 +65,7 @@ public class UIGlobalHandlerScript : MonoBehaviour
     void globalTimer()
     {
         script_scriptable.global_timer -= Time.deltaTime;
-
+        Debug.Log("Global Timer ON");
         updateGlobalTimerUI(textUI);
 
         if (script_scriptable.global_timer <= 0)

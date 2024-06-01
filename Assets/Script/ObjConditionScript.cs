@@ -23,29 +23,7 @@ public class ObjConditionScript : MonoBehaviour
     public List<GameObject> obj_assetSwitchList;
     public List<GameObject> room_list;
     public List<CheckACValueScript> acTVScript;
-    //public List<CheckACValueScript> script_acValue;
-    //[HideInInspector] public bool isElectricityAssetFound;
 
-    /// <summary>
-    /// Onscene Loaded 
-    /// </summary>
-    //private void OnEnable()
-    //{
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //}
-
-    //private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    Debug.Log("Scene loaded: " + scene.name);
-    //    // THIS ONE IS A PROBLEM BECAUSE ON ENABLE IS CALLED FIRST THAN START
-    //    //assignObj();
-    //    //objColor();
-    //}
     public static Dictionary<int, acObjBehaviour> global_acStatsIndex = new();
 
     public enum acObjBehaviour
@@ -68,32 +46,11 @@ public class ObjConditionScript : MonoBehaviour
     {
         loseCheck();
         eleSwitch();
-
-        //if (script_scriptable.global_eleCapacity <= 0)
-        //{
-        //    //Debug.Log("Elec Out");
-        //}
-        //else
-        //{
-        //    script_scriptable.global_eleOn_Q = true;
-        //}
-
-        
-        //if (GameObject.FindWithTag("Electricity") != null  && !isElectricityAssetFound)
-        //{
-        //    //Debug.Log("Find Electricity & Obj");
-        //    global_electricitySwitch = GameObject.FindWithTag("Electricity");
-
-        //    isElectricityAssetFound = true;
-        //}
-
     }
    
     //update all asset color inside obj_assetList
     public void objColor()
     {
-        //Debug.Log("Asset Switch " + obj_assetSwitchList.Count);
-        //Debug.Log("Asset Data " + obj_dataList.Count);
         for (int i = 0; i < obj_assetSwitchList.Count; i++)
         {
             if(obj_assetSwitchList != null && obj_dataList != null)
@@ -134,43 +91,15 @@ public class ObjConditionScript : MonoBehaviour
                     if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
                     {
                         obj_dataList[j].tronic_active_Q = true;
-                        //script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
                         script_bedlamp.bedroomLampCheck();
                         obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
                             (j));
                         script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
                         StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
-                    if (script_scriptable.global_eleCapacity < 0)
-                        {
-                            Debug.Log("Electricity Out");
-                            elecOut();
-                            //objColor();
-                            break;
-                        }
-
-                        //else
-                        //{
-                        //    if (obj_dataList[j].tronic_timer > 0)
-                        //    {
-                        //        obj_dataList[j].tronic_timerCoroutine  = StartCoroutine(timerDecreasePerSec
-                        //            (j));
-                        //        script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
-                        //        StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
-                        //    } else
-                        //    {
-                        //    obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
-                        //     (j));
-                        //    script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
-                        //        StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
-                        //    }
-                        //    //objColor();
-                        //    break;
-                        //}
                     }
                     else
                     {   
                         obj_dataList[j].tronic_active_Q = false;
-                        //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                         script_bedlamp.bedroomLampCheck();
                         StartCoroutine(timerDecreasePerSec
                             (script_bedlamp.bedlampIndex));
@@ -190,22 +119,11 @@ public class ObjConditionScript : MonoBehaviour
                 {
                     obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
                     //script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
-                    if (script_scriptable.global_eleCapacity < 0)
-                    {
-                        Debug.Log("Electricity Out");
-                        elecOut();
-                        //objColor();
-                        break;
-                    }
 
-                    else
-                    {
                         script_checkAC.ACButtonPressed(true);
                         script_checkAC.acIndex = j;
                         objACStats();
                         //objColor();
-                        break;
-                    }
                 }
                 else
                 {
@@ -220,19 +138,21 @@ public class ObjConditionScript : MonoBehaviour
 
     public void objACStats()
     {
-        if (script_checkAC.state_acBehaviour == CheckACValueScript.acBehaviour.activated && !script_checkAC.isACActive)
+        if (script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated && !script_checkAC.isACActive)
         {
             StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
         }
         if (script_checkAC.defValue == script_checkAC.valueCondition)
         {
-            script_checkAC.ChangeState(CheckACValueScript.acBehaviour.correct);
+            script_checkAC.ChangeState(CheckACValueScript.objBehaviour.correct);
             global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.correct;
+            obj_dataList[script_checkAC.acIndex].tronic_correct_Q = true;
             obj_dataList[script_checkAC.acIndex].tronic_timerCoroutine = StartCoroutine(timerACDecreasePerSec(script_checkAC.acIndex));
             script_waitTimer.StartTimer(obj_dataList[script_checkAC.acIndex].tronic_timer, script_checkAC.acIndex, true);
         } else
         {
-            script_checkAC.ChangeState(CheckACValueScript.acBehaviour.activated);
+            obj_dataList[script_checkAC.acIndex].tronic_correct_Q = false;
+            script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
             global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
         }
     }
@@ -250,7 +170,7 @@ public class ObjConditionScript : MonoBehaviour
 
         for (int j = 0; j < acTVScript.Count; j++)
         {
-            acTVScript[j].ChangeState(CheckACValueScript.acBehaviour.off);
+            acTVScript[j].ChangeState(CheckACValueScript.objBehaviour.off);
             if (acTVScript[j].isThisTV)
             {
                 acTVScript[j].rendererAC.material.SetTexture("_MainTex", null);
@@ -325,6 +245,7 @@ public class ObjConditionScript : MonoBehaviour
         {
             Debug.Log("You Win!");
             script_singletonData.global_win_Q = true;
+            dataHandler.unlockedScene++;
         }
     }
 
@@ -341,6 +262,12 @@ public class ObjConditionScript : MonoBehaviour
         if(true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
         {
             script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
+            if (script_scriptable.global_eleCapacity < 0)
+            {
+                Debug.Log("Electricity Out");
+                elecOut();
+                //objColor();
+            }
             while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
             {
                 script_scriptable.global_eleQuota -= amount * Time.deltaTime;
@@ -394,6 +321,12 @@ public class ObjConditionScript : MonoBehaviour
         if(true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
         {
             script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
+            if (script_scriptable.global_eleCapacity < 0)
+            {
+                Debug.Log("Electricity Out");
+                elecOut();
+                //objColor();
+            }
             while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
             {
                 script_scriptable.global_eleQuota -= amount * Time.deltaTime;
@@ -433,7 +366,7 @@ public class ObjConditionScript : MonoBehaviour
                 //Debug.Log("Object Deactivated-Done Timer");
                 winCheck();
 
-                script_checkAC.ChangeState(CheckACValueScript.acBehaviour.activated);
+                script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
                 global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
                 yield break; // Exit the coroutine if the taskTimer has reached zero
             }

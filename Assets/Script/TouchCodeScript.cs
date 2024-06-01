@@ -59,8 +59,6 @@ public class TouchCodeScript : MonoBehaviour
             stack_selectedCollider.Push(selectedObject.GetComponent<Collider>());
             stack_objCollider.Peek().enabled = true;
             stack_selectedCollider.Peek().enabled = false;
-            //objCollider = selectedObject.GetComponent<Collider>();
-            //objCollider.enabled = false;
         }
     }
     public void deactiveSecCollider()
@@ -159,6 +157,7 @@ public class TouchCodeScript : MonoBehaviour
                 {
                     TVRemoteScript script_tv = selectedObject.GetComponent<TVRemoteScript>();
                     script_tv.changeChannel(script_tv.channel);
+                    script_tv.animActivate(script_tv.channel);
                 }
                 break;
             case "Coffee":
@@ -229,31 +228,14 @@ public class TouchCodeScript : MonoBehaviour
                         if (endTouchPos.x < startTouchPos.x)
                         {
                             Debug.Log("Next Swipe");
-                            //if (!isSwipeLocked)
-                            //{
-                                script_cameraState.nextSwipe();
-                                //StartCoroutine(SwipeTimer(swipeLockTimer));
-                            //}
-                            //else
-                            //{
-                            //    Debug.Log("SWIPE NEXT IS LOCKED TIMER");
-                            //}
+                            script_cameraState.nextSwipe();
 
                         }
 
                         if (endTouchPos.x > startTouchPos.x)
                         {
                             Debug.Log("Prev Swipe");
-                            //if (!isSwipeLocked)
-                            //{
-                                script_cameraState.prevSwipe();
-                            //    StartCoroutine(SwipeTimer(swipeLockTimer));
-                            //}
-                            //else
-                            //{
-                            //    Debug.Log("SWIPE PREV IS LOCKED TIMER");
-                            //}
-
+                            script_cameraState.prevSwipe();
                         }
                     }
                 }

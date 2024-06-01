@@ -11,6 +11,9 @@ public class CheckACValueScript : MonoBehaviour
     [SerializeField] public int tvIndex;
     [SerializeField] public bool isThisTV = false;
 
+    public List<Texture2D> textureTVRemote = new();
+    [SerializeField] public Renderer remoteTVRenderer;
+
     private bool objActive = false;
     public int defValue;
     public int changeVal;
@@ -41,7 +44,7 @@ public class CheckACValueScript : MonoBehaviour
         PerformStateBehaviour();
     }
 
-    public enum acBehaviour
+    public enum objBehaviour
     {
         off,
         initialized,
@@ -49,15 +52,15 @@ public class CheckACValueScript : MonoBehaviour
         correct
     }
 
-    public acBehaviour state_acBehaviour;
+    public objBehaviour state_acBehaviour;
 
-    public void ChangeState(acBehaviour newState)
+    public void ChangeState(objBehaviour newState)
     {
-        // Exit the current state
+
         ExitState();
-        // Set the new state
+
         state_acBehaviour = newState;
-        // Enter the new state
+
         EnterState();
     }
 
@@ -66,43 +69,48 @@ public class CheckACValueScript : MonoBehaviour
         // Perform actions when exiting a state
         switch (state_acBehaviour)
         {
-            case acBehaviour.off:
-                if(!isThisTV)
-                {
-                    acAnimator.SetTrigger("acOff");
-                    acScreenCover.SetActive(true);
-                    remoteScreenCover.SetActive(true);
-                    acLight.enabled = false;
-                    remoteLight.enabled = false;
-                }
-                else
-                {
-                    
-                }
+            case objBehaviour.off:
+                objEnterState_off();
+                break;
+            case objBehaviour.initialized:
+                break;
+            case objBehaviour.activated:
+                objEnterState_activated();
+                break;
+            case objBehaviour.correct:
+                break;
+        }
+    }
 
-                break;
-            case acBehaviour.initialized:
-                
-                
-                break;
-            case acBehaviour.activated:
-                if(!isThisTV)
-                {
-                    Debug.Log("AC ACTIVATED");
-                    acAnimator.SetTrigger("acOn");
-                    acScreenCover.SetActive(false);
-                    remoteScreenCover.SetActive(false);
-                    acLight.enabled = true;
-                    remoteLight.enabled = true;
-                } else
-                {
-                    
-                }
-                
-                break;
-            case acBehaviour.correct:
+    private void objEnterState_activated()
+    {
+        if (!isThisTV)
+        {
+            acAnimator.SetTrigger("acOn");
+            acScreenCover.SetActive(false);
+            remoteScreenCover.SetActive(false);
+            acLight.enabled = true;
+            remoteLight.enabled = true;
+        }
+        else
+        {
+            remoteTVRenderer.material.SetTexture("_MainTex", textureTVRemote[1]);
+        }
+    }
 
-                break;
+    private void objEnterState_off()
+    {
+        if (!isThisTV)
+        {
+            acAnimator.SetTrigger("acOff");
+            acScreenCover.SetActive(true);
+            remoteScreenCover.SetActive(true);
+            acLight.enabled = false;
+            remoteLight.enabled = false;
+        }
+        else
+        {
+            remoteTVRenderer.material.SetTexture("_MainTex", textureTVRemote[0]);
         }
     }
 
@@ -111,16 +119,16 @@ public class CheckACValueScript : MonoBehaviour
         // Perform actions when exiting a state
         switch (state_acBehaviour)
         {
-            case acBehaviour.off:
+            case objBehaviour.off:
 
                 break;
-            case acBehaviour.initialized:
+            case objBehaviour.initialized:
 
                 break;
-            case acBehaviour.activated:
+            case objBehaviour.activated:
     
                 break;
-            case acBehaviour.correct:
+            case objBehaviour.correct:
 
                 break;
         }
@@ -131,16 +139,16 @@ public class CheckACValueScript : MonoBehaviour
         // Perform actions when exiting a state
         switch (state_acBehaviour)
         {
-            case acBehaviour.off:
+            case objBehaviour.off:
                 if (console_switch != null)
                 {
                     console_switch.enabled = false;
                 }
                 break;
-            case acBehaviour.initialized:
+            case objBehaviour.initialized:
 
                 break;
-            case acBehaviour.activated:
+            case objBehaviour.activated:
                 if (console_switch != null)
                 {
                     if(isTVAV)
@@ -149,7 +157,7 @@ public class CheckACValueScript : MonoBehaviour
                     }
                 }
                 break;
-            case acBehaviour.correct:
+            case objBehaviour.correct:
 
                 break;
         }
@@ -171,7 +179,6 @@ public class CheckACValueScript : MonoBehaviour
 
     public IEnumerator acPopUpWarning()
     {
-        Debug.Log("Text Pop Up!");
         float elapsedTime = 0f;
         ACTextWarningScript script_acText = TouchCodeScript.selectedObject.GetComponent<ACTextWarningScript>();
         while (elapsedTime < script_acText.timer)
@@ -191,11 +198,11 @@ public class CheckACValueScript : MonoBehaviour
         {
             if(isWantToTurnOn)
             {
-                ChangeState(acBehaviour.activated);
+                ChangeState(objBehaviour.activated);
                 ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.activated;
             } else
             {
-                ChangeState(acBehaviour.off);
+                ChangeState(objBehaviour.off);
                 ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.off;
                 isACActive = false;
             }
@@ -205,12 +212,11 @@ public class CheckACValueScript : MonoBehaviour
 
     public void changeACValue(int val)
     {
-        if (state_acBehaviour == acBehaviour.activated || state_acBehaviour == acBehaviour.correct)
+        if (state_acBehaviour == objBehaviour.activated || state_acBehaviour == objBehaviour.correct)
         {
             if (defValue - 20 + val > -1 && defValue - 20 + val < 7)
             {
                 defValue += (changeVal * val);
-                Debug.Log("Value " + defValue);
                 try
                 {
                     script_obj.objACStats();
@@ -235,7 +241,7 @@ public class CheckACValueScript : MonoBehaviour
         if (TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>() != null)
         {
             _objActivate = true;
-            ChangeState(acBehaviour.initialized);
+            ChangeState(objBehaviour.initialized);
             if (!ObjConditionScript.global_acStatsIndex.ContainsKey(acIndex))
             {
                 ObjConditionScript.global_acStatsIndex.Add(acIndex, ObjConditionScript.acObjBehaviour.initialized);

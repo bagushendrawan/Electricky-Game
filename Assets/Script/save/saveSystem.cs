@@ -7,13 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class saveSystem : MonoBehaviour
 {
-    public static void SavePlayer(dataHandler data)
+    public static void SavePlayer()
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/player.rock";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData dataPlayer = new PlayerData(data);
+        PlayerData dataPlayer = new PlayerData();
 
         formatter.Serialize(stream, dataPlayer);
         stream.Close();
@@ -45,8 +45,8 @@ public class PlayerData
 {
     public int unlockedScene = 1;
 
-    public PlayerData(dataHandler data)
+    public PlayerData()
     {
-        unlockedScene = data.unlockedScene;
+        unlockedScene = dataHandler.unlockedScene;
     }
 }

@@ -121,7 +121,6 @@ public class CameraStatesScript : MonoBehaviour
         Animator anim = obj.GetComponent<Animator>();
         if (obj.transform.position.y > 0)
         {
-            Debug.Log(obj.name + animTriggerDown);
             anim.SetTrigger(animTriggerDown);
             StartCoroutine(DelayedExecution(obj, true, duration, pos));
         }
@@ -133,7 +132,6 @@ public class CameraStatesScript : MonoBehaviour
         Animator anim = obj.GetComponent<Animator>();
         if (obj.transform.position.y <=0)
         {
-            Debug.Log(obj.name + animTriggerUp);
             anim.SetTrigger(animTriggerUp);
             StartCoroutine(DelayedExecution(obj, false, duration, pos));
         }
@@ -145,7 +143,6 @@ public class CameraStatesScript : MonoBehaviour
     private IEnumerator DelayedExecution(GameObject obj, bool con, float dur, float pos)
     {
         yield return new WaitForSeconds(dur);
-        Debug.Log("Delayed Done");
         obj.transform.position = new Vector3(obj.transform.position.x, pos, obj.transform.position.z);
         //obj.SetActive(con);
     }
@@ -243,7 +240,6 @@ public class CameraStatesScript : MonoBehaviour
             if(x.gameObject.name == "Switch")
             {
                 x.enabled = col;
-                Debug.Log("Object Activated");
             }
         }
     }

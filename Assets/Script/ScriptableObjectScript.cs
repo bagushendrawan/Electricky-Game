@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewLevel", menuName = "MyLevel/Data", order = 1)]
 public class ScriptableObjectScript : ScriptableObject
 {
-    public int global_eleCapacity;
+    public float global_eleCapacity;
     public float global_eleQuota;
     public float global_timer;
     public bool global_eleOn_Q;

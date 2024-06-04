@@ -12,19 +12,23 @@ public class UIGlobalHandlerScript : MonoBehaviour
     private TouchCodeScript script_touchCode;
     [SerializeField] private CheckACValueScript script_acObj;
 
-    private Canvas canvasMenu;
-    private TMP_Text textUI;
-    private TMP_Text textWatt;
-    private TMP_Text textQuota;
+    public Canvas canvasMenu;
+    //private TMP_Text textUI;
+    public TMP_Text textWatt;
+    public TMP_Text textQuota;
+    public Image timerBar;
+    public Image capacityBar;
+    public Image quotaBar;
+    public GameObject buttonBack;
 
     private void Start()
     {
         script_cameraState = GetComponent<FSMCameraRoomScript>();
         script_touchCode = GetComponent<TouchCodeScript>();
-        canvasMenu = GameObject.Find("Canvas_Menu").GetComponent<Canvas>();
-        textUI = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
-        textWatt = GameObject.Find("EleCapacity").GetComponent<TextMeshProUGUI>();
-        textQuota = GameObject.Find("EleQuota").GetComponent<TextMeshProUGUI>();
+        //canvasMenu = GameObject.Find("Canvas_Menu").GetComponent<Canvas>();
+        //textUI = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
+        //textWatt = GameObject.Find("EleCapacity").GetComponent<TextMeshProUGUI>();
+        //textQuota = GameObject.Find("EleQuota").GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
@@ -32,6 +36,13 @@ public class UIGlobalHandlerScript : MonoBehaviour
         globalTimer();
         updateGlobalWattageUI();
         updateGlobalQuotaUI();
+        if (script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
+        {
+            buttonBack.SetActive(false);
+        } else
+        {
+            buttonBack.SetActive(true);
+        }
     }
 
     //Back button switch
@@ -47,11 +58,17 @@ public class UIGlobalHandlerScript : MonoBehaviour
 
             script_touchCode.deactiveSecCollider();
         }
-        else
-        {
-            Time.timeScale = 0;
-            canvasMenu.enabled = true;
-        }
+        //else
+        //{
+        //    Time.timeScale = 0;
+        //    canvasMenu.enabled = true;
+        //}
+    }
+
+    public void pauseButton()
+    {
+        Time.timeScale = 0;
+        canvasMenu.enabled = true;
     }
 
     public void updateGlobalTimerUI(TMP_Text textCanvas)
@@ -64,9 +81,10 @@ public class UIGlobalHandlerScript : MonoBehaviour
 
     void globalTimer()
     {
+        timerBar.fillAmount = script_scriptable.global_timer / SingletonDataScript.timer;
         script_scriptable.global_timer -= Time.deltaTime;
-        Debug.Log("Global Timer ON");
-        updateGlobalTimerUI(textUI);
+        //Debug.Log("Global Timer ON");
+        //updateGlobalTimerUI(textUI);
 
         if (script_scriptable.global_timer <= 0)
         {
@@ -76,11 +94,16 @@ public class UIGlobalHandlerScript : MonoBehaviour
 
     public void updateGlobalWattageUI()
     {
+        //Debug.Log("Percent Capacity " + script_scriptable.global_eleCapacity / SingletonDataScript.eleCapacity + " " + SingletonDataScript.eleCapacity + " " + script_scriptable.global_eleCapacity);
+        float capacityDiff = script_scriptable.global_eleCapacity / SingletonDataScript.eleCapacity;
+        Debug.Log("DIff " + capacityDiff);
+        capacityBar.fillAmount = capacityDiff;
         textWatt.text = "Capacity : " + script_scriptable.global_eleCapacity;
     }
 
     public void updateGlobalQuotaUI()
     {
+        quotaBar.fillAmount = script_scriptable.global_eleQuota / SingletonDataScript.eleQuota;
         textQuota.text = "Quota : " + Mathf.Round(script_scriptable.global_eleQuota);
     }
 }

@@ -95,6 +95,10 @@ public class CheckACValueScript : MonoBehaviour
         else
         {
             remoteTVRenderer.material.SetTexture("_MainTex", textureTVRemote[1]);
+            //script_channel.changeChannel(script_channel.channel);
+            rendererAC.material.SetTexture("_MainTex", textureACList[1]);
+            acLight.enabled = true;
+            remoteLight.enabled = true;
         }
     }
 
@@ -111,6 +115,9 @@ public class CheckACValueScript : MonoBehaviour
         else
         {
             remoteTVRenderer.material.SetTexture("_MainTex", textureTVRemote[0]);
+            rendererAC.material.SetTexture("_MainTex", textureACList[5]);
+            acLight.enabled = false;
+            remoteLight.enabled = false;
         }
     }
 
@@ -171,11 +178,17 @@ public class CheckACValueScript : MonoBehaviour
             if (objActive != value)
             {
                 objActive = value;
-                objToActivate.SetActive(objActive);
+                StartCoroutine(DelayedActivation(0.33f, objActive));
                 objToDeactivate.SetActive(!objActive);
             }
         }
     }
+    IEnumerator DelayedActivation(float delay, bool activate)
+    {
+        yield return new WaitForSeconds(delay);
+        objToActivate.SetActive(activate);
+    }
+
 
     public IEnumerator acPopUpWarning()
     {

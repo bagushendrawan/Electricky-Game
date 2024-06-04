@@ -96,6 +96,7 @@ public class ObjConditionScript : MonoBehaviour
                             (j));
                         script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
                         StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                        script_taskUi.updateTask();
                     }
                     else
                     {   
@@ -104,6 +105,8 @@ public class ObjConditionScript : MonoBehaviour
                         StartCoroutine(timerDecreasePerSec
                             (script_bedlamp.bedlampIndex));
                         script_waitTimer.StartTimer(obj_dataList[script_bedlamp.bedlampIndex].tronic_timer, script_bedlamp.bedlampIndex, false);
+                    StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                    script_taskUi.updateTask();
                 }
             }
         }
@@ -123,13 +126,16 @@ public class ObjConditionScript : MonoBehaviour
                         script_checkAC.ACButtonPressed(true);
                         script_checkAC.acIndex = j;
                         objACStats();
-                        //objColor();
+                        script_taskUi.updateTask();
+                    //objColor();
                 }
                 else
                 {
                     //AC Anim Off if being pressed off
                     script_checkAC.ACButtonPressed(false);
                     obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
+                    objACStats();
+                    script_taskUi.updateTask();
                     //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                 }
             }
@@ -138,10 +144,7 @@ public class ObjConditionScript : MonoBehaviour
 
     public void objACStats()
     {
-        if (script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated && !script_checkAC.isACActive)
-        {
             StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
-        }
         if (script_checkAC.defValue == script_checkAC.valueCondition)
         {
             script_checkAC.ChangeState(CheckACValueScript.objBehaviour.correct);
@@ -317,33 +320,38 @@ public class ObjConditionScript : MonoBehaviour
 
     IEnumerator eleACDecreasePerSec(int index, float amount)
     {
-        script_checkAC.isACActive = true;
-        if(true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
+        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated && !script_checkAC.isACActive)
         {
-            script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
-            if (script_scriptable.global_eleCapacity < 0)
+            script_checkAC.isACActive = true;
+            if (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
             {
-                Debug.Log("Electricity Out");
-                elecOut();
-                //objColor();
-            }
-            while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
-            {
-                script_scriptable.global_eleQuota -= amount * Time.deltaTime;
-                //if(obj_dataList[index].tronic_timer < 0)
-                //{
-                //    yield break;
-                //}
-                if (script_scriptable.global_eleQuota < 0)
+                script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
+                if (script_scriptable.global_eleCapacity < 0)
                 {
-                    yield break;
+                    Debug.Log("Electricity Out");
+                    elecOut();
+                    //objColor();
                 }
-                yield return null; // Wait for the next frame
+                while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
+                {
+                    script_scriptable.global_eleQuota -= amount * Time.deltaTime;
+                    //if(obj_dataList[index].tronic_timer < 0)
+                    //{
+                    //    yield break;
+                    //}
+                    if (script_scriptable.global_eleQuota < 0)
+                    {
+                        yield break;
+                    }
+                    yield return null; // Wait for the next frame
+                }
             }
-        } else
+        }
+        else
         {
             script_scriptable.global_eleCapacity += obj_dataList[index].tronic_wattage;
         }
+        
     }
 
     //Decrease the timer and update the task

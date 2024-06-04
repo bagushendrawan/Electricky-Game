@@ -32,11 +32,6 @@ public class TVRemoteScript : MonoBehaviour
                     avTVChannel(channel);
                 }
             }
-            else
-            {
-                Debug.LogError("The TV is not activated");
-                script_value.rendererAC.material.SetTexture("_MainTex", null);
-            }
         } else
         {
             script_value.rendererAC.material.SetTexture("_MainTex", null);

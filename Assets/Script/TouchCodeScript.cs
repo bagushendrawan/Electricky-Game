@@ -14,6 +14,7 @@ public class TouchCodeScript : MonoBehaviour
     private Vector2 endTouchPos;
 
     private BedLampActivateScript script_objToActivate;
+    private ConsoleBehaviourScript script_console;
     [SerializeField] private CPUButtonScript script_cpuButton;
     private LampButtonScript script_lampButton;
     private bool isSwipeLocked = false;
@@ -80,6 +81,11 @@ public class TouchCodeScript : MonoBehaviour
                     ObjConditionScript.script_checkAC.activateACCollider();
                 }
 
+                if (selectedObject.GetComponent<ConsoleBehaviourScript>() != null)
+                {
+                    script_console = selectedObject.GetComponent<ConsoleBehaviourScript>();
+                }
+
                 activateSecCollider();
 
                 if(selectedObject.GetComponent<BedLampActivateScript>() != null)
@@ -112,6 +118,7 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Switch":
                 print($"tag : {Tag}");
+
                 if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
                 {
                     script_objCondition.objACSwitch(selectedObject);
@@ -121,7 +128,8 @@ public class TouchCodeScript : MonoBehaviour
                         ConsoleMiddleScript script_console = selectedObject.GetComponentInParent<ConsoleMiddleScript>();
                         script_console.consoleCheck();
                     }
-                } else
+                } 
+                else
                 {
                     Debug.Log("Regular Switch Hit!");
                     script_objCondition.objSwitch(selectedObject);
@@ -130,6 +138,7 @@ public class TouchCodeScript : MonoBehaviour
                     {
                         script_lampButton.LampButtonPressed();
                     }
+
                 }
                 break;
             case "Electricity":
@@ -176,6 +185,11 @@ public class TouchCodeScript : MonoBehaviour
                     script_console.consoleOn();
                     script_console.consoleCheck();
                 }
+
+                if (script_console != null)
+                {
+                    script_console.ConsoleButtonPressed();
+                }
                 break;
             default:
                 print($"tag : {Tag}");
@@ -206,7 +220,13 @@ public class TouchCodeScript : MonoBehaviour
                     {
                         ObjConditionScript.script_checkAC = selectedObject.GetComponentInParent<CheckACValueScript>();
                     }
-                    
+
+                    if (selectedObject.GetComponent<SoundEffectScript>() != null)
+                    {
+                        SoundEffectScript sfx = selectedObject.GetComponent<SoundEffectScript>();
+                        sfx.playSound();
+                    }
+
                     select(touchedObject.tag);
                 }
             }

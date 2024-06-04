@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 82133042}
   - component: {fileID: 82133041}
   - component: {fileID: 82133040}
+  - component: {fileID: 82133044}
   m_Layer: 5
   m_Name: Canvas_Level
   m_TagString: Untagged
@@ -225,6 +226,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &82133044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82133039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0edfaebba0bc8499a020b590c3ccf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  script_datahandler: {fileID: 1202834128}
+  levelButtonList:
+  - {fileID: 1491575716}
+  - {fileID: 968734989}
+  - {fileID: 1524324520}
 --- !u!1 &151848196
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,7 +1219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1478ffe526eb6ea478f92218dff5d778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlockedScene: 0
   currentScene: 0
 --- !u!1 &1484373531
 GameObject:

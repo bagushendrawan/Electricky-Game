@@ -8,9 +8,9 @@ public class SingletonDataScript : MonoBehaviour
     [HideInInspector] public bool global_win_Q = false;
     [HideInInspector] public bool global_lose_Q = false;
 
-    private float timer;
-    public static int eleCapacity;
-    private float eleQuota;
+    public static float timer;
+    public static float eleCapacity;
+    public static float eleQuota;
     private bool eleGlobal;
     public static SingletonDataScript singletonInstance;
     [SerializeField] private ScriptableObjectScript script_scriptable;
@@ -29,7 +29,7 @@ public class SingletonDataScript : MonoBehaviour
         //}
         //DontDestroyOnLoad(gameObject);
         Time.timeScale = 1;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 120;
     }
 
     private void Update()

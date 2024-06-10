@@ -35,7 +35,7 @@ public class CheckACValueScript : MonoBehaviour
     [SerializeField] private GameObject remoteScreenCover;
     [SerializeField] private GameObject acScreenCover;
     [HideInInspector] public int acIndex;
-    [HideInInspector] public bool isACActive = false;
+ public bool isACActive = false;
 
     // Update is called once per frame
     void Update()
@@ -147,22 +147,22 @@ public class CheckACValueScript : MonoBehaviour
         switch (state_acBehaviour)
         {
             case objBehaviour.off:
-                if (console_switch != null)
-                {
-                    console_switch.enabled = false;
-                }
+                //if (console_switch != null)
+                //{
+                //    console_switch.enabled = false;
+                //}
                 break;
             case objBehaviour.initialized:
 
                 break;
             case objBehaviour.activated:
-                if (console_switch != null)
-                {
-                    if(isTVAV)
-                    {
-                        console_switch.enabled = true;
-                    }
-                }
+                //if (console_switch != null)
+                //{
+                //    if(isTVAV)
+                //    {
+                //        console_switch.enabled = true;
+                //    }
+                //}
                 break;
             case objBehaviour.correct:
 
@@ -215,6 +215,7 @@ public class CheckACValueScript : MonoBehaviour
                 ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.activated;
             } else
             {
+                //Debug.Log("TV BUTTON HIT");
                 ChangeState(objBehaviour.off);
                 ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.off;
                 isACActive = false;
@@ -251,9 +252,10 @@ public class CheckACValueScript : MonoBehaviour
 
     public void activateACCollider()
     {
-        if (TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>() != null)
+        if (TouchCodeScript.selectedObject.GetComponentInParent<CheckACValueScript>() != null && TouchCodeScript.selectedObject.GetComponent<ConsoleBehaviourScript>() == null )
         {
             _objActivate = true;
+            if(state_acBehaviour == objBehaviour.off)
             ChangeState(objBehaviour.initialized);
             if (!ObjConditionScript.global_acStatsIndex.ContainsKey(acIndex))
             {

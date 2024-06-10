@@ -10,7 +10,7 @@ public class DoorSceneScript : MonoBehaviour
     {
         foreach (GameObject roomSides in script_cameraState.roomSides)
         {
-            Debug.Log("CHANGE POS HERE");
+            //Debug.Log("CHANGE POS HERE");
             roomSides.transform.position = new Vector3(roomSides.transform.position.x, 0, roomSides.transform.position.z);
         }
 

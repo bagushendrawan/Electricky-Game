@@ -190,7 +190,7 @@ public class CameraStatesScript : MonoBehaviour
             else
             {
                 currentCameraIndex = i;
-                Debug.Log("Current Cam Index :" + currentCameraIndex);
+                //Debug.Log("Current Cam Index :" + currentCameraIndex);
             }
         }
     }

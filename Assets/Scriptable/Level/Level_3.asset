@@ -45,7 +45,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 0
   - tronic_name: B_BedLamp
-    tronic_timer: 10
+    tronic_timer: 100
     tronic_wattage: 300
     tronic_wattPerSec: 20
     tronic_statsDone_Q: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
   - tronic_name: M_AC
-    tronic_timer: 30
+    tronic_timer: 60
     tronic_wattage: 300
     tronic_wattPerSec: 20
     tronic_statsDone_Q: 0

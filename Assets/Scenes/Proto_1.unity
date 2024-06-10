@@ -2608,6 +2608,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8a08e9f306ab5ed4484a6f9847355bc1,
         type: 2}
+    - target: {fileID: 7454360367894509595, guid: 7c7e21346960844429d46efa826998e1,
+        type: 3}
+      propertyPath: objSpriteIcon.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7490291982828647360, guid: 7c7e21346960844429d46efa826998e1,
         type: 3}
       propertyPath: m_IsActive

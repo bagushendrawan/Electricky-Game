@@ -20,7 +20,7 @@ public class CameraOnEnableScript : MonoBehaviour
             script_cameraState.roomSides.Sort(CompareGameObjectNames);
         }
 
-        Debug.Log("ONENABLE CAMERA");
+        //Debug.Log("ONENABLE CAMERA");
         cameraChanges();
     }
 

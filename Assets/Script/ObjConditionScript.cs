@@ -120,20 +120,26 @@ public class ObjConditionScript : MonoBehaviour
             {
                 if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
                 {
-                    obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
+                    obj_dataList[j].tronic_active_Q = true;
                     //script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
 
-                        script_checkAC.ACButtonPressed(true);
+                    if (script_checkAC.state_acBehaviour != CheckACValueScript.objBehaviour.activated)
+                    {
+                        script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
+                        global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
+                    }
+                    script_checkAC.ACButtonPressed(true);
                         script_checkAC.acIndex = j;
                         objACStats();
                         script_taskUi.updateTask();
+                    StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
                     //objColor();
                 }
                 else
                 {
                     //AC Anim Off if being pressed off
                     script_checkAC.ACButtonPressed(false);
-                    obj_dataList[j].tronic_active_Q = !obj_dataList[j].tronic_active_Q;
+                    obj_dataList[j].tronic_active_Q = false;
                     objACStats();
                     script_taskUi.updateTask();
                     //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
@@ -144,9 +150,9 @@ public class ObjConditionScript : MonoBehaviour
 
     public void objACStats()
     {
-            StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
         if (script_checkAC.defValue == script_checkAC.valueCondition)
         {
+            //Debug.Log("AC CORRECT" + obj_dataList[script_checkAC.acIndex].tronic_timer);
             script_checkAC.ChangeState(CheckACValueScript.objBehaviour.correct);
             global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.correct;
             obj_dataList[script_checkAC.acIndex].tronic_correct_Q = true;
@@ -155,8 +161,6 @@ public class ObjConditionScript : MonoBehaviour
         } else
         {
             obj_dataList[script_checkAC.acIndex].tronic_correct_Q = false;
-            script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
-            global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
         }
     }
 
@@ -207,7 +211,7 @@ public class ObjConditionScript : MonoBehaviour
         
         if(!script_scriptable.global_eleOn_Q)
         {
-            Debug.Log("Elec On");
+            //Debug.Log("Elec On");
             script_scriptable.global_eleOn_Q = true;
             script_scriptable.global_eleCapacity = SingletonDataScript.eleCapacity;
             for (int i = 0; i < obj_dataList.Count; i++)
@@ -320,7 +324,7 @@ public class ObjConditionScript : MonoBehaviour
 
     IEnumerator eleACDecreasePerSec(int index, float amount)
     {
-        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated && !script_checkAC.isACActive)
+        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated || script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.correct && !script_checkAC.isACActive)
         {
             script_checkAC.isACActive = true;
             if (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
@@ -347,7 +351,7 @@ public class ObjConditionScript : MonoBehaviour
                 }
             }
         }
-        else
+        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.off)
         {
             script_scriptable.global_eleCapacity += obj_dataList[index].tronic_wattage;
         }

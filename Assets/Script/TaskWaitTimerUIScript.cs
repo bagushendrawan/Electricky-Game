@@ -16,8 +16,8 @@ public class TaskWaitTimerUIScript : MonoBehaviour
     public Transform prefabsParent;
     public Vector3 positionOffset;
     public List<Texture2D> objSpriteIcon = new();
-    private GameObject[] prefabsArray;
-    private float[] durationArray;
+    public GameObject[] prefabsArray;
+    public float[] durationArray;
     
     // Start is called before the first frame update
     void Start()
@@ -32,6 +32,9 @@ public class TaskWaitTimerUIScript : MonoBehaviour
     {
         // Update and display timers
         UpdateTimers();
+
+        // Display active timers in UI
+        DisplayTimers();
     }
 
     // Start a new timer
@@ -41,6 +44,7 @@ public class TaskWaitTimerUIScript : MonoBehaviour
         {
             if (!global_acTimerActive.ContainsKey(index))
             {
+                Debug.Log("AC START TIMER UI" + index);
                 Timer newTimer = new Timer(duration, durationArray[index]);
                 global_acTimerActive.Add(index, newTimer);
             }
@@ -104,6 +108,7 @@ public class TaskWaitTimerUIScript : MonoBehaviour
 
             if (timer.IsFinished || !script_scriptable.global_tronicDataList[index].tronic_active_Q ||  ObjConditionScript.global_acStatsIndex[index] != ObjConditionScript.acObjBehaviour.correct || !script_scriptable.global_tronicDataList[index].tronic_correct_Q)
             {
+                Debug.Log("ackey removed");
                 acKeysToRemove.Add(index);
             }
         }
@@ -117,13 +122,12 @@ public class TaskWaitTimerUIScript : MonoBehaviour
 
         foreach (int index in acKeysToRemove)
         {
+            Debug.Log("acremove count " + acKeysToRemove.Count);
             global_acTimerActive.Remove(index);
             prefabsArray[index].SetActive(false);
         }
 
-        // Display active timers in UI
-        DisplayTimers();
-
+        acKeysToRemove.Clear();
         // Update each timer
         foreach (var pair in global_taskTimerActive)
         {
@@ -139,11 +143,8 @@ public class TaskWaitTimerUIScript : MonoBehaviour
     // Display active timers in UI
     void DisplayTimers()
     {
-        if (timerText != null)
-        {
-            // Clear existing text
-            timerText.text = "";
             int i = 0;
+            
             // Display each active timer
             foreach (var pair in global_taskTimerActive)
             {
@@ -191,6 +192,7 @@ public class TaskWaitTimerUIScript : MonoBehaviour
                     rectTransform.anchoredPosition = newPosition;
                 }
 
+                Debug.Log("prefabs ac ui active " + index);
                 prefabsArray[index].SetActive(true);
                 Image objImg = prefabsArray[index].GetComponentInChildren<Image>();
 
@@ -202,7 +204,6 @@ public class TaskWaitTimerUIScript : MonoBehaviour
                 //timerText.text += $"{nameObj} Timer: {timer.Duration - timer.ElapsedTime:F1}s\n";
             }
         }
-    }
 }
 
 // Timer class to track elapsed time

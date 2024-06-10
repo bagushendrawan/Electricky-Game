@@ -39,7 +39,7 @@ public class FSMCameraRoomScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Game Start");
+        //Debug.Log("Game Start");
         deactivateAllCameras();
         virCameraList.Push(roomCamera[0]);
         currentVirtualCamera = virCameraList.Peek();
@@ -249,7 +249,7 @@ public class FSMCameraRoomScript : MonoBehaviour
         
         if (obj.transform.position.y > 0)
         {   
-            Debug.Log(obj.name + animTriggerDown);
+            //Debug.Log(obj.name + animTriggerDown);
             anim.SetTrigger(animTriggerDown);
             StartCoroutine(DelayedExecution(obj, true, duration, pos));
         }
@@ -288,7 +288,7 @@ public class FSMCameraRoomScript : MonoBehaviour
             else
             {
                 currentCameraIndex = i;
-                Debug.Log("Current Cam Index :" + currentCameraIndex);
+                //Debug.Log("Current Cam Index :" + currentCameraIndex);
             }
         }
     }
@@ -362,7 +362,7 @@ public class FSMCameraRoomScript : MonoBehaviour
             if (x.gameObject.name == "Switch")
             {
                 x.enabled = col;
-                Debug.Log("Object Activated");
+                //Debug.Log("Object Activated");
             }
         }
     }

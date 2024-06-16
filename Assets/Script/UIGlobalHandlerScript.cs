@@ -13,7 +13,7 @@ public class UIGlobalHandlerScript : MonoBehaviour
     [SerializeField] private CheckACValueScript script_acObj;
 
     public Canvas canvasMenu;
-    //private TMP_Text textUI;
+    public TMP_Text textUI;
     public TMP_Text textWatt;
     public TMP_Text textQuota;
     public Image timerBar;
@@ -76,15 +76,14 @@ public class UIGlobalHandlerScript : MonoBehaviour
         string minutes = Mathf.Floor(script_scriptable.global_timer / 60).ToString("00");
         string seconds = (script_scriptable.global_timer % 60).ToString("00");
 
-        textCanvas.text = "Time : " + minutes + ":" + seconds;
+        textCanvas.text = minutes + ":" + seconds;
     }
 
     void globalTimer()
     {
         timerBar.fillAmount = script_scriptable.global_timer / SingletonDataScript.timer;
         script_scriptable.global_timer -= Time.deltaTime;
-        //Debug.Log("Global Timer ON");
-        //updateGlobalTimerUI(textUI);
+        updateGlobalTimerUI(textUI);
 
         if (script_scriptable.global_timer <= 0)
         {
@@ -98,12 +97,12 @@ public class UIGlobalHandlerScript : MonoBehaviour
         float capacityDiff = script_scriptable.global_eleCapacity / SingletonDataScript.eleCapacity;
         Debug.Log("DIff " + capacityDiff);
         capacityBar.fillAmount = capacityDiff;
-        textWatt.text = "Capacity : " + script_scriptable.global_eleCapacity;
+        textWatt.text = script_scriptable.global_eleCapacity.ToString("0");
     }
 
     public void updateGlobalQuotaUI()
     {
         quotaBar.fillAmount = script_scriptable.global_eleQuota / SingletonDataScript.eleQuota;
-        textQuota.text = "Quota : " + Mathf.Round(script_scriptable.global_eleQuota);
+        textQuota.text = Mathf.Round(script_scriptable.global_eleQuota).ToString("0");
     }
 }

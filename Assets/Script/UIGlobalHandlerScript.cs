@@ -95,7 +95,6 @@ public class UIGlobalHandlerScript : MonoBehaviour
     {
         //Debug.Log("Percent Capacity " + script_scriptable.global_eleCapacity / SingletonDataScript.eleCapacity + " " + SingletonDataScript.eleCapacity + " " + script_scriptable.global_eleCapacity);
         float capacityDiff = script_scriptable.global_eleCapacity / SingletonDataScript.eleCapacity;
-        Debug.Log("DIff " + capacityDiff);
         capacityBar.fillAmount = capacityDiff;
         textWatt.text = script_scriptable.global_eleCapacity.ToString("0");
     }

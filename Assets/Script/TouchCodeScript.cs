@@ -197,6 +197,8 @@ public class TouchCodeScript : MonoBehaviour
         }
     }
 
+    private bool isTouchOverUI = false;
+
     private void touchHandler()
     {
         if (Input.touchCount > 0)
@@ -205,37 +207,53 @@ public class TouchCodeScript : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-                RaycastHit hit;
-                startTouchPos = touch.position;
-
-                if (Physics.Raycast(ray, out hit))
+                if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
                 {
-                    GameObject touchedObject = hit.transform.gameObject;
-
-                    selectedObject = touchedObject;
-                    print($"hit {touchedObject.tag}");
-
-                    if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
-                    {
-                        ObjConditionScript.script_checkAC = selectedObject.GetComponentInParent<CheckACValueScript>();
-                    }
-
-                    if (selectedObject.GetComponent<SoundEffectScript>() != null)
-                    {
-                        SoundEffectScript sfx = selectedObject.GetComponent<SoundEffectScript>();
-                        sfx.playSound();
-                    }
-
-                    select(touchedObject.tag);
+                    // Do not process the raycast if the touch is over a UI element
+                    Debug.Log("UI Block Raycast");
+                    isTouchOverUI = true;
+                    return;
                 }
+                else
+                {
+                    isTouchOverUI = false;
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    RaycastHit hit;
+                    startTouchPos = touch.position;
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        GameObject touchedObject = hit.transform.gameObject;
+
+                        selectedObject = touchedObject;
+                        print($"hit {touchedObject.tag}");
+
+                        if (selectedObject.GetComponentInParent<CheckACValueScript>() != null)
+                        {
+                            ObjConditionScript.script_checkAC = selectedObject.GetComponentInParent<CheckACValueScript>();
+                        }
+
+                        if (selectedObject.GetComponent<SoundEffectScript>() != null)
+                        {
+                            SoundEffectScript sfx = selectedObject.GetComponent<SoundEffectScript>();
+                            sfx.playSound();
+                        }
+
+                        select(touchedObject.tag);
+                    }
+                }
+            }
+
+            if (isTouchOverUI)
+            {
+                // Do not process the rest of the touch phases if it started over a UI element
+                return;
             }
 
             if (touch.phase == TouchPhase.Moved && script_cameraState.currentVirtualCamera.CompareTag("firVirtualCamera"))
             {
-                //Error here
-                if(script_objToActivate != null)
-                script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
+                if (script_objToActivate != null)
+                    script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
             }
 
             if (touch.phase == TouchPhase.Ended)
@@ -245,23 +263,22 @@ public class TouchCodeScript : MonoBehaviour
                 {
                     if (startTouchPos.y < Screen.height / 2)
                     {
-                        if (endTouchPos.x < startTouchPos.x)
+                        if (endTouchPos.x - startTouchPos.x < -100)
                         {
                             Debug.Log("Next Swipe");
                             script_cameraState.nextSwipe();
-
                         }
 
-                        if (endTouchPos.x > startTouchPos.x)
+                        if (endTouchPos.x - startTouchPos.x > 100)
                         {
                             Debug.Log("Prev Swipe");
                             script_cameraState.prevSwipe();
                         }
                     }
                 }
-
             }
         }
     }
+
 
 }

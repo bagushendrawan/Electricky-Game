@@ -2044,6 +2044,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3418635788191054931, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_Lens.NearClipPlane
+      value: 4.48
+      objectReference: {fileID: 0}
     - target: {fileID: 4583137151718079510, guid: 55ae13e424be74745b1dd0affaab9107,
         type: 3}
       propertyPath: script_cameraState
@@ -2117,7 +2122,7 @@ PrefabInstance:
     - target: {fileID: 8934310066664310913, guid: 55ae13e424be74745b1dd0affaab9107,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9032877452652894213, guid: 55ae13e424be74745b1dd0affaab9107,
         type: 3}
@@ -2168,7 +2173,7 @@ PrefabInstance:
     - target: {fileID: 1555110181262781134, guid: e695883dc8d29b044a80ab1c3b2328c0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1941667031728769179, guid: e695883dc8d29b044a80ab1c3b2328c0,
         type: 3}
@@ -2380,6 +2385,26 @@ PrefabInstance:
       propertyPath: script_cameraState
       value: 
       objectReference: {fileID: 66026960}
+    - target: {fileID: 8961631726806860205, guid: e695883dc8d29b044a80ab1c3b2328c0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961631726806860205, guid: e695883dc8d29b044a80ab1c3b2328c0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961631726806860205, guid: e695883dc8d29b044a80ab1c3b2328c0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8961631726806860205, guid: e695883dc8d29b044a80ab1c3b2328c0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9112992191632479221, guid: e695883dc8d29b044a80ab1c3b2328c0,
         type: 3}
       propertyPath: script_obj

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
   m_Name: Level_3
   m_EditorClassIdentifier: 
-  global_eleCapacity: 400
+  global_eleCapacity: 4000
   global_eleQuota: 30000
   global_timer: 300
   global_eleOn_Q: 1

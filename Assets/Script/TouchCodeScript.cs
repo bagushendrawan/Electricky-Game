@@ -10,6 +10,11 @@ public class TouchCodeScript : MonoBehaviour
     private ObjConditionScript script_objCondition;
     public static GameObject selectedObject;
 
+    public AudioSource audioSource;
+    public AudioClip touch;
+    public AudioClip swipe;
+    public AudioClip door;
+
     private Vector2 startTouchPos;
     private Vector2 endTouchPos;
 
@@ -70,7 +75,7 @@ public class TouchCodeScript : MonoBehaviour
 
     public void select(string Tag)
     {
-
+        audioSource.PlayOneShot(touch);
         switch (Tag)
         {
             case "firstLevel":
@@ -149,6 +154,7 @@ public class TouchCodeScript : MonoBehaviour
                 print($"tag : {Tag}");
                 selectedObject.GetComponent<DoorSceneScript>().changeRoom();
                 script_lampButton = FindAnyObjectByType<LampButtonScript>();
+                audioSource.PlayOneShot(door);
                 break;
             case "backScene":
                 print($"tag : {Tag}");
@@ -189,6 +195,13 @@ public class TouchCodeScript : MonoBehaviour
                 if (script_console != null)
                 {
                     script_console.ConsoleButtonPressed();
+                }
+                break;
+            case "trivia":
+                print($"tag : {Tag}");
+                if(selectedObject.GetComponentInChildren<Canvas>() != null)
+                {
+                    selectedObject.GetComponentInChildren<Canvas>().enabled = true;
                 }
                 break;
             default:
@@ -263,6 +276,7 @@ public class TouchCodeScript : MonoBehaviour
                 {
                     if (startTouchPos.y < Screen.height / 2)
                     {
+                        audioSource.PlayOneShot(swipe);
                         if (endTouchPos.x - startTouchPos.x < -100)
                         {
                             Debug.Log("Next Swipe");

@@ -8,9 +8,16 @@ using TMPro;
 //Should be a central game state, but only using it for win and lose
 public class GameCondStateScript : MonoBehaviour
 {
+    public static Dictionary<int, int> starsLevel = new();
     private SingletonDataScript script_Data;
+    private dataHandler script_dataHandler;
     private Canvas winCanvas;
     private Canvas loseCanvas;
+    public GameObject[] starArray;
+    [SerializeField] private ScriptableObjectScript script_scriptable;
+    [SerializeField] private TMP_Text winDesc;
+    [SerializeField] private TMP_Text loseDesc;
+    //public List<GameObject> starGameobject;
 
     public enum state
     {
@@ -25,6 +32,7 @@ public class GameCondStateScript : MonoBehaviour
 
     void Start()
     {
+        script_dataHandler = GetComponent<dataHandler>();
         ChangeState(state.mainGame);
         script_Data = GetComponent<SingletonDataScript>();
         winCanvas = GameObject.Find("Canvas_Win").GetComponent<Canvas>();
@@ -54,9 +62,32 @@ public class GameCondStateScript : MonoBehaviour
             case state.pauseGame:
                 break;
             case state.winGame:
+                int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+                int currentStar = calculateStars(script_scriptable.global_timer);
+                Debug.Log("scene" + sceneIndex + "currentStar" + currentStar);
+                for(int i=0; i<currentStar; i++)
+                {
+                    starArray[i].SetActive(true);
+                }
+
+                if(starsLevel.ContainsKey(sceneIndex))
+                {
+                    if (starsLevel[sceneIndex] < currentStar)
+                    {
+                        starsLevel[sceneIndex] = currentStar;
+                    }
+                } else
+                {
+                    starsLevel.Add(sceneIndex, currentStar);
+                }
+
+                winDesc.text = "Kamu Menghemat sebanyak " + script_scriptable.global_eleQuota + " kouta Listrik dalam waktu " + Mathf.Floor(SingletonDataScript.timer - script_scriptable.global_timer) + " detik";
+                Time.timeScale = 0;
                 winCanvas.enabled = true;
+                script_dataHandler.Save();
                 break;
             case state.loseGame:
+                Time.timeScale = 0;
                 loseCanvas.enabled = true;
                 break;
             case state.menuGame:
@@ -111,4 +142,29 @@ public class GameCondStateScript : MonoBehaviour
                 break;
         }
     }
+
+    int calculateStars(float timeRemaining)
+    {
+        float originalTime = SingletonDataScript.timer;
+        float star = timeRemaining / (originalTime / 100);
+        Debug.Log("star " + star);
+        if(star > 50)
+        {
+            return 3;
+        }
+
+        if(star > 25)
+        {
+            return 2;
+        }
+
+        if(star > 0)
+        {
+            return 1;
+        }
+
+        return 0;
+    }
 }
+
+

@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class dataHandler : MonoBehaviour
 {
     [HideInInspector] public static int unlockedScene;
-    public int currentScene;
+    public static int currentScene;
+    public static Dictionary<int, int> starLoad = new();
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class dataHandler : MonoBehaviour
 
     public void Save()
     {
+        currentScene = SceneManager.GetActiveScene().buildIndex;
         saveSystem.SavePlayer();
         Debug.Log("Data Saved");
         Debug.Log(unlockedScene);
@@ -31,6 +33,7 @@ public class dataHandler : MonoBehaviour
     {
         PlayerData dataPlayer = saveSystem.LoadSave();
         unlockedScene = dataPlayer.unlockedScene;
+        starLoad = dataPlayer.starDict;
         Debug.Log("Load Game");
         Debug.Log(unlockedScene);
     }

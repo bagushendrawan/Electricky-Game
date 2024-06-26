@@ -42,7 +42,7 @@ public class TaskStatsUIScript : MonoBehaviour
                 rectTransform.anchoredPosition = newPosition;
             }
 
-            if (x.tronic_active_Q && x.tronic_statsDone_Q)
+            if (x.tronic_statsDone_Q)
             {
                 stats.SetActive(true);
             }
@@ -64,7 +64,7 @@ public class TaskStatsUIScript : MonoBehaviour
             // Unpack the tuple
             var (checklist, stats) = global_taskUI[x.tronic_name];
 
-            if (x.tronic_active_Q && x.tronic_statsDone_Q)
+            if (x.tronic_statsDone_Q)
             {
                 stats.SetActive(true);
             }

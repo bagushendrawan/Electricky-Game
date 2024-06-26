@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class SoundEffectScript : MonoBehaviour
 {
-    private AudioSource soundEffect;
+    public AudioSource soundEffect;
     public AudioClip soundClip;
 
     public void playSound()
     {
-        soundEffect = GetComponent<AudioSource>();
         soundEffect.PlayOneShot(soundClip);
     }
 }

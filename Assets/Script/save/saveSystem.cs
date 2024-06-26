@@ -29,7 +29,7 @@ public class saveSystem : MonoBehaviour
 
             PlayerData dataPlayer = formatter.Deserialize(stream) as PlayerData;
             stream.Close();
-
+            Debug.Log("File LOAD EXIST on" + path);
             return dataPlayer;
         }
         else
@@ -44,9 +44,11 @@ public class saveSystem : MonoBehaviour
 public class PlayerData
 {
     public int unlockedScene = 1;
-
+    public Dictionary<int, int> starDict = new();
     public PlayerData()
     {
-        unlockedScene = dataHandler.unlockedScene;
+        if(dataHandler.currentScene > unlockedScene)
+        unlockedScene = dataHandler.currentScene;
+        starDict = GameCondStateScript.starsLevel; 
     }
 }

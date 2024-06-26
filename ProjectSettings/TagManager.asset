@@ -25,6 +25,7 @@ TagManager:
   - Channel
   - Coffee
   - Console
+  - trivia
   layers:
   - Default
   - TransparentFX

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ObjConditionScript : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class ObjConditionScript : MonoBehaviour
     private TaskStatsUIScript script_taskUi;
     public BedLampBehaviourScript script_bedlamp;
     public static CheckACValueScript script_checkAC;
+    public Texture2D defaultTVTexture;
 
+    public AudioSource audioSource;
+    public AudioClip elecOutClip;
 
     //Get global tronic data list and store it here
     [HideInInspector] public static List<LevelDataClass> obj_dataList;
@@ -79,33 +83,36 @@ public class ObjConditionScript : MonoBehaviour
         }
     }
 
+
+
+
+
     //activate obj
     public void objSwitch(GameObject target)
     {
-        //Debug.Log("Here");
         for (int j = 0; j < obj_dataList.Count; j++)
         {
             if(target.name == obj_assetSwitchList[j].name)
             {
 
-                    if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
-                    {
-                        obj_dataList[j].tronic_active_Q = true;
-                        script_bedlamp.bedroomLampCheck();
-                        obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
-                            (j));
-                        script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
-                        StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
-                        script_taskUi.updateTask();
-                    }
-                    else
-                    {   
-                        obj_dataList[j].tronic_active_Q = false;
-                        script_bedlamp.bedroomLampCheck();
-                        StartCoroutine(timerDecreasePerSec
-                            (script_bedlamp.bedlampIndex));
-                        script_waitTimer.StartTimer(obj_dataList[script_bedlamp.bedlampIndex].tronic_timer, script_bedlamp.bedlampIndex, false);
+                if (!obj_dataList[j].tronic_active_Q && obj_dataList[j].tronic_eleSupplied_Q)
+                {
+                    obj_dataList[j].tronic_active_Q = true;
+                    script_bedlamp.bedroomLampCheck();
                     StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                    obj_dataList[j].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
+                            (j));
+                    script_waitTimer.StartTimer(obj_dataList[j].tronic_timer, j, false);
+                    script_taskUi.updateTask();
+                }
+                else
+                {   
+                    obj_dataList[j].tronic_active_Q = false;
+                    script_bedlamp.bedroomLampCheck();
+                    StartCoroutine(eleDecreasePerSec(j, obj_dataList[j].tronic_wattPerSec));
+                    StartCoroutine(timerDecreasePerSec
+                            (script_bedlamp.bedlampIndex));
+                    script_waitTimer.StartTimer(obj_dataList[script_bedlamp.bedlampIndex].tronic_timer, script_bedlamp.bedlampIndex, false);
                     script_taskUi.updateTask();
                 }
             }
@@ -130,9 +137,9 @@ public class ObjConditionScript : MonoBehaviour
                     }
                     script_checkAC.ACButtonPressed(true);
                         script_checkAC.acIndex = j;
+                        StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
                         objACStats();
                         script_taskUi.updateTask();
-                    StartCoroutine(eleACDecreasePerSec(script_checkAC.acIndex, obj_dataList[script_checkAC.acIndex].tronic_wattPerSec));
                     //objColor();
                 }
                 else
@@ -150,17 +157,21 @@ public class ObjConditionScript : MonoBehaviour
 
     public void objACStats()
     {
-        if (script_checkAC.defValue == script_checkAC.valueCondition)
+        if(script_checkAC != null)
         {
-            //Debug.Log("AC CORRECT" + obj_dataList[script_checkAC.acIndex].tronic_timer);
-            script_checkAC.ChangeState(CheckACValueScript.objBehaviour.correct);
-            global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.correct;
-            obj_dataList[script_checkAC.acIndex].tronic_correct_Q = true;
-            obj_dataList[script_checkAC.acIndex].tronic_timerCoroutine = StartCoroutine(timerACDecreasePerSec(script_checkAC.acIndex));
-            script_waitTimer.StartTimer(obj_dataList[script_checkAC.acIndex].tronic_timer, script_checkAC.acIndex, true);
-        } else
-        {
-            obj_dataList[script_checkAC.acIndex].tronic_correct_Q = false;
+            if (script_checkAC.defValue == script_checkAC.valueCondition)
+            {
+                //Debug.Log("AC CORRECT" + obj_dataList[script_checkAC.acIndex].tronic_timer);
+                script_checkAC.ChangeState(CheckACValueScript.objBehaviour.correct);
+                global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.correct;
+                obj_dataList[script_checkAC.acIndex].tronic_correct_Q = true;
+                obj_dataList[script_checkAC.acIndex].tronic_timerCoroutine = StartCoroutine(timerACDecreasePerSec(script_checkAC.acIndex));
+                script_waitTimer.StartTimer(obj_dataList[script_checkAC.acIndex].tronic_timer, script_checkAC.acIndex, true);
+            }
+            else
+            {
+                obj_dataList[script_checkAC.acIndex].tronic_correct_Q = false;
+            }
         }
     }
 
@@ -169,6 +180,8 @@ public class ObjConditionScript : MonoBehaviour
     public void elecOut()
     {
         script_scriptable.global_eleOn_Q = false;
+        audioSource.PlayOneShot(elecOutClip);
+
         for (int i = 0; i < obj_dataList.Count; i++)
         {
             obj_dataList[i].tronic_eleSupplied_Q = false;
@@ -180,7 +193,7 @@ public class ObjConditionScript : MonoBehaviour
             acTVScript[j].ChangeState(CheckACValueScript.objBehaviour.off);
             if (acTVScript[j].isThisTV)
             {
-                acTVScript[j].rendererAC.material.SetTexture("_MainTex", null);
+                acTVScript[j].rendererAC.material.SetTexture("_MainTex", defaultTVTexture);
             }
         }
     }
@@ -216,23 +229,23 @@ public class ObjConditionScript : MonoBehaviour
             script_scriptable.global_eleCapacity = SingletonDataScript.eleCapacity;
             for (int i = 0; i < obj_dataList.Count; i++)
             {
+                //script_bedlamp.bedroomLampCheck();
                 obj_dataList[i].tronic_eleSupplied_Q = true;
-                //objColor();
-                //if (obj_dataList[i].tronic_couldRestored_Q)
+                //if (obj_dataList[i].tronic_couldRestored_Q && obj_dataList[i].tronic_correct_Q)
                 //{
                 //    obj_dataList[i].tronic_active_Q = true;
-                //    script_scriptable.global_eleCapacity -= obj_dataList[i].tronic_wattage;
-                //    if(obj_dataList[i].tronic_correct_Q)
+                //    if (obj_dataList[i].tronic_correct_Q)
                 //    {
+                //        StartCoroutine(eleDecreasePerSec(i, obj_dataList[i].tronic_wattPerSec));
                 //        obj_dataList[i].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
                 //                   (i));
                 //        script_waitTimer.StartTimer(obj_dataList[i].tronic_timer, i, false);
-                //        StartCoroutine(eleDecreasePerSec(i, obj_dataList[i].tronic_wattPerSec));
+                //        objACStats();
+                //        script_taskUi.updateTask();
                 //    }
-                //    //objColor();
-                //} 
+                //}
 
-                
+
             }
 
             
@@ -250,6 +263,10 @@ public class ObjConditionScript : MonoBehaviour
 
         if (!check.Contains(false))
         {
+            for (int i = 0; i < obj_dataList.Count; i++)
+            {
+                obj_dataList[i].tronic_active_Q = false;
+            }
             Debug.Log("You Win!");
             script_singletonData.global_win_Q = true;
             dataHandler.unlockedScene++;
@@ -261,6 +278,10 @@ public class ObjConditionScript : MonoBehaviour
         if(script_scriptable.global_timer <= 0 || script_scriptable.global_eleQuota <= 0)
         {
             script_singletonData.global_lose_Q = true;
+            for (int i = 0; i < obj_dataList.Count; i++)
+            {
+                obj_dataList[i].tronic_active_Q = false;
+            }
         }
     }
 

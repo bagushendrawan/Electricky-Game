@@ -25,6 +25,7 @@ public class CheckACValueScript : MonoBehaviour
     public List<Texture2D> emissionACList = new();
     public Renderer rendererRemote;
     public Renderer rendererAC;
+    public GameObject acParticle;
     [SerializeField] private GameObject ac_remoteSwitch;
     [SerializeField] private Collider console_switch;
     [SerializeField] private Animator acAnimator;
@@ -213,12 +214,14 @@ public class CheckACValueScript : MonoBehaviour
             {
                 ChangeState(objBehaviour.activated);
                 ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.activated;
+                acParticle.SetActive(true);
             } else
             {
                 //Debug.Log("TV BUTTON HIT");
                 ChangeState(objBehaviour.off);
                 ObjConditionScript.global_acStatsIndex[acIndex] = ObjConditionScript.acObjBehaviour.off;
                 isACActive = false;
+                acParticle.SetActive(false);
             }
             
         }

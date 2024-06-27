@@ -16,10 +16,12 @@ public class UIGlobalHandlerScript : MonoBehaviour
     public TMP_Text textUI;
     public TMP_Text textWatt;
     public TMP_Text textQuota;
+    public TMP_Text textFPS;
     public Image timerBar;
     public Image capacityBar;
     public Image quotaBar;
     public GameObject buttonBack;
+    private float avgFrameRate;
 
     private void Start()
     {
@@ -36,6 +38,8 @@ public class UIGlobalHandlerScript : MonoBehaviour
         globalTimer();
         updateGlobalWattageUI();
         updateGlobalQuotaUI();
+        avgFrameRate = Time.frameCount / Time.time;
+        textFPS.text = "FPS : " + avgFrameRate.ToString("00");
         if (script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
         {
             buttonBack.SetActive(false);
@@ -97,6 +101,10 @@ public class UIGlobalHandlerScript : MonoBehaviour
         float capacityDiff = script_scriptable.global_eleCapacity / SingletonDataScript.eleCapacity;
         capacityBar.fillAmount = capacityDiff;
         textWatt.text = script_scriptable.global_eleCapacity.ToString("0");
+        if(!script_scriptable.global_eleOn_Q)
+        {
+            textWatt.text = "Out!";
+        }
     }
 
     public void updateGlobalQuotaUI()

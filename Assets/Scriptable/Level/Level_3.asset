@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
   m_Name: Level_3
   m_EditorClassIdentifier: 
-  global_eleCapacity: 3000
-  global_eleQuota: 10000
-  global_timer: 600
+  global_eleCapacity: 4000
+  global_eleQuota: 30000
+  global_timer: 300
   global_eleOn_Q: 1
   global_tronicDataList:
   - tronic_name: B_Lamp
@@ -49,7 +49,7 @@ MonoBehaviour:
     tronic_wattage: 300
     tronic_wattPerSec: 20
     tronic_statsDone_Q: 0
-    tronic_couldRestored_Q: 0
+    tronic_couldRestored_Q: 1
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1

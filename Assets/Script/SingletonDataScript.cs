@@ -29,7 +29,7 @@ public class SingletonDataScript : MonoBehaviour
         //}
         //DontDestroyOnLoad(gameObject);
         Time.timeScale = 1;
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 144;
     }
 
     private void Update()

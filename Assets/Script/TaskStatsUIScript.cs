@@ -9,6 +9,7 @@ public class TaskStatsUIScript : MonoBehaviour
     public ScriptableObjectScript script_scriptable;
     public TMP_Text taskText;
     public GameObject checklistPrefab; // Prefab for checklist items
+    public GameObject checkboxPrefab; // Prefab for checklist items
     public Transform prefabParents;
     public Vector3 positionOffset;
 
@@ -32,14 +33,21 @@ public class TaskStatsUIScript : MonoBehaviour
         {
             // Create a new checklist item
             GameObject checklistItem = Instantiate(checklistPrefab, prefabParents);
+            GameObject checkboxItem = Instantiate(checkboxPrefab, prefabParents);
             GameObject stats = checklistItem; // Assuming stats is part of the checklistItem
             Vector3 newPosition = positionOffset * i++;
 
             // Set the position
             RectTransform rectTransform = checklistItem.GetComponent<RectTransform>();
+            RectTransform rectBoxTransform = checkboxItem.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
                 rectTransform.anchoredPosition = newPosition;
+            }
+
+            if (rectBoxTransform != null)
+            {
+                rectBoxTransform.anchoredPosition = newPosition;
             }
 
             if (x.tronic_statsDone_Q)
@@ -50,6 +58,8 @@ public class TaskStatsUIScript : MonoBehaviour
             {
                 stats.SetActive(false);
             }
+
+            checkboxItem.SetActive(true);
 
             // Add to the dictionary with the checklist item and its stats
             global_taskUI.Add(x.tronic_name, (checklistItem, stats));
@@ -75,11 +85,8 @@ public class TaskStatsUIScript : MonoBehaviour
 
             // Update the dictionary with the modified stats if needed
             global_taskUI[x.tronic_name] = (checklist, stats);
-        }
 
-        foreach (var pair in global_taskUI)
-        {
-            taskText.text += $"{pair.Key} Stats:\n";
+            taskText.text += $"{x.tronic_name} selama : \n {x.tronic_timer} detik \n\n";
         }
     }
 }

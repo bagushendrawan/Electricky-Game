@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChangeTextureScript : MonoBehaviour
 {
-    public Renderer renderer;
+    public Renderer textureRenderer;
     public List<Texture2D> textureList;
     public int obj_index;
     // Start is called before the first frame update
@@ -18,10 +18,10 @@ public class ChangeTextureScript : MonoBehaviour
     {
         if(ObjConditionScript.obj_dataList[obj_index].tronic_active_Q)
         {
-            renderer.material.SetTexture("_MainTex", textureList[1]);
+            textureRenderer.material.SetTexture("_MainTex", textureList[1]);
         } else
         {
-            renderer.material.SetTexture("_MainTex", textureList[0]);
+            textureRenderer.material.SetTexture("_MainTex", textureList[0]);
         }
     }
 }

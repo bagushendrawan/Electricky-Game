@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //Show task Timer Stack in UI
 public class TaskWaitTimerUIScript : MonoBehaviour
 {
-    private TMP_Text timerText;
+    //private TMP_Text timerText;
     public ScriptableObjectScript script_scriptable;
     public ObjConditionScript script_objCon;
     public Dictionary<int, Timer> global_taskTimerActive = new Dictionary<int, Timer>();
@@ -23,7 +23,7 @@ public class TaskWaitTimerUIScript : MonoBehaviour
     void Start()
     {
         //Find objTimer in canvas
-        timerText = GameObject.Find("ObjTimer").GetComponent<TMP_Text>();
+        //timerText = GameObject.Find("ObjTimer").GetComponent<TMP_Text>();
         initializedPrefabs();
     }
 
@@ -47,13 +47,23 @@ public class TaskWaitTimerUIScript : MonoBehaviour
                 Debug.Log("AC START TIMER UI" + index);
                 Timer newTimer = new Timer(duration, durationArray[index]);
                 global_acTimerActive.Add(index, newTimer);
+            } else
+            {
+                Timer newTimer = new Timer(duration, durationArray[index]);
+                global_acTimerActive[index] = newTimer;
             }
         } else
         {
             if (!global_taskTimerActive.ContainsKey(index))
             {
+                Debug.Log("NOT CONTAINS KEY");
                 Timer newTimer = new Timer(duration, durationArray[index]);
                 global_taskTimerActive.Add(index, newTimer);
+            } else
+            {
+                Debug.Log("CONTAINS KEY");
+                Timer newTimer = new Timer(duration, durationArray[index]);
+                global_taskTimerActive[index] = newTimer;
             }
         }
         

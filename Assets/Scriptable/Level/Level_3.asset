@@ -30,7 +30,7 @@ MonoBehaviour:
     tronic_timer: 20
     tronic_wattage: 200
     tronic_wattPerSec: 15
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -39,7 +39,7 @@ MonoBehaviour:
     tronic_timer: 30
     tronic_wattage: 300
     tronic_wattPerSec: 15
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 1
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -48,7 +48,7 @@ MonoBehaviour:
     tronic_timer: 100
     tronic_wattage: 300
     tronic_wattPerSec: 20
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 1
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -57,7 +57,7 @@ MonoBehaviour:
     tronic_timer: 0
     tronic_wattage: 15
     tronic_wattPerSec: 5
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -66,7 +66,7 @@ MonoBehaviour:
     tronic_timer: 60
     tronic_wattage: 300
     tronic_wattPerSec: 20
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 1
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -75,7 +75,7 @@ MonoBehaviour:
     tronic_timer: 15
     tronic_wattage: 300
     tronic_wattPerSec: 15
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -84,7 +84,7 @@ MonoBehaviour:
     tronic_timer: 15
     tronic_wattage: 300
     tronic_wattPerSec: 10
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 1
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -93,7 +93,7 @@ MonoBehaviour:
     tronic_timer: 10
     tronic_wattage: 200
     tronic_wattPerSec: 40
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -102,7 +102,7 @@ MonoBehaviour:
     tronic_timer: 0
     tronic_wattage: 15
     tronic_wattPerSec: 5
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -111,7 +111,7 @@ MonoBehaviour:
     tronic_timer: 15
     tronic_wattage: 300
     tronic_wattPerSec: 30
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -120,7 +120,7 @@ MonoBehaviour:
     tronic_timer: 10
     tronic_wattage: 400
     tronic_wattPerSec: 50
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
@@ -129,7 +129,7 @@ MonoBehaviour:
     tronic_timer: 10
     tronic_wattage: 300
     tronic_wattPerSec: 20
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1

@@ -13,16 +13,12 @@ public class BGMScript : MonoBehaviour
     [HideInInspector] public float volumeBGM;
 
     [SerializeField] AudioSource audioSource;
-    bool isBGMPlaying;
 
     public Slider mySlider;
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        isBGMPlaying = false;
-        audioSource.Play();
-
     }
 
     // Update is called once per frame

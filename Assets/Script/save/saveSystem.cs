@@ -38,16 +38,21 @@ public class saveSystem : MonoBehaviour
             return null;
         }
     }
+
+    public static string SaveFilePath
+    {
+        get { return Application.persistentDataPath + "/playerInfo.sa"; }
+    }
+
 }
 
 [System.Serializable]
 public class PlayerData
 {
-    public int unlockedScene = 1;
+    public int unlockedScene;
     public Dictionary<int, int> starDict = new();
     public PlayerData()
     {
-        if(dataHandler.currentScene > unlockedScene)
         unlockedScene = dataHandler.currentScene;
         starDict = GameCondStateScript.starsLevel; 
     }

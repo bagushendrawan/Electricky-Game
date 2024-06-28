@@ -9,12 +9,11 @@ public class levelUnlockScript : MonoBehaviour
     public GameObject[] level1_star;
     public GameObject[] level2_star;
     public GameObject[] level3_star;
+    public dataHandler script_dataHandler;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("load star3 " + dataHandler.starLoad[3]);
-        Debug.Log("load scene " + dataHandler.unlockedScene);
-
+        script_datahandler.Load();
         if (dataHandler.starLoad.ContainsKey(1))
         {
             for (int i = 0; i < dataHandler.starLoad[1]; i++)
@@ -22,20 +21,25 @@ public class levelUnlockScript : MonoBehaviour
                 level1_star[i].SetActive(true);
             }
         }
-
-        if (dataHandler.starLoad.ContainsKey(2))
+        else if (dataHandler.starLoad.ContainsKey(2))
         {
             for (int i = 0; i < dataHandler.starLoad[2]; i++)
             {
                 level2_star[i].SetActive(true);
             }
         }
-
-        if (dataHandler.starLoad.ContainsKey(3))
+        else if (dataHandler.starLoad.ContainsKey(3))
         {
             for (int i = 0; i < dataHandler.starLoad[3]; i++)
             {
                 level3_star[i].SetActive(true);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < levelButtonList.Count; i++)
+            {
+                levelButtonList[i].SetActive(false);
             }
         }
 
@@ -47,6 +51,25 @@ public class levelUnlockScript : MonoBehaviour
         for (int i = 0; i < dataHandler.unlockedScene; i++)
         {
             levelButtonList[i].SetActive(true);
+        }
+    }
+
+    public void checkLevel()
+    {
+        script_datahandler.Load();
+
+        for (int i = 0; i < levelButtonList.Count; i++)
+        {
+            levelButtonList[i].SetActive(false);
+            level1_star[i].SetActive(false);
+            level2_star[i].SetActive(false);
+            level3_star[i].SetActive(false);
+        }
+
+        for (int i = 0; i < dataHandler.unlockedScene; i++)
+        {
+            levelButtonList[i].SetActive(true);
+
         }
     }
 }

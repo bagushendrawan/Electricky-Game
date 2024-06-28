@@ -63,14 +63,17 @@ public class TaskStatsUIScript : MonoBehaviour
 
             // Add to the dictionary with the checklist item and its stats
             global_taskUI.Add(x.tronic_name, (checklistItem, stats));
+
+            taskText.text += $"{x.tronic_name} selama : \n {x.tronic_timer} detik \n\n";
         }
     }
 
     public void updateTask()
     {
-        taskText.text = null;
+        int i = 0;
         foreach (var x in script_scriptable.global_tronicDataList)
         {
+
             // Unpack the tuple
             var (checklist, stats) = global_taskUI[x.tronic_name];
 
@@ -86,7 +89,7 @@ public class TaskStatsUIScript : MonoBehaviour
             // Update the dictionary with the modified stats if needed
             global_taskUI[x.tronic_name] = (checklist, stats);
 
-            taskText.text += $"{x.tronic_name} selama : \n {x.tronic_timer} detik \n\n";
+            i++;
         }
     }
 }

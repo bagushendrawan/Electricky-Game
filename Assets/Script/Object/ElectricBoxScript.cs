@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ElectricBoxScript : MonoBehaviour
 {
-    public Animator obj_animator;
+    public Animator elec_animator;
     public GameObject lightOn;
     public GameObject lightOff;
     public ScriptableObjectScript scriptable_script;
@@ -21,13 +21,12 @@ public class ElectricBoxScript : MonoBehaviour
         {
             lightOff.SetActive(false);
             lightOn.SetActive(true);
-            obj_animator.SetBool("on", true);
         }
         else
         {
             lightOn.SetActive(false);
             lightOff.SetActive(true);
-            obj_animator.SetBool("on", false);
+            elec_animator.SetBool("on", false);
         }
     }
 }

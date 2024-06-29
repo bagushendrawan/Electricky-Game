@@ -16,6 +16,8 @@ public class ObjConditionScript : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip elecOutClip;
+    public Animator elec_animator;
+    public Canvas elec_canvas;
 
     //Get global tronic data list and store it here
     [HideInInspector] public static List<LevelDataClass> obj_dataList;
@@ -181,6 +183,7 @@ public class ObjConditionScript : MonoBehaviour
     {
         script_scriptable.global_eleOn_Q = false;
         audioSource.PlayOneShot(elecOutClip);
+        elec_canvas.enabled = true;
 
         for (int i = 0; i < obj_dataList.Count; i++)
         {
@@ -227,6 +230,7 @@ public class ObjConditionScript : MonoBehaviour
             //Debug.Log("Elec On");
             script_scriptable.global_eleOn_Q = true;
             script_scriptable.global_eleCapacity = SingletonDataScript.eleCapacity;
+            elec_animator.SetBool("on", true);
             for (int i = 0; i < obj_dataList.Count; i++)
             {
                 //script_bedlamp.bedroomLampCheck();

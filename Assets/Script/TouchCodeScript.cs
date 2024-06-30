@@ -75,11 +75,11 @@ public class TouchCodeScript : MonoBehaviour
 
     public void select(string Tag)
     {
-        audioSource.PlayOneShot(touch);
         switch (Tag)
         {
             case "firstLevel":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 script_cameraState.activateNewCamera(selectedObject);
                 if(ObjConditionScript.script_checkAC != null)
                 {
@@ -100,6 +100,7 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "secondLevel":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 script_cameraState.activateNewCamera(selectedObject);
                 if (ObjConditionScript.script_checkAC != null)
                 {
@@ -115,10 +116,12 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "plusButton":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 ObjConditionScript.script_checkAC.changeACValue(1);
                 break;
             case "minButton":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 ObjConditionScript.script_checkAC.changeACValue(-1);
                 break;
             case "Switch":
@@ -152,15 +155,18 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "changeScene":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 selectedObject.GetComponent<DoorSceneScript>().changeRoom();
                 script_lampButton = FindAnyObjectByType<LampButtonScript>();
                 audioSource.PlayOneShot(door);
                 break;
             case "backScene":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 break;
             case "Selectable":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 if (selectedObject.GetComponent<ACTextWarningScript>() != null)
                 {
                     StartCoroutine(ObjConditionScript.script_checkAC.acPopUpWarning());
@@ -168,7 +174,8 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Channel":
                 print($"tag : {Tag}");
-                if(selectedObject.GetComponent<TVRemoteScript>() != null)
+                audioSource.PlayOneShot(touch);
+                if (selectedObject.GetComponent<TVRemoteScript>() != null)
                 {
                     TVRemoteScript script_tv = selectedObject.GetComponent<TVRemoteScript>();
                     script_tv.changeChannel(script_tv.channel);
@@ -177,6 +184,7 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Coffee":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 if (selectedObject.GetComponent<CoffeeScript>() != null)
                 {
                     CoffeeScript script_coffee = selectedObject.GetComponent<CoffeeScript>();
@@ -185,6 +193,7 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Console":
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 if (selectedObject.GetComponentInParent<ConsoleMiddleScript>() != null)
                 {
                     ConsoleMiddleScript script_console = selectedObject.GetComponentInParent<ConsoleMiddleScript>();
@@ -199,13 +208,15 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "trivia":
                 print($"tag : {Tag}");
-                if(selectedObject.GetComponentInChildren<Canvas>() != null)
+                audioSource.PlayOneShot(touch);
+                if (selectedObject.GetComponentInChildren<Canvas>() != null)
                 {
                     selectedObject.GetComponentInChildren<Canvas>().enabled = true;
                 }
                 break;
             default:
                 print($"tag : {Tag}");
+                audioSource.PlayOneShot(touch);
                 break;
         }
     }

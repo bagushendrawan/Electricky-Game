@@ -6494,6 +6494,36 @@ PrefabInstance:
       propertyPath: m_Lens.NearClipPlane
       value: 4.48
       objectReference: {fileID: 0}
+    - target: {fileID: 3514545907315708261, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514545907315708261, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514545907315708261, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514545907315708261, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514545907315708261, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 3514545907315708261, guid: 55ae13e424be74745b1dd0affaab9107,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.25
+      objectReference: {fileID: 0}
     - target: {fileID: 4270841933971737743, guid: 55ae13e424be74745b1dd0affaab9107,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -7609,7 +7639,7 @@ PrefabInstance:
     - target: {fileID: 857634327851542620, guid: 7c7e21346960844429d46efa826998e1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -96675.336
+      value: -105484.86
       objectReference: {fileID: 0}
     - target: {fileID: 867863569375443338, guid: 7c7e21346960844429d46efa826998e1,
         type: 3}

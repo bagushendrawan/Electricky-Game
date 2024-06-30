@@ -81,7 +81,7 @@ public class GameCondStateScript : MonoBehaviour
                     starsLevel.Add(sceneIndex, currentStar);
                 }
 
-                winDesc.text = "Kamu Menghemat sebanyak " + script_scriptable.global_eleQuota + " kouta Listrik dalam waktu " + Mathf.Floor(SingletonDataScript.timer - script_scriptable.global_timer) + " detik";
+                winDesc.text = "Kamu Menghemat sebanyak " + Mathf.Floor(script_scriptable.global_eleQuota) + " kouta Listrik dalam waktu " + Mathf.Floor(SingletonDataScript.timer - script_scriptable.global_timer) + " detik";
                 Time.timeScale = 0;
                 winCanvas.enabled = true;
                 script_dataHandler.Save();
@@ -145,15 +145,14 @@ public class GameCondStateScript : MonoBehaviour
 
     int calculateStars(float timeRemaining)
     {
-        float originalTime = SingletonDataScript.timer;
-        float star = timeRemaining / (originalTime / 100);
+        float star = timeRemaining;
         Debug.Log("star " + star);
-        if(star > 50)
+        if(star > 180)
         {
             return 3;
         }
 
-        if(star > 25)
+        if(star > 60)
         {
             return 2;
         }

@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class dataHandler : MonoBehaviour
 {
     [HideInInspector] public static int unlockedScene;
-    public static int currentScene = 1;
+    public static int currentScene = 0;
     public static Dictionary<int, int> starLoad = new();
     public levelUnlockScript script_levelUnlock;
 
@@ -35,7 +35,7 @@ public class dataHandler : MonoBehaviour
 
     public void ResetData()
     {
-        currentScene = 1;
+        currentScene = 0;
         GameCondStateScript.starsLevel.Clear();
         saveSystem.SavePlayer();
         if (script_levelUnlock != null)

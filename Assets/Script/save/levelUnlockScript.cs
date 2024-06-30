@@ -48,7 +48,7 @@ public class levelUnlockScript : MonoBehaviour
             levelButtonList[i].SetActive(false);
         }
 
-        for (int i = 0; i < dataHandler.unlockedScene; i++)
+        for (int i = 0; i <= dataHandler.unlockedScene; i++)
         {
             levelButtonList[i].SetActive(true);
         }
@@ -66,7 +66,7 @@ public class levelUnlockScript : MonoBehaviour
             level3_star[i].SetActive(false);
         }
 
-        for (int i = 0; i < dataHandler.unlockedScene; i++)
+        for (int i = 0; i <= dataHandler.unlockedScene; i++)
         {
             levelButtonList[i].SetActive(true);
 

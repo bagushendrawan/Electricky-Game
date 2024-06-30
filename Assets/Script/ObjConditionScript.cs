@@ -150,6 +150,7 @@ public class ObjConditionScript : MonoBehaviour
                     script_checkAC.ACButtonPressed(false);
                     obj_dataList[j].tronic_active_Q = false;
                     objACStats();
+                    script_scriptable.global_eleCapacity += obj_dataList[script_checkAC.acIndex].tronic_wattage;
                     script_taskUi.updateTask();
                     //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                 }
@@ -212,11 +213,6 @@ public class ObjConditionScript : MonoBehaviour
             {
                 //ChangeObjectMaterial(obj, Color.yellow);
                 collider.enabled = false;
-            }
-            else
-            {
-               // ChangeObjectMaterial(obj, Color.cyan);
-                collider.enabled = true;
             }
         }
     }
@@ -349,10 +345,10 @@ public class ObjConditionScript : MonoBehaviour
 
     IEnumerator eleACDecreasePerSec(int index, float amount)
     {
-        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated || script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.correct && !script_checkAC.isACActive)
+        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.activated || script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.correct)
         {
             script_checkAC.isACActive = true;
-            if (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
+            if (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q && script_checkAC.isACActive)
             {
                 script_scriptable.global_eleCapacity -= obj_dataList[index].tronic_wattage;
                 if (script_scriptable.global_eleCapacity < 0)
@@ -375,10 +371,6 @@ public class ObjConditionScript : MonoBehaviour
                     yield return null; // Wait for the next frame
                 }
             }
-        }
-        if(script_checkAC.state_acBehaviour == CheckACValueScript.objBehaviour.off)
-        {
-            script_scriptable.global_eleCapacity += obj_dataList[index].tronic_wattage;
         }
         
     }

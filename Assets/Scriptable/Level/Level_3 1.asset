@@ -12,42 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
   m_Name: Level_3 1
   m_EditorClassIdentifier: 
-  global_eleCapacity: 24
-  global_eleQuota: 3000
+  global_eleCapacity: 20
+  global_eleQuota: 1000
   global_timer: 300
   global_eleOn_Q: 1
   global_tronicDataList:
-  - tronic_name: B_Lamp
+  - tronic_name: Lampu Kamar
     tronic_timer: 0
     tronic_wattage: 1
     tronic_wattPerSec: 1
-    tronic_statsDone_Q: 0
+    tronic_statsDone_Q: 1
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
-  - tronic_name: B_Comp
+  - tronic_name: Nyalakan Komputer
     tronic_timer: 20
-    tronic_wattage: 4
-    tronic_wattPerSec: 4
+    tronic_wattage: 2
+    tronic_wattPerSec: 3
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 0
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
-  - tronic_name: B_AC
-    tronic_timer: 30
-    tronic_wattage: 4
+  - tronic_name: "Nyalakan AC 23\xB0C Kamar"
+    tronic_timer: 20
+    tronic_wattage: 5
     tronic_wattPerSec: 5
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 1
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 0
-  - tronic_name: B_BedLamp
-    tronic_timer: 100
-    tronic_wattage: 4
-    tronic_wattPerSec: 1
+  - tronic_name: Nyalakan Lampu tidur
+    tronic_timer: 30
+    tronic_wattage: 2
+    tronic_wattPerSec: 2
     tronic_statsDone_Q: 0
     tronic_couldRestored_Q: 1
     tronic_active_Q: 0

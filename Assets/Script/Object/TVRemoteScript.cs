@@ -7,6 +7,8 @@ public class TVRemoteScript : MonoBehaviour
     public int channel;
     public CheckACValueScript script_value;
     public ObjConditionScript script_obj;
+
+    public ConsoleMiddleScript script_middleConsole;
     [SerializeField] private ScriptableObjectScript script_scriptable;
     [SerializeField] private GameObject remote_switch;
     public void changeChannel(int channel)
@@ -44,11 +46,9 @@ public class TVRemoteScript : MonoBehaviour
         script_value.defValue = channel;
         script_obj.objACStats();
 
-        if (ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q == false)
+        if (script_middleConsole != null)
         {
-            ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_correct_Q = true;
-            ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_timerCoroutine = StartCoroutine(script_obj.timerDecreasePerSec(script_value.consoleIndex));
-            script_obj.script_waitTimer.StartTimer(ObjConditionScript.obj_dataList[script_value.consoleIndex].tronic_timer, script_value.consoleIndex, false);
+            script_obj.consoleCheck();
         }
 
         script_value.rendererAC.material.SetTexture("_MainTex", null);

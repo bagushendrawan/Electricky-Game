@@ -47,7 +47,5 @@ public class dataHandler : MonoBehaviour
         PlayerData dataPlayer = saveSystem.LoadSave();
         unlockedScene = dataPlayer.unlockedScene;
         starLoad = dataPlayer.starDict;
-        Debug.Log("Load Game");
-        Debug.Log(unlockedScene);
     }
 }

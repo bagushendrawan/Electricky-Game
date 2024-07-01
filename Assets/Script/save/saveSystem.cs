@@ -50,7 +50,7 @@ public class saveSystem : MonoBehaviour
 public class PlayerData
 {
     public int unlockedScene;
-    public Dictionary<int, int> starDict = new();
+    public Dictionary<int, int> starDict;
     public PlayerData()
     {
         unlockedScene = dataHandler.currentScene;

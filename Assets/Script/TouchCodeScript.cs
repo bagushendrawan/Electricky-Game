@@ -11,7 +11,7 @@ public class TouchCodeScript : MonoBehaviour
     public static GameObject selectedObject;
 
     public AudioSource audioSource;
-    public AudioClip touch;
+    public AudioClip touchSound;
     public AudioClip swipe;
     public AudioClip door;
 
@@ -69,19 +69,23 @@ public class TouchCodeScript : MonoBehaviour
     }
     public void deactiveSecCollider()
     {
+        if(stack_objCollider.Count > 0)
         stack_objCollider.Pop().enabled = false;
-        stack_selectedCollider.Pop().enabled = true;
+
+        if (stack_selectedCollider.Count > 0)
+            stack_selectedCollider.Pop().enabled = true;
     }
 
-    public void select(string Tag)
+    public void select(string Tag, bool startTouch)
     {
         switch (Tag)
         {
             case "firstLevel":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if(!startTouch)
+                audioSource.PlayOneShot(touchSound);
                 script_cameraState.activateNewCamera(selectedObject);
-                if(ObjConditionScript.script_checkAC != null)
+                if (ObjConditionScript.script_checkAC != null)
                 {
                     ObjConditionScript.script_checkAC.activateACCollider();
                 }
@@ -93,14 +97,15 @@ public class TouchCodeScript : MonoBehaviour
 
                 activateSecCollider();
 
-                if(selectedObject.GetComponent<BedLampActivateScript>() != null)
+                if (selectedObject.GetComponent<BedLampActivateScript>() != null)
                 {
                     script_objToActivate = selectedObject.GetComponent<BedLampActivateScript>();
                 }
                 break;
             case "secondLevel":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 script_cameraState.activateNewCamera(selectedObject);
                 if (ObjConditionScript.script_checkAC != null)
                 {
@@ -116,33 +121,40 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "plusButton":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 ObjConditionScript.script_checkAC.changeACValue(1);
                 break;
             case "minButton":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 ObjConditionScript.script_checkAC.changeACValue(-1);
                 break;
             case "Switch":
                 print($"tag : {Tag}");
 
-                if(selectedObject.GetComponentInParent<CheckACValueScript>() != null)
+                if(selectedObject.GetComponent<ObjCorrectScript>() != null)
+                {
+                    selectedObject.GetComponent<ObjCorrectScript>().Correct();
+                }
+
+                if (selectedObject.GetComponentInParent<CheckACValueScript>() != null)
                 {
                     script_objCondition.objACSwitch(selectedObject);
-                    if(selectedObject.GetComponentInParent<ConsoleMiddleScript>() != null)
+                    if (selectedObject.GetComponentInParent<ConsoleMiddleScript>() != null)
                     {
                         Debug.Log("Console Switch Hit!");
                         ConsoleMiddleScript script_console = selectedObject.GetComponentInParent<ConsoleMiddleScript>();
-                        script_console.consoleCheck();
+                        script_objCondition.consoleCheck();
                     }
-                } 
+                }
                 else
                 {
                     Debug.Log("Regular Switch Hit!");
                     script_objCondition.objSwitch(selectedObject);
                     script_cpuButton.CPUButtonPressed();
-                    if(script_lampButton != null)
+                    if (script_lampButton != null)
                     {
                         script_lampButton.LampButtonPressed();
                     }
@@ -155,18 +167,21 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "changeScene":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 selectedObject.GetComponent<DoorSceneScript>().changeRoom();
                 script_lampButton = FindAnyObjectByType<LampButtonScript>();
                 audioSource.PlayOneShot(door);
                 break;
             case "backScene":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 break;
             case "Selectable":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 if (selectedObject.GetComponent<ACTextWarningScript>() != null)
                 {
                     StartCoroutine(ObjConditionScript.script_checkAC.acPopUpWarning());
@@ -174,7 +189,8 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Channel":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 if (selectedObject.GetComponent<TVRemoteScript>() != null)
                 {
                     TVRemoteScript script_tv = selectedObject.GetComponent<TVRemoteScript>();
@@ -184,7 +200,8 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Coffee":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 if (selectedObject.GetComponent<CoffeeScript>() != null)
                 {
                     CoffeeScript script_coffee = selectedObject.GetComponent<CoffeeScript>();
@@ -193,12 +210,13 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "Console":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 if (selectedObject.GetComponentInParent<ConsoleMiddleScript>() != null)
                 {
                     ConsoleMiddleScript script_console = selectedObject.GetComponentInParent<ConsoleMiddleScript>();
                     script_console.consoleOn();
-                    script_console.consoleCheck();
+                    script_objCondition.consoleCheck();
                 }
 
                 if (script_console != null)
@@ -208,7 +226,8 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             case "trivia":
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                if (!startTouch)
+                    audioSource.PlayOneShot(touchSound);
                 if (selectedObject.GetComponentInChildren<Canvas>() != null)
                 {
                     selectedObject.GetComponentInChildren<Canvas>().enabled = true;
@@ -216,7 +235,8 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             default:
                 print($"tag : {Tag}");
-                audioSource.PlayOneShot(touch);
+                //if (!startTouch)
+                //    audioSource.PlayOneShot(touchSound);
                 break;
         }
     }
@@ -228,7 +248,7 @@ public class TouchCodeScript : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0); // Assuming you're interested in the first touch
-
+            bool startTouch = false;
             if (touch.phase == TouchPhase.Began)
             {
                 if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
@@ -247,7 +267,7 @@ public class TouchCodeScript : MonoBehaviour
 
                     if (Physics.Raycast(ray, out hit))
                     {
-                        GameObject touchedObject = hit.transform.gameObject;
+                       GameObject touchedObject = hit.transform.gameObject;
 
                         selectedObject = touchedObject;
                         print($"hit {touchedObject.tag}");
@@ -262,8 +282,7 @@ public class TouchCodeScript : MonoBehaviour
                             SoundEffectScript sfx = selectedObject.GetComponent<SoundEffectScript>();
                             sfx.playSound();
                         }
-
-                        select(touchedObject.tag);
+                        select(selectedObject.tag, startTouch);
                     }
                 }
             }
@@ -274,11 +293,11 @@ public class TouchCodeScript : MonoBehaviour
                 return;
             }
 
-            if (touch.phase == TouchPhase.Moved && script_cameraState.currentVirtualCamera.CompareTag("firVirtualCamera"))
-            {
-                if (script_objToActivate != null)
-                    script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
-            }
+            //if (touch.phase == TouchPhase.Moved && script_cameraState.currentVirtualCamera.CompareTag("firVirtualCamera"))
+            //{
+            //    if (script_objToActivate != null)
+            //        script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
+            //}
 
             if (touch.phase == TouchPhase.Ended)
             {
@@ -287,20 +306,24 @@ public class TouchCodeScript : MonoBehaviour
                 {
                     if (startTouchPos.y < Screen.height / 2)
                     {
-                        audioSource.PlayOneShot(swipe);
+     
                         if (endTouchPos.x - startTouchPos.x < -100)
                         {
                             Debug.Log("Next Swipe");
                             script_cameraState.nextSwipe();
+                            audioSource.PlayOneShot(swipe);
                         }
 
                         if (endTouchPos.x - startTouchPos.x > 100)
                         {
                             Debug.Log("Prev Swipe");
                             script_cameraState.prevSwipe();
+                            audioSource.PlayOneShot(swipe);
                         }
                     }
                 }
+
+
             }
         }
     }

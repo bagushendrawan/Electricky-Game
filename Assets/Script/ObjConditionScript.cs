@@ -18,6 +18,7 @@ public class ObjConditionScript : MonoBehaviour
     public AudioClip elecOutClip;
     public Animator elec_animator;
     public Canvas elec_canvas;
+    public CheckACValueScript script_tv;
 
     //Get global tronic data list and store it here
     [HideInInspector] public static List<LevelDataClass> obj_dataList;
@@ -132,7 +133,8 @@ public class ObjConditionScript : MonoBehaviour
                     obj_dataList[j].tronic_active_Q = true;
                     //script_scriptable.global_eleCapacity -= obj_dataList[j].tronic_wattage;
 
-                    if (script_checkAC.state_acBehaviour != CheckACValueScript.objBehaviour.activated)
+
+                    if (global_acStatsIndex[script_checkAC.acIndex] != acObjBehaviour.correct && !script_checkAC.isThisTV)
                     {
                         script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
                         global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
@@ -155,6 +157,27 @@ public class ObjConditionScript : MonoBehaviour
                     //script_scriptable.global_eleCapacity += obj_dataList[j].tronic_wattage;
                 }
             }
+        }
+    }
+
+    public void consoleCheck()
+    {
+        if (script_tv.isTVAV && ObjConditionScript.obj_dataList[script_tv.tvIndex].tronic_active_Q && ObjConditionScript.obj_dataList[script_tv.consoleIndex].tronic_active_Q)
+        {
+            ObjConditionScript.obj_dataList[script_tv.consoleIndex].tronic_correct_Q = true;
+            script_tv.rendererAC.material.SetTexture("_MainTex", script_tv.textureACList[4]);
+        }
+        else
+        {
+            //script_ac.rendererAC.material.SetTexture("_MainTex", null);
+            ObjConditionScript.obj_dataList[script_tv.consoleIndex].tronic_correct_Q = false;
+        }
+
+
+        if (ObjConditionScript.obj_dataList[script_tv.consoleIndex].tronic_correct_Q)
+        {
+            StartCoroutine(timerDecreasePerSec(script_tv.consoleIndex));
+            script_waitTimer.StartTimer(ObjConditionScript.obj_dataList[script_tv.consoleIndex].tronic_timer, script_tv.consoleIndex, false);
         }
     }
 
@@ -333,7 +356,7 @@ public class ObjConditionScript : MonoBehaviour
 
             if (obj_dataList[index].tronic_timer <= 0)
             {
-                obj_dataList[index].tronic_statsDone_Q = !obj_dataList[index].tronic_statsDone_Q;
+                obj_dataList[index].tronic_statsDone_Q = true;
                 script_taskUi.updateTask();
                 //objColor();
                 winCheck();
@@ -395,8 +418,9 @@ public class ObjConditionScript : MonoBehaviour
                 //Debug.Log("Object Deactivated-Done Timer");
                 winCheck();
 
-                script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
-                global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
+                //if(!script_checkAC.isThisTV)
+                //script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
+                //global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
                 yield break; // Exit the coroutine if the taskTimer has reached zero
             }
             yield return null; // Wait for the next frame

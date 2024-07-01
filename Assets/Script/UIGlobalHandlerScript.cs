@@ -55,7 +55,12 @@ public class UIGlobalHandlerScript : MonoBehaviour
         if (!script_cameraState.currentVirtualCamera.CompareTag("mainVirtualCamera"))
         {
             script_cameraState.activatePrevCamera();
-            if(ObjConditionScript.script_checkAC != null)
+            if(ObjConditionScript.script_checkAC != null && ObjConditionScript.script_checkAC.isThisTV)
+            {
+                ObjConditionScript.script_checkAC.deactivateACCollider();
+            }
+
+            if (ObjConditionScript.script_checkAC != null && !ObjConditionScript.script_checkAC.isThisTV)
             {
                 ObjConditionScript.script_checkAC.deactivateACCollider();
             }

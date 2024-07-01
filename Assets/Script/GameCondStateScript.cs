@@ -14,6 +14,11 @@ public class GameCondStateScript : MonoBehaviour
     private Canvas winCanvas;
     private Canvas loseCanvas;
     public GameObject[] starArray;
+
+    public AudioSource sfx;
+    public AudioClip win;
+    public AudioClip lose;
+
     [SerializeField] private ScriptableObjectScript script_scriptable;
     [SerializeField] private TMP_Text winDesc;
     [SerializeField] private TMP_Text loseDesc;
@@ -62,6 +67,7 @@ public class GameCondStateScript : MonoBehaviour
             case state.pauseGame:
                 break;
             case state.winGame:
+                sfx.PlayOneShot(win);
                 int sceneIndex = SceneManager.GetActiveScene().buildIndex;
                 int currentStar = calculateStars(script_scriptable.global_timer);
                 Debug.Log("scene" + sceneIndex + "currentStar" + currentStar);
@@ -87,6 +93,7 @@ public class GameCondStateScript : MonoBehaviour
                 script_dataHandler.Save();
                 break;
             case state.loseGame:
+                sfx.PlayOneShot(lose);
                 Time.timeScale = 0;
                 loseCanvas.enabled = true;
                 break;

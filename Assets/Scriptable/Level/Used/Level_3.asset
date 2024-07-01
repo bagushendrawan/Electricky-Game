@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 351b248fc53171547b76905329a42c31, type: 3}
-  m_Name: Level_3 3
+  m_Name: Level_3
   m_EditorClassIdentifier: 
   global_eleCapacity: 20
-  global_eleQuota: 1000
-  global_timer: 300
+  global_eleQuota: 5000
+  global_timer: 420
   global_eleOn_Q: 1
   global_tronicDataList:
   - tronic_name: Lampu Kamar
@@ -27,7 +27,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
   - tronic_name: Nyalakan Komputer
-    tronic_timer: 30
+    tronic_timer: 60
     tronic_wattage: 2
     tronic_wattPerSec: 3
     tronic_statsDone_Q: 0
@@ -35,8 +35,8 @@ MonoBehaviour:
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
-  - tronic_name: "Nyalakan AC 23\xB0C Kamar"
-    tronic_timer: 30
+  - tronic_name: "Nyalakan AC 22\xB0C Kamar"
+    tronic_timer: 60
     tronic_wattage: 5
     tronic_wattPerSec: 5
     tronic_statsDone_Q: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 0
   - tronic_name: 'Nyalakan Lampu tidur '
-    tronic_timer: 10
+    tronic_timer: 30
     tronic_wattage: 2
     tronic_wattPerSec: 2
     tronic_statsDone_Q: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
   - tronic_name: "Nyalakan AC 26\xB0C R.Tamu"
-    tronic_timer: 60
+    tronic_timer: 50
     tronic_wattage: 5
     tronic_wattPerSec: 5
     tronic_statsDone_Q: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 0
   - tronic_name: Nyalakan Robo Vacum
-    tronic_timer: 15
+    tronic_timer: 30
     tronic_wattage: 2
     tronic_wattPerSec: 2
     tronic_statsDone_Q: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
-  - tronic_name: Tonton TV Channel Hewan
+  - tronic_name: Tonton TV Channel Kartun
     tronic_timer: 40
     tronic_wattage: 3
     tronic_wattPerSec: 3
@@ -89,8 +89,8 @@ MonoBehaviour:
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 0
-  - tronic_name: Mainkan Game console
-    tronic_timer: 30
+  - tronic_name: Mainkan Game di console
+    tronic_timer: 60
     tronic_wattage: 3
     tronic_wattPerSec: 2
     tronic_statsDone_Q: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
     tronic_active_Q: 0
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 0
-  - tronic_name: Masak Daging di kompor
+  - tronic_name: Masak Daging dikompor
     tronic_timer: 60
     tronic_wattage: 3
     tronic_wattPerSec: 2

@@ -34,6 +34,7 @@ public class CameraOnEnableScript : MonoBehaviour
     {
         script_cameraState.deactivateAllCameras();
         script_cameraState.roomCamera[cameraRoomState].enabled = true;
+        script_cameraState.virCameraList.Push(script_cameraState.roomCamera[cameraRoomState]);
         script_cameraState.changeRoomState(cameraRoomState);
     }
 }

@@ -246,7 +246,6 @@ public class ObjConditionScript : MonoBehaviour
         
         if(!script_scriptable.global_eleOn_Q)
         {
-            //Debug.Log("Elec On");
             script_scriptable.global_eleOn_Q = true;
             script_scriptable.global_eleCapacity = SingletonDataScript.eleCapacity;
             elec_animator.SetBool("on", true);
@@ -254,25 +253,8 @@ public class ObjConditionScript : MonoBehaviour
             {
                 //script_bedlamp.bedroomLampCheck();
                 obj_dataList[i].tronic_eleSupplied_Q = true;
-                //if (obj_dataList[i].tronic_couldRestored_Q && obj_dataList[i].tronic_correct_Q)
-                //{
-                //    obj_dataList[i].tronic_active_Q = true;
-                //    if (obj_dataList[i].tronic_correct_Q)
-                //    {
-                //        StartCoroutine(eleDecreasePerSec(i, obj_dataList[i].tronic_wattPerSec));
-                //        obj_dataList[i].tronic_timerCoroutine = StartCoroutine(timerDecreasePerSec
-                //                   (i));
-                //        script_waitTimer.StartTimer(obj_dataList[i].tronic_timer, i, false);
-                //        objACStats();
-                //        script_taskUi.updateTask();
-                //    }
-                //}
-
-
+               
             }
-
-            
-
         }
     }
 
@@ -322,15 +304,12 @@ public class ObjConditionScript : MonoBehaviour
             while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
             {
                 script_scriptable.global_eleQuota -= amount * Time.deltaTime;
-                //if(obj_dataList[index].tronic_timer < 0)
-                //{
-                //    yield break;
-                //}
+
                 if (script_scriptable.global_eleQuota < 0)
                 {
                     yield break;
                 }
-                yield return null; // Wait for the next frame
+                yield return null;
             }
         } else
         {
@@ -344,10 +323,9 @@ public class ObjConditionScript : MonoBehaviour
         if (index < 0 || index >= obj_dataList.Count)
         {
             Debug.LogError("Invalid index provided for timerDecreasePerSec coroutine.");
-            yield break; // Exit the coroutine if the index is out of range
+            yield break; 
         }
 
-        //StartCoroutine(eleDecreasePerSec(index,obj_dataList[index].tronic_wattPerSec));
 
         
         while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_correct_Q && obj_dataList[index].tronic_eleSupplied_Q)
@@ -358,11 +336,10 @@ public class ObjConditionScript : MonoBehaviour
             {
                 obj_dataList[index].tronic_statsDone_Q = true;
                 script_taskUi.updateTask();
-                //objColor();
                 winCheck();
-                yield break; // Exit the coroutine if the taskTimer has reached zero
+                yield break; 
             }
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
     }
 
@@ -378,33 +355,28 @@ public class ObjConditionScript : MonoBehaviour
                 {
                     Debug.Log("Electricity Out");
                     elecOut();
-                    //objColor();
                 }
                 while (true && obj_dataList[index].tronic_active_Q && obj_dataList[index].tronic_eleSupplied_Q)
                 {
                     script_scriptable.global_eleQuota -= amount * Time.deltaTime;
-                    //if(obj_dataList[index].tronic_timer < 0)
-                    //{
-                    //    yield break;
-                    //}
+
                     if (script_scriptable.global_eleQuota < 0)
                     {
                         yield break;
                     }
-                    yield return null; // Wait for the next frame
+                    yield return null;
                 }
             }
         }
         
     }
 
-    //Decrease the timer and update the task
     IEnumerator timerACDecreasePerSec(int index)
     {
         if (index < 0 || index >= obj_dataList.Count)
         {
             Debug.LogError("Invalid index provided for timerDecreasePerSec coroutine.");
-            yield break; // Exit the coroutine if the index is out of range
+            yield break;
         }
 
         while (obj_dataList[index].tronic_timer >= 0 && obj_dataList[index].tronic_active_Q && global_acStatsIndex[index] == acObjBehaviour.correct && obj_dataList[index].tronic_correct_Q && obj_dataList[index].tronic_eleSupplied_Q)//errr
@@ -414,59 +386,15 @@ public class ObjConditionScript : MonoBehaviour
             {
                 obj_dataList[index].tronic_statsDone_Q = !obj_dataList[index].tronic_statsDone_Q;
                 script_taskUi.updateTask();
-                //objColor();
-                //Debug.Log("Object Deactivated-Done Timer");
+
                 winCheck();
 
-                //if(!script_checkAC.isThisTV)
-                //script_checkAC.ChangeState(CheckACValueScript.objBehaviour.activated);
-                //global_acStatsIndex[script_checkAC.acIndex] = acObjBehaviour.activated;
-                yield break; // Exit the coroutine if the taskTimer has reached zero
+                yield break; 
             }
-            yield return null; // Wait for the next frame
+            yield return null;
         }
     }
 
-    ////Assign obj to objList
-    //public void assignObj()
-    //{
-    //    if(obj_assetSwitchList != null)
-    //    {
-    //        obj_assetSwitchList.Clear();
-    //    }
-
-    //    foreach (GameObject x in GameObject.FindGameObjectsWithTag("Switch"))
-    //    {
-    //        obj_assetSwitchList.Add(x);
-    //    }
-
-    //    if(obj_assetSwitchList != null)
-    //    {
-    //        obj_assetSwitchList.Sort(CompareGameObjectNames);
-    //    }
-    //}
-
-    ////Sort by names
-    //private int CompareGameObjectNames(GameObject a, GameObject b)
-    //{
-    //    return a.name.CompareTo(b.name);
-    //}
-
-    //public void deactivateObjSwitch()
-    //{
-    //    foreach(GameObject obj in obj_assetSwitchList)
-    //    {
-    //        obj.SetActive(false);
-    //    }
-    //}
-
-    //public void activateObjSwitch()
-    //{
-    //    foreach (GameObject obj in obj_assetSwitchList)
-    //    {
-    //        obj.SetActive(true);
-    //    }
-    //}
 
     public void ChangeObjectMaterial(GameObject target, Color color)
     {

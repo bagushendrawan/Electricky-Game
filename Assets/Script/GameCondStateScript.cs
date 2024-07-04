@@ -8,7 +8,6 @@ using TMPro;
 //Should be a central game state, but only using it for win and lose
 public class GameCondStateScript : MonoBehaviour
 {
-    public static Dictionary<int, int> starsLevel = new();
     private SingletonDataScript script_Data;
     private dataHandler script_dataHandler;
     private Canvas winCanvas;
@@ -44,6 +43,11 @@ public class GameCondStateScript : MonoBehaviour
         loseCanvas = GameObject.Find("Canvas_Lose").GetComponent<Canvas>();
         winCanvas.enabled = false;
         loseCanvas.enabled = false;
+
+        foreach (KeyValuePair<int, int> kvp in dataHandler.starLoad)
+        {
+           Debug.Log(string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value));
+        }
     }
 
     void Update()
@@ -68,6 +72,8 @@ public class GameCondStateScript : MonoBehaviour
                 break;
             case state.winGame:
                 sfx.PlayOneShot(win);
+                script_dataHandler.Load();
+
                 int sceneIndex = SceneManager.GetActiveScene().buildIndex;
                 int currentStar = calculateStars(script_scriptable.global_timer);
                 Debug.Log("scene" + sceneIndex + "currentStar" + currentStar);
@@ -76,16 +82,17 @@ public class GameCondStateScript : MonoBehaviour
                     starArray[i].SetActive(true);
                 }
 
-                if(starsLevel.ContainsKey(sceneIndex))
+                if(dataHandler.starLoad.ContainsKey(sceneIndex))
                 {
-                    if (starsLevel[sceneIndex] < currentStar)
+                    if (dataHandler.starLoad[sceneIndex] < currentStar)
                     {
-                        starsLevel[sceneIndex] = currentStar;
+                        dataHandler.starLoad[sceneIndex] = currentStar;
                     }
                 } else
                 {
-                    starsLevel.Add(sceneIndex, currentStar);
+                    dataHandler.starLoad.Add(sceneIndex, currentStar);
                 }
+
 
                 winDesc.text = "Kamu Menghemat sebanyak " + Mathf.Floor(script_scriptable.global_eleQuota) + " kouta Listrik dalam waktu " + Mathf.Floor(SingletonDataScript.timer - script_scriptable.global_timer) + " detik";
                 Time.timeScale = 0;

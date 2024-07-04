@@ -54,6 +54,6 @@ public class PlayerData
     public PlayerData()
     {
         unlockedScene = dataHandler.currentScene;
-        starDict = GameCondStateScript.starsLevel; 
+        starDict = dataHandler.starLoad; 
     }
 }

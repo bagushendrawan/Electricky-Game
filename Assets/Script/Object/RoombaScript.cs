@@ -19,11 +19,11 @@ public class RoombaScript : MonoBehaviour
     {
         if(ObjConditionScript.obj_dataList[roombaDataIndex].tronic_active_Q)
         {
-            roomba_animator.SetTrigger("roombaOn");
+            roomba_animator.SetBool("roomba",true);
             roombaRenderer.material.SetTexture("_MainTex", roombaTexture[1]);
         } else
         {
-            roomba_animator.SetTrigger("roombaOff");
+            roomba_animator.SetBool("roomba", false);
             roombaRenderer.material.SetTexture("_MainTex", roombaTexture[0]);
         }
     }

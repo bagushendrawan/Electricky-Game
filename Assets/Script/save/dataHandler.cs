@@ -36,7 +36,7 @@ public class dataHandler : MonoBehaviour
     public void ResetData()
     {
         currentScene = 0;
-        GameCondStateScript.starsLevel.Clear();
+        starLoad.Clear();
         saveSystem.SavePlayer();
         if (script_levelUnlock != null)
         script_levelUnlock.checkLevel();

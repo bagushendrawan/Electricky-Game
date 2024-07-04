@@ -27,7 +27,7 @@ MonoBehaviour:
     tronic_eleSupplied_Q: 1
     tronic_correct_Q: 1
   - tronic_name: Nyalakan Komputer
-    tronic_timer: 30
+    tronic_timer: 40
     tronic_wattage: 2
     tronic_wattPerSec: 3
     tronic_statsDone_Q: 0

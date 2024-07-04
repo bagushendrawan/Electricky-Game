@@ -235,8 +235,6 @@ public class TouchCodeScript : MonoBehaviour
                 break;
             default:
                 print($"tag : {Tag}");
-                //if (!startTouch)
-                //    audioSource.PlayOneShot(touchSound);
                 break;
         }
     }
@@ -289,15 +287,8 @@ public class TouchCodeScript : MonoBehaviour
 
             if (isTouchOverUI)
             {
-                // Do not process the rest of the touch phases if it started over a UI element
                 return;
             }
-
-            //if (touch.phase == TouchPhase.Moved && script_cameraState.currentVirtualCamera.CompareTag("firVirtualCamera"))
-            //{
-            //    if (script_objToActivate != null)
-            //        script_objToActivate.obj.transform.Rotate(0, -touch.deltaPosition.x * script_objToActivate.turnspeed * Time.deltaTime, 0);
-            //}
 
             if (touch.phase == TouchPhase.Ended)
             {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class levelUnlockScript : MonoBehaviour
 {
@@ -10,33 +11,40 @@ public class levelUnlockScript : MonoBehaviour
     public GameObject[] level2_star;
     public GameObject[] level3_star;
     public dataHandler script_dataHandler;
+    public GameObject obj_reset;
     // Start is called before the first frame update
     void Start()
     {
         script_datahandler.Load();
         if (dataHandler.starLoad.ContainsKey(1))
         {
+            obj_reset.GetComponent<Button>().interactable = true;
             for (int i = 0; i < dataHandler.starLoad[1]; i++)
             {
                 level1_star[i].SetActive(true);
             }
-        }
-        else if (dataHandler.starLoad.ContainsKey(2))
-        {
-            for (int i = 0; i < dataHandler.starLoad[2]; i++)
+
+            if (dataHandler.starLoad.ContainsKey(2))
             {
-                level2_star[i].SetActive(true);
+                obj_reset.GetComponent<Button>().interactable = true;
+                for (int i = 0; i < dataHandler.starLoad[2]; i++)
+                {
+                    level2_star[i].SetActive(true);
+                }
             }
-        }
-        else if (dataHandler.starLoad.ContainsKey(3))
-        {
-            for (int i = 0; i < dataHandler.starLoad[3]; i++)
+
+            if (dataHandler.starLoad.ContainsKey(3))
             {
-                level3_star[i].SetActive(true);
+                obj_reset.GetComponent<Button>().interactable = true;
+                for (int i = 0; i < dataHandler.starLoad[3]; i++)
+                {
+                    level3_star[i].SetActive(true);
+                }
             }
         }
         else
         {
+            obj_reset.GetComponent<Button>().interactable = false;
             for (int i = 0; i < levelButtonList.Count; i++)
             {
                 levelButtonList[i].SetActive(false);
@@ -71,5 +79,7 @@ public class levelUnlockScript : MonoBehaviour
             levelButtonList[i].SetActive(true);
 
         }
+
+        obj_reset.GetComponent<Button>().interactable = false;
     }
 }

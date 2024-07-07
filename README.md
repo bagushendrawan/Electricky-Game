@@ -1,4 +1,4 @@
-# Project-TA
+# Electricky Game
 ![image](https://github.com/bagushendrawan/Electricky-Game/assets/125522708/94884a30-67f2-4f87-9fef-beecd5478461)
 ![image](https://github.com/bagushendrawan/Electricky-Game/assets/125522708/6bf9379f-17d2-4034-b5fb-bd1d0617bb1a)
 ![image](https://github.com/bagushendrawan/Electricky-Game/assets/125522708/e40cc750-d62e-46c7-909d-9a905bed85e4)
@@ -9,6 +9,8 @@ Electricky adalah permainan Simulasi Time Management Puzzle 3D dengan sudut pand
 
 Siapkah Anda mengatasi tantangan sehari-hari sambil menjaga penggunaan listrik tetap terkendali? 
 
+<a href="https://maddjix.itch.io/electricky">Download Disini!</a>
+
 Cara Bermain
 <ul>
  <li>Geser Layar untuk mengganti kamera</li>
@@ -17,7 +19,6 @@ Cara Bermain
  <li>Berusahalah menghemat energi listrik sebisa mungkin!</li>
 </ul>
 
-Kredit
 Long Distance Team (Kelompok Tugas Akhir)
 <ul>
  <li>Muhammad Majid Akbar - Game Designer</li>
